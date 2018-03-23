@@ -1,0 +1,9 @@
+@value gray from "../Colors.css";
+
+.header {
+    margin: 0 0 25px;
+    padding: 0px 0px 10px;
+    border-bottom: 1px gray solid;
+    display: flex;
+    justify-content: space-around;
+}
