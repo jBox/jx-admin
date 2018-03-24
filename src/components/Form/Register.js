@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import isEqual from "lodash/isEqual";
+import isEmpty from "lodash/isEmpty";
 import classNames from "classnames";
 import InputItem from "./InputItem";
 import CaptchaItem from "./CaptchaItem";
@@ -10,8 +11,10 @@ export default class Register extends Component {
         intact: PropTypes.bool,
         verification: PropTypes.object,
         captcha: PropTypes.object,
+        error: PropTypes.string,
         onChange: PropTypes.func,
-        onSubmit: PropTypes.func
+        onSubmit: PropTypes.func,
+        onObtainCaptcha: PropTypes.func
     }
 
     constructor(props, context) {
@@ -20,6 +23,7 @@ export default class Register extends Component {
         this.form = {};
 
         this.state = {
+            captchaDisabled: true,
             verification: {},
             terms: false,
             error: ""
@@ -72,8 +76,22 @@ export default class Register extends Component {
             pattern
         };
 
+        // check captcha disabled
+        const state = {};
+        if (name === "mobile") {
+            const r = new RegExp(pattern, "g");
+            const captchaDisabled = !r.test(value);
+            if (this.state.captchaDisabled !== captchaDisabled) {
+                state.captchaDisabled = captchaDisabled;
+            }
+        }
+
         if (this.state.error === name) {
-            this.setState({ error: "" });
+            state.error = "";
+        }
+
+        if (!isEmpty(state)) {
+            this.setState(state);
         }
 
         const { onChange } = this.props;
@@ -87,6 +105,13 @@ export default class Register extends Component {
 
         if (name === "terms" && this.state.terms !== checked) {
             this.setState({ terms: checked });
+        }
+    }
+
+    handleObtainCaptcha = () => {
+        const { onObtainCaptcha } = this.props;
+        if (onObtainCaptcha) {
+            onObtainCaptcha(this.form.mobile.value)
         }
     }
 
@@ -139,8 +164,8 @@ export default class Register extends Component {
     }
 
     render() {
-        const { intact } = this.props;
-        const { error, terms, verification } = this.state;
+        const { intact, captcha, error: formError } = this.props;
+        const { error, terms, verification, captchaDisabled } = this.state;
         const formData = this.extractFormData();
 
         return (
@@ -162,8 +187,11 @@ export default class Register extends Component {
                     hasError={error === "captcha"}
                     pattern="^\d{6}$"
                     message="验证码不正确"
+                    disabled={captchaDisabled}
+                    sent={captcha.state}
                     defaultValue={formData.captcha}
-                    onChange={this.handleInputChange} />
+                    onChange={this.handleInputChange}
+                    onObtain={this.handleObtainCaptcha} />
                 {intact && <InputItem name="username" placeholder="用户名" icon="user"
                     hasError={error === "username"}
                     pattern="^[a-zA-z][\w-]{4,}$"
@@ -183,18 +211,22 @@ export default class Register extends Component {
                     defaultValue={formData.confirmPassword}
                     onChange={this.handleInputChange} />}
 
+                {formError && (<div class="form-group has-feedback has-error">
+                    <span class="help-block">{formError}</span>
+                </div>)}
+
                 <div className="row">
                     <div className="col-xs-8">
                         <div className="checkbox">
                             <label>
-                                <input name="terms" type="checkbox" onChange={this.handleTermsChange} /> 我同意 <a href="#terms">条款</a>
+                                <input name="terms" type="checkbox" onChange={this.handleTermsChange} /> 同意 <a href="#terms">租车协议</a>
                             </label>
                         </div>
                     </div>
                     <div className="col-xs-4">
                         <button type="submit"
                             className="btn btn-primary btn-block btn-flat"
-                            disabled={!terms || !!error}
+                            disabled={!terms || !!error || !!formError}
                         >
                             注册
                         </button>

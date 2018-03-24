@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
+import isEqual from "lodash/isEqual";
+import isEmpty from "lodash/isEmpty";
 import InputItem from "./InputItem";
 import CaptchaItem from "./CaptchaItem";
 
@@ -11,7 +13,11 @@ export default class Login extends Component {
 
     static propTypes = {
         mode: PropTypes.string,
-        onSubmit: PropTypes.func
+        captcha: PropTypes.object,
+        error: PropTypes.string,
+        onChange: PropTypes.func,
+        onSubmit: PropTypes.func,
+        onObtainCaptcha: PropTypes.func
     }
 
     constructor(props, context) {
@@ -20,6 +26,7 @@ export default class Login extends Component {
         this.form = { remember: { value: false } };
 
         this.state = {
+            captchaDisabled: true,
             mode: props.mode,
             error: ""
         }
@@ -73,8 +80,34 @@ export default class Login extends Component {
             pattern
         };
 
+        // check captcha disabled
+        const state = {};
+        if (name === "mobile") {
+            const r = new RegExp(pattern, "g");
+            const captchaDisabled = !r.test(value);
+            if (this.state.captchaDisabled !== captchaDisabled) {
+                state.captchaDisabled = captchaDisabled;
+            }
+        }
+
         if (this.state.error === name) {
-            this.setState({ error: "" });
+            state.error = "";
+        }
+
+        if (!isEmpty(state)) {
+            this.setState(state);
+        }
+
+        const { onChange } = this.props;
+        if (onChange) {
+            onChange({ name, value });
+        }
+    }
+
+    handleObtainCaptcha = () => {
+        const { onObtainCaptcha } = this.props;
+        if (onObtainCaptcha) {
+            onObtainCaptcha(this.form.mobile.value)
         }
     }
 
@@ -120,8 +153,9 @@ export default class Login extends Component {
     }
 
     buildInputs = () => {
+        const { captcha } = this.props;
+        const { mode, error, captchaDisabled } = this.state;
         const formData = this.extractFormData();
-        const { mode, error } = this.state;
         if (mode === "mob") {
             return [
                 (<InputItem key="mobile" name="mobile" placeholder="手机号码" icon="phone"
@@ -134,8 +168,11 @@ export default class Login extends Component {
                     hasError={error === "captcha"}
                     pattern="^\d{6}$"
                     message="验证码不正确"
+                    disabled={captchaDisabled}
+                    sent={captcha.state}
                     defaultValue={formData.captcha}
-                    onChange={this.handleInputChange} />)
+                    onChange={this.handleInputChange}
+                    onObtain={this.handleObtainCaptcha} />)
             ];
         }
 
@@ -157,9 +194,15 @@ export default class Login extends Component {
 
     render() {
         const { error } = this.state;
+        const { error: formError } = this.props;
+
         return (
             <form action="/login" method="post" onSubmit={this.handleSubmit}>
                 {this.buildInputs()}
+
+                {formError && (<div class="form-group has-feedback has-error">
+                    <span class="help-block">{formError}</span>
+                </div>)}
 
                 <div className="row">
                     <div className="col-xs-8">
@@ -172,7 +215,7 @@ export default class Login extends Component {
                     <div className="col-xs-4">
                         <button type="submit"
                             className="btn btn-primary btn-block btn-flat"
-                            disabled={!!error}
+                            disabled={!!error || !!formError}
                         >
                             登录
                         </button>

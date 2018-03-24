@@ -1,13 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import isEqual from "lodash/isEqual";
 import ExLayout from "./ExLayout";
 import { Link } from "react-browser-router";
 import Light from "../components/Tabs/Light";
 import Form from "../components/Form/Register";
 
 import registerSelector from "../redux/selectors/register";
-import { submit, validateIdentity, getCaptcha } from "../redux/actions/register";
+import { submit, validateIdentity, obtainCaptcha, resetSubmission } from "../redux/actions/register";
 
 const isMobilenumberValid = (num) => (
     /^1\d{10}$/g.test(num)
@@ -27,27 +28,32 @@ const GoLogin = () => (
 class Register extends ExLayout {
 
     static propTypes = {
+        history: PropTypes.object,
         verification: PropTypes.object,
         captcha: PropTypes.object,
         submission: PropTypes.object,
         submit: PropTypes.func,
+        resetSubmission: PropTypes.func,
         validateIdentity: PropTypes.func,
-        getCaptcha: PropTypes.func
+        obtainCaptcha: PropTypes.func
     }
 
     handleFormChange = ({ name, value }) => {
-        const { validateIdentity } = this.props;
-        if (validateIdentity) {
-            if (name === "mobile" && isMobilenumberValid(value)) {
-                validateIdentity(name, value);
-            } else if (name === "username" && isUsernameValid(value)) {
-                validateIdentity(name, value);
-            }
+        const { resetSubmission, submission } = this.props;
+        if (resetSubmission && submission.state === "failure") {
+            resetSubmission();
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { submission, history } = nextProps;
+        if (!isEqual(submission, this.props.submission) && submission.state === "success") {
+            history.replace("/register/success");
         }
     }
 
     render() {
-        const { verification, captcha } = this.props;
+        const { verification, submission, captcha, obtainCaptcha, submit } = this.props;
         return (
             <div className="register-box">
                 <div className="register-logo">
@@ -63,13 +69,19 @@ class Register extends ExLayout {
                         <Light.Item id="mob">
                             <Form verification={verification}
                                 captcha={captcha}
-                                onChange={this.handleFormChange} />
+                                error={submission.error}
+                                onObtainCaptcha={obtainCaptcha}
+                                onChange={this.handleFormChange}
+                                onSubmit={submit} />
                             <GoLogin />
                         </Light.Item>
                         <Light.Item id="acc">
                             <Form verification={verification}
                                 captcha={captcha}
+                                error={submission.error}
+                                onObtainCaptcha={obtainCaptcha}
                                 onChange={this.handleFormChange}
+                                onSubmit={submit}
                                 intact />
                             <GoLogin />
                         </Light.Item>
@@ -81,7 +93,8 @@ class Register extends ExLayout {
 }
 
 export default connect(registerSelector, {
+    resetSubmission,
     submit,
     validateIdentity,
-    getCaptcha
+    obtainCaptcha
 })(Register);

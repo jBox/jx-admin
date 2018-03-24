@@ -8,7 +8,8 @@ import {
     VALIDATE_FAILURE,
     GET_CAP_REQUEST,
     GET_CAP_SUCCESS,
-    GET_CAP_FAILURE
+    GET_CAP_FAILURE,
+    RESET_SUBMIT
 } from "../actions/ActionTypes";
 
 const verification = (state = {}, action) => {
@@ -20,15 +21,17 @@ const verification = (state = {}, action) => {
             return { ...state, [category]: { verified } }
         case VALIDATE_FAILURE:
             return { ...state, [category]: { verified: false, error: action.error } }
+        case GET_CAP_SUCCESS:
+            return { ...state, [category]: { verified: true } }
         default:
             return state;
     }
 };
 
-const captcha = (state = { success: false }, action) => {
+const captcha = (state = { state: "", success: false }, action) => {
     switch (action.type) {
         case GET_CAP_REQUEST:
-            return { success: false, state: "request" };
+            return { success: false, state: "" };
         case GET_CAP_SUCCESS:
             return { success: true, state: "success", time: Date.now() };
         case GET_CAP_FAILURE:
@@ -46,6 +49,8 @@ const submission = (state = { success: false }, action) => {
             return { success: true, state: "success" };
         case SUBMIT_REG_FAILURE:
             return { success: false, state: "failure", error: action.error };
+        case RESET_SUBMIT:
+            return { success: false };
         default:
             return state;
     }

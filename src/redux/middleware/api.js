@@ -1,11 +1,14 @@
 import { API } from "../actions/ActionTypes";
+import isObject from "lodash/isObject";
 import fetch from "chaos-fetch";
 import qs from "qs";
+
+const isMissingContentType = (headers) => Object.keys(headers).every(x => x.toLowerCase() !== "content-type");
 
 const request = (endpoint, { token }) => {
     const headers = { "cache-control": "no-cache", ...(endpoint.headers || {}) };
 
-    if (!headers["content-type"]) {
+    if (isObject(endpoint.body) && isMissingContentType(headers)) {
         headers["content-type"] = "application/json";
     }
 
@@ -38,7 +41,7 @@ const perfect = (apiBaseUrl, endpoint) => {
 
 // A Redux middleware that interprets actions with CALL info specified.
 // Performs the call and promises when such actions are dispatched.
-export default ({ dispatch, getState }) => next => action => {
+export default ({ dispatch, getState, edge }) => next => action => {
     if (action.type !== API) {
         return next(action);
     }
@@ -64,10 +67,10 @@ export default ({ dispatch, getState }) => next => action => {
 
     const { auth: { token } } = state;
     return request(endpoint, { token }).then((res) => {
-        console.log(res);
-        return successCb({ dispatch, getState, data: res.data });
+        return successCb({ dispatch, getState, edge, data: res.data });
     }).catch((error) => {
         console.error(error);
-        return errorCb({ dispatch, getState, error: error.message });
+        const interError = error.error || error;
+        return errorCb({ dispatch, getState, edge, error: interError.message || interError.statusText });
     })
 }
