@@ -17,7 +17,7 @@ import isEmpty from "lodash/isEmpty";
 export const initialLogin = () => (dispatch) => {
     const token = Jwt.verify();
     if (token) {
-        Jwt.refresh();
+        Jwt.refresh().catch(() => {/* ignore */ });
         return dispatch({
             type: INIT_LOGIN,
             data: token
@@ -28,7 +28,7 @@ export const initialLogin = () => (dispatch) => {
                 type: INIT_LOGIN,
                 data
             })
-        });
+        }).catch(() => {/* ignore */ });
     }
 };
 

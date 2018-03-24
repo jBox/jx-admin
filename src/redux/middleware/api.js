@@ -1,28 +1,40 @@
 import { API } from "../actions/ActionTypes";
 import isObject from "lodash/isObject";
 import fetch from "chaos-fetch";
-import qs from "qs";
+import Jwt from "../common/Jwt";
 
 const isMissingContentType = (headers) => Object.keys(headers).every(x => x.toLowerCase() !== "content-type");
 
-const request = (endpoint, { token }) => {
+const requireToken = () => {
+    console.log("require token");
+    const token = Jwt.verify();
+    if (token) {
+        return Promise.resolve(token);
+    }
+
+    return Jwt.refresh().catch(() => Promise.resolve()).then((token));
+};
+
+const request = (endpoint) => {
     const headers = { "cache-control": "no-cache", ...(endpoint.headers || {}) };
 
     if (isObject(endpoint.body) && isMissingContentType(headers)) {
         headers["content-type"] = "application/json";
     }
 
-    if (token) {
-        headers["authorization"] = `${token.token_type} ${token.access_token}`;
-    }
+    return requireToken().then((token) => {
+        if (token) {
+            headers["authorization"] = `${token.token_type} ${token.access_token}`;
+        }
 
-    const options = {
-        method: endpoint.method,
-        headers,
-        body: endpoint.body
-    };
+        const options = {
+            method: endpoint.method,
+            headers,
+            body: endpoint.body
+        };
 
-    return fetch(endpoint.url, options);
+        return fetch(endpoint.url, options);
+    });
 };
 
 const noop = (arg) => (arg);
@@ -65,8 +77,7 @@ export default ({ dispatch, getState, edge }) => next => action => {
         console.error(ex);
     }
 
-    const { auth: { token } } = state;
-    return request(endpoint, { token }).then((res) => {
+    return request(endpoint).then((res) => {
         return successCb({ dispatch, getState, edge, data: res.data });
     }).catch((error) => {
         console.error(error);

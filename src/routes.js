@@ -4,7 +4,8 @@ import Login from "./containers/Login";
 import Register from "./containers/Register";
 import RegisterSuccess from "./containers/RegisterSuccess";
 import Dashboard from "./containers/Dashboard";
-import Starter from "./containers/Starter";
+import Manage from "./containers/Manage";
+import ManageRegisters from "./containers/Manage/Registers";
 
 import { authenticate } from "./redux/common";
 
@@ -32,9 +33,13 @@ const routes = [{
                 exact: true,
                 component: Dashboard
             }, {
-                path: "/starter",
-                exact: true,
-                component: Starter
+                path: "/manage/:category",
+                component: Manage,
+                routes: [{
+                    path: "/manage/registers",
+                    exact: true,
+                    component: ManageRegisters
+                }]
             }]
         }
     ]

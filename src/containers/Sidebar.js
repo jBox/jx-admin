@@ -30,15 +30,23 @@ export default class Sidebar extends Component {
                         <li className="header">导航</li>
                         <li className="active">
                             <Link to="/">
-                                <i className="fa fa-home"></i> <span>首页</span>
+                                <i className="fa fa-home"></i> <span>主页</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/manage/orders">
+                                <i className="fa fa-edit"></i> <span>订单管理</span>
                                 <span className="pull-right-container">
                                     <small className="label pull-right bg-green">new</small>
                                 </span>
                             </Link>
                         </li>
                         <li>
-                            <Link to="/login">
-                                <i className="fa fa-edit"></i> <span>Starter</span>
+                            <Link to="/manage/registers">
+                                <i className="fa fa-edit"></i> <span>注册管理</span>
+                                <span className="pull-right-container">
+                                    <small className="label pull-right bg-green">new</small>
+                                </span>
                             </Link>
                         </li>
                     </ul>

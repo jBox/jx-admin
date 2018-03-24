@@ -36,7 +36,7 @@ class Login extends ExLayout {
     }
 
     componentDidMount() {
-        const { auth } = this.props;
+        const { auth, history } = this.props;
         if (auth.authenticated) {
             history.replace(auth.returnUrl);
         }

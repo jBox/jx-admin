@@ -1,5 +1,5 @@
 import { createSelector } from "reselect";
-import Qs from "qs";
+import qs from "qs";
 
 const getReturnUrl = (location) => {
     if (location && location.search) {

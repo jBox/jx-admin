@@ -7,8 +7,8 @@ import { logout } from "../redux/actions/header";
 
 const Logo = () => (
     <a href="/" className="logo">
-        <span className="logo-mini"><b>JH</b></span>
-        <span className="logo-lg">Jinahu</span>
+        <span className="logo-mini"><b>健湖</b></span>
+        <span className="logo-lg">健湖租车</span>
     </a>
 );
 
@@ -19,6 +19,43 @@ const Nav = ({ onLogout }) => (
         </a>
         <div className="navbar-custom-menu">
             <ul className="nav navbar-nav">
+
+                <li className="dropdown notifications-menu">
+                    <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                        <i className="fa fa-bell-o"></i>
+                        <span className="label label-warning">10</span>
+                    </a>
+                    <ul className="dropdown-menu">
+                        <li className="header">You have 10 notifications</li>
+                        <li>
+                            <ul className="menu">
+                                <li>
+                                    <a href="#">
+                                        <i className="fa fa-users text-aqua"></i> 5 new members joined today</a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i className="fa fa-warning text-yellow"></i> Very long description here that may not fit into the
+                                        page and may cause design problems</a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i className="fa fa-users text-red"></i> 5 new members joined</a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i className="fa fa-shopping-cart text-green"></i> 25 sales made</a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i className="fa fa-user text-red"></i> You changed your username</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li className="footer"><a href="#">View all</a></li>
+                    </ul>
+                </li>
+
                 <li className="dropdown user user-menu">
                     <a href="#" className="dropdown-toggle" data-toggle="dropdown">
                         <img src="/static/AdminLTE-2.4.3/dist/img/user2-160x160.jpg" className="user-image" alt="User Image" />

@@ -6,5 +6,5 @@ module.exports.authenticate = () => {
         return { verified: true };
     }
 
-    return { redirect: "/login" };
+    return { redirect: "/login?returnUrl={0}" };
 };
