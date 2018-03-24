@@ -1,4 +1,9 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+
+import headerSelector from "../redux/selectors/header";
+import { logout } from "../redux/actions/header";
 
 const Logo = () => (
     <a href="/" className="logo">
@@ -7,86 +12,13 @@ const Logo = () => (
     </a>
 );
 
-const Nav = () => (
+const Nav = ({ onLogout }) => (
     <nav className="navbar navbar-static-top" role="navigation">
         <a href="#" className="sidebar-toggle" data-toggle="push-menu" role="button">
             <span className="sr-only">Toggle navigation</span>
         </a>
         <div className="navbar-custom-menu">
             <ul className="nav navbar-nav">
-                <li className="dropdown messages-menu">
-                    <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-                        <i className="fa fa-envelope-o"></i>
-                        <span className="label label-success">4</span>
-                    </a>
-                    <ul className="dropdown-menu">
-                        <li className="header">You have 4 messages</li>
-                        <li>
-                            <ul className="menu">
-                                <li>
-                                    <a href="#">
-                                        <div className="pull-left">
-                                            <img src="/static/AdminLTE-2.4.3/dist/img/user2-160x160.jpg" className="img-circle" alt="User Image" />
-                                        </div>
-                                        <h4>
-                                            Support Team <small><i className="fa fa-clock-o"></i> 5 mins</small>
-                                        </h4>
-                                        <p>Why not buy a new awesome theme?</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li className="footer"><a href="#">See All Messages</a></li>
-                    </ul>
-                </li>
-                <li className="dropdown notifications-menu">
-                    <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-                        <i className="fa fa-bell-o"></i>
-                        <span className="label label-warning">10</span>
-                    </a>
-                    <ul className="dropdown-menu">
-                        <li className="header">You have 10 notifications</li>
-                        <li>
-                            <ul className="menu">
-                                <li>
-                                    <a href="#">
-                                        <i className="fa fa-users text-aqua"></i> 5 new members joined today
-                                </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li className="footer"><a href="#">View all</a></li>
-                    </ul>
-                </li>
-                <li className="dropdown tasks-menu">
-                    <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-                        <i className="fa fa-flag-o"></i>
-                        <span className="label label-danger">9</span>
-                    </a>
-                    <ul className="dropdown-menu">
-                        <li className="header">You have 9 tasks</li>
-                        <li>
-                            <ul className="menu">
-                                <li>
-                                    <a href="#">
-                                        <h3>
-                                            Design some buttons <small className="pull-right">20%</small>
-                                        </h3>
-                                        <div className="progress xs">
-                                            <div className="progress-bar progress-bar-aqua" style={{ width: "20%" }} role="progressbar"
-                                                aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                                <span className="sr-only">20% Complete</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li className="footer">
-                            <a href="#">View all tasks</a>
-                        </li>
-                    </ul>
-                </li>
                 <li className="dropdown user user-menu">
                     <a href="#" className="dropdown-toggle" data-toggle="dropdown">
                         <img src="/static/AdminLTE-2.4.3/dist/img/user2-160x160.jpg" className="user-image" alt="User Image" />
@@ -115,10 +47,10 @@ const Nav = () => (
                         </li>
                         <li className="user-footer">
                             <div className="pull-left">
-                                <a href="#" className="btn btn-default btn-flat">Profile</a>
+                                <a href="/profile" className="btn btn-default btn-flat">账号</a>
                             </div>
                             <div className="pull-right">
-                                <a href="#" className="btn btn-default btn-flat">Sign out</a>
+                                <a href="/logout" onClick={onLogout} className="btn btn-default btn-flat">登出</a>
                             </div>
                         </li>
                     </ul>
@@ -128,11 +60,38 @@ const Nav = () => (
     </nav>
 );
 
-export default class Header extends Component {
+class Header extends Component {
+    static propTypes = {
+        history: PropTypes.object,
+        authenticated: PropTypes.bool,
+        logout: PropTypes.func
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { authenticated, history } = nextProps;
+        if (!authenticated && authenticated !== this.props.authenticated) {
+            history.replace("/login");
+        }
+    }
+
+    handleLogout = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const { logout } = this.props;
+        if (logout) {
+            logout();
+        }
+    }
+
     render() {
         return (<header className="main-header">
             <Logo key="logo" />
-            <Nav key="nav" />
+            <Nav onLogout={this.handleLogout} key="nav" />
         </header>);
     }
 }
+
+export default connect(headerSelector, {
+    logout
+})(Header);

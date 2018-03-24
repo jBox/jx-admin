@@ -14,14 +14,8 @@ const getReturnUrl = (location) => {
 };
 
 export default createSelector(
-    (state, props) => {
-        const { authenticated } = state.auth;
-        const { location } = props;
-        const returnUrl = getReturnUrl(location);
-        return { authenticated, returnUrl };
-    },
-    (state) => state.login,
-    (auth, login) => {
-        return { ...login, auth };
+    (state) => state.auth,
+    (auth) => {
+        return { authenticated: auth.authenticated };
     }
 );

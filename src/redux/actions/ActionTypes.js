@@ -2,6 +2,8 @@
 export const API = "@CALL/API";
 /********************************/
 
+export const LOGOUT = "logout";
+
 /***************** START REGISTER *****************/
 export const SUBMIT_REG_REQUEST = "reg/submit/req";
 export const SUBMIT_REG_SUCCESS = "reg/submit/sec";
@@ -23,6 +25,7 @@ export const LOGIN_REQUEST = "login/req";
 export const LOGIN_SUCCESS = "login/sec";
 export const LOGIN_FAILURE = "login/fai";
 export const RESET_LOGIN = "login/reset";
+export const INIT_LOGIN = "login/initial";
 
 export const LOGIN_CAP_REQUEST = "login/cap/req";
 export const LOGIN_CAP_SUCCESS = "login/cap/sec";

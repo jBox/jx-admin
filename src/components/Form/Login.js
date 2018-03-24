@@ -200,8 +200,8 @@ export default class Login extends Component {
             <form action="/login" method="post" onSubmit={this.handleSubmit}>
                 {this.buildInputs()}
 
-                {formError && (<div class="form-group has-feedback has-error">
-                    <span class="help-block">{formError}</span>
+                {formError && (<div className="form-group has-feedback has-error">
+                    <span className="help-block">{formError}</span>
                 </div>)}
 
                 <div className="row">

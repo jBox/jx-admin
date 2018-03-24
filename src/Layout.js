@@ -1,18 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Switch, Route } from "react-browser-router";
-import Header from "./Header";
-import Sidebar from "./Sidebar";
+import Header from "./containers/Header";
+import Sidebar from "./containers/Sidebar";
 
 export default class Layout extends Component {
-    componentDidMount() {
-        console.log("Layout");
-    }
-
-    componentWillUnmount() {
-        console.log("Unmount", "Layout");
-    }
-
     static defaultProps = {
         routes: []
     }
@@ -22,12 +14,12 @@ export default class Layout extends Component {
     }
 
     render() {
-        const { routes } = this.props;
+        const { routes, ...props } = this.props;
         const fullYear = new Date().getFullYear();
         return (
             <div className="wrapper">
-                <Header />
-                <Sidebar />
+                <Header {...props} />
+                <Sidebar {...props} />
                 <div className="content-wrapper">
                     <Switch>
                         {routes.map((route, index) => (<Route key={index} {...route} />))}

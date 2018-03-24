@@ -28,79 +28,80 @@ const getBaseUrl = () => {
 
 function Jwt() {
     const baseUrl = getBaseUrl();
-    const key = "__JWT_";
+    const KEY = "__JWT_";
     const storage = {
         local: typeof localStorage !== "undefined" ? localStorage : new memoryStorage(),
         session: typeof sessionStorage !== "undefined" ? sessionStorage : new memoryStorage()
     };
 
     const getToken = () => {
-        const local = storage.local.getItem(key);
-        const session = storage.session.getItem(key);
+        const local = storage.local.getItem(KEY);
+        const session = storage.session.getItem(KEY);
         if (local) {
-            return JSON.parse(local);
+            return { ...JSON.parse(local), rememberme: true };
         } else if (session) {
             return JSON.parse(session);
         }
 
-        return {};
+        return { token: {} };
     };
 
-    const setToken = (value, rememberme) => {
-        let str = "";
-        if (isObject(value)) {
-            const { token, refresh } = value;
-            const data = { token, refresh, rememberme };
-            if (token) {
-                const { user, exp } = jwtDecode(token) || {};
-                data.user = user;
-                data.exp = exp;
+    const setToken = (token, rememberme) => {
+        if (isObject(token)) {
+            try {
+                const data = { token };
+                const { exp } = jwtDecode(token.access_token) || {};
+                data.expiresAt = exp;
+
+                const str = JSON.stringify(data);
+                if (rememberme) {
+                    storage.local.setItem(KEY, str)
+                } else {
+                    storage.session.setItem(KEY, str);
+                }
+            } catch (ex) {
+                console.error("Save jwt failed.", ex);
             }
-
-            str = JSON.stringify(data);
-        }
-
-        if (rememberme) {
-            storage.local.setItem(key, str)
-        } else {
-            storage.session.setItem(key, str);
         }
     };
 
-    this.save = (value, rememberme) => setToken(value, rememberme);
+    this.save = (token, rememberme) => setToken(token, rememberme);
 
     this.verify = () => {
         const now = Date.now() / 1000;
-        const { exp, token, user } = getToken();
-        if (exp > now) {
-            return { token, user };
+        const { expiresAt, token } = getToken();
+        if (expiresAt > now) {
+            return token;
         }
 
         return null;
     };
 
     this.refresh = () => {
-        const { refresh, rememberme } = getToken();
-        if (!refresh) {
-            return Promise.reject({ message: "Unauthorized Error" });
+        const { token: { refresh_token }, rememberme } = getToken();
+        if (!refresh_token) {
+            return Promise.reject("Refresh tokon error");
         }
 
-        const url = `${baseUrl}/api/oauth/refresh`;
+        const url = `${baseUrl}/oauth/refresh`;
         const request = {
             method: "POST",
-            body: { token: refresh },
+            body: { token: refresh_token },
             headers: { "Content-Type": "application/json" }
         };
         return fetch(url, request).then((res) => {
             setToken(res.data, rememberme);
-            const token = getToken();
-            return { token: token.token, user: token.user };
+            const { token } = getToken();
+            return token;
+        }).catch((error) => {
+            const interError = error.error || error;
+            return Promise.reject(interError.message);
         });
     };
 
     this.clear = () => {
-        storage.local.removeItem(key);
-        storage.session.removeItem(key);
+        storage.local.removeItem(KEY);
+        storage.session.removeItem(KEY);
     };
 }
 

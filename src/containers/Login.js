@@ -8,7 +8,7 @@ import Light from "../components/Tabs/Light";
 import Form from "../components/Form/Login";
 
 import loginSelector from "../redux/selectors/login";
-import { login, obtainCaptcha, resetLogin } from "../redux/actions/login";
+import { login, obtainCaptcha, resetLogin, initialLogin } from "../redux/actions/login";
 
 const Split = () => (
     <span style={{ paddingLeft: "15px", paddingRight: "15px" }}>|</span>
@@ -25,18 +25,34 @@ const GoRegister = () => (
 class Login extends ExLayout {
 
     static propTypes = {
+        auth: PropTypes.object,
         history: PropTypes.object,
         captcha: PropTypes.object,
         submission: PropTypes.object,
         login: PropTypes.func,
         resetLogin: PropTypes.func,
+        initialLogin: PropTypes.func,
         obtainCaptcha: PropTypes.func
     }
 
+    componentDidMount() {
+        const { auth } = this.props;
+        if (auth.authenticated) {
+            history.replace(auth.returnUrl);
+        }
+
+        const { initialLogin } = this.props;
+        if (initialLogin) {
+            initialLogin();
+        }
+
+        super.componentDidMount();
+    }
+
     componentWillReceiveProps(nextProps) {
-        const { submission, history } = nextProps;
-        if (!isEqual(submission, this.props.submission)) {
-            history.replace("/");
+        const { auth, history } = nextProps;
+        if (!isEqual(auth, this.props.auth) && auth.authenticated) {
+            history.replace(auth.returnUrl);
         }
     }
 
@@ -90,5 +106,6 @@ class Login extends ExLayout {
 export default connect(loginSelector, {
     resetLogin,
     login,
-    obtainCaptcha
+    obtainCaptcha,
+    initialLogin
 })(Login);

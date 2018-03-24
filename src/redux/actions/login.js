@@ -1,5 +1,6 @@
 import {
     API,
+    INIT_LOGIN,
     LOGIN_REQUEST,
     LOGIN_SUCCESS,
     LOGIN_FAILURE,
@@ -9,7 +10,27 @@ import {
     RESET_LOGIN
 } from "./ActionTypes";
 
+import Jwt from "../common/Jwt";
+
 import isEmpty from "lodash/isEmpty";
+
+export const initialLogin = () => (dispatch) => {
+    const token = Jwt.verify();
+    if (token) {
+        Jwt.refresh();
+        return dispatch({
+            type: INIT_LOGIN,
+            data: token
+        });
+    } else {
+        Jwt.refresh().then((data) => {
+            return dispatch({
+                type: INIT_LOGIN,
+                data
+            })
+        });
+    }
+};
 
 export const login = (formData) => {
 
@@ -19,6 +40,7 @@ export const login = (formData) => {
         before: ({ dispatch }) => dispatch({ type: LOGIN_REQUEST }),
         error: ({ dispatch, error }) => dispatch({ type: LOGIN_FAILURE, error }),
         success: ({ data, dispatch }) => {
+            Jwt.save(data, formData.remember);
             dispatch({
                 data,
                 type: LOGIN_SUCCESS
