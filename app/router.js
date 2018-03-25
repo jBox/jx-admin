@@ -23,6 +23,7 @@ const router = express.Router();
 const cv = require("config-vars");
 
 const apiBaseUrl = cv.env.jx.inExternalHost;
+const CompanyName = cv.env.jx.company;
 
 /* GET pages. */
 router.get("/:any*?", (req, res, next) => {
@@ -38,6 +39,7 @@ router.get("/:any*?", (req, res, next) => {
         }
 
         const models = {
+            title: CompanyName,
             apiBaseUrl,
             initialState: JSON.stringify(comp.initials.__INITIAL_STATE__).replace(/</g, "\\x3c"),
             ...comp.components
