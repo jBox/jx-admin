@@ -45,7 +45,6 @@ export default class Register extends Component {
         if (this.validateInputs()) {
             const { onSubmit } = this.props;
             const formData = this.extractFormData();
-            console.log(formData);
             if (onSubmit) {
                 onSubmit(formData);
             }

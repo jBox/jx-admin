@@ -1,12 +1,43 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import classNames from "classnames";
 import Select2 from "react-select2-wrapper";
 import styles from "./RegisterItem.css";
 
+const roles = [
+    { text: "管理员", id: "admin" },
+    { text: "驾驶员", id: "driver" }
+];
+
+const getSelectedValue = (select) => {
+    const values = [];
+    const options = select.options;
+    for (let i = 0; i < options.length; i++) {
+        const opt = options[i];
+        if (opt.selected) {
+            values.push(opt.value);
+        }
+    }
+
+    return values;
+};
+
 export default class RegisterItem extends Component {
+    static propTypes = {
+        data: PropTypes.object,
+        onPass: PropTypes.func,
+        onReject: PropTypes.func
+    }
 
     state = {
-        showOperators: false
+        showOperators: false,
+        enablePassButton: false,
+        enableRejectButton: false
+    }
+
+    options = {
+        reject: "",
+        roles: []
     }
 
     handleClick = () => {
@@ -15,16 +46,85 @@ export default class RegisterItem extends Component {
         }
     }
 
+    handleRejectReasonChange = (event) => {
+        const { value } = event.target;
+        this.options.reject = value;
+        if (value && !this.state.enableRejectButton) {
+            this.setState({ enableRejectButton: true });
+        }
+    }
+
+    handleRolesChange = (event) => {
+        const values = getSelectedValue(event.target);
+        this.options.roles = values;
+    }
+
+    handleRejectClick = () => {
+        const { onReject } = this.props;
+        if (onReject) {
+            onReject(this.options.reject);
+        }
+    }
+
+    handlePassClick = () => {
+        const { onPass } = this.props;
+        if (onPass) {
+            onPass(this.options.roles);
+        }
+    }
+
+    buildOperators = () => {
+        const { enablePassButton, enableRejectButton } = this.state;
+        return (
+            <div className={classNames(styles.operators)}>
+                <div className="box-body">
+                    <div className="row">
+                        <div className="col-md-6 col-xs-12">
+                            <div className="form-group input-group">
+                                <input type="text" name="rejectMessage" placeholder="填写拒绝理由" className="form-control"
+                                    onChange={this.handleRejectReasonChange} />
+                                <span className="input-group-btn">
+                                    <button type="button" className="btn btn-danger btn-flat" onClick={this.handleRejectClick} disabled={!enableRejectButton}>拒绝</button>
+                                </span>
+                            </div>
+                        </div>
+                        <div className="col-md-6 col-xs-12">
+                            <div className="form-group input-group">
+                                <div>
+                                    <Select2
+                                        className="form-control"
+                                        multiple
+                                        data={roles}
+                                        onChange={this.handleRolesChange}
+                                        options={{
+                                            placeholder: "选择用户的角色"
+                                        }}
+                                    />
+                                </div>
+
+                                <span className="input-group-btn">
+                                    <button type="button" className="btn btn-success btn-flat" onClick={this.handlePassClick} disabled={!enablePassButton}>审核通过</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     render() {
-        const { showOperators } = this.state;
+        const { data } = this.props;
+        const { showOperators, enablePassButton, enableRejectButton } = this.state;
+        const registerTime = new Date(data.registerTime).format("yyyy年MM月dd日");
         return (
             <div className={classNames("info-box", styles.register)} onClick={this.handleClick}>
                 <span className="info-box-icon bg-aqua"><i className="fa fa-user-plus"></i></span>
 
                 <div className="info-box-content">
-                    <span className="info-box-text">魏兰</span>
-                    <span className="info-box-number">18688950367</span>
-                    <span className="info-box-text">注册日期：2018-03-03</span>
+                    <span className="info-box-text">{data.nickname}</span>
+                    <span className="info-box-number">{data.mobile}</span>
+                    <span className="info-box-text">注册日期：{registerTime}</span>
                 </div>
                 {showOperators && (<div className={classNames(styles.operators)}>
 
@@ -32,9 +132,10 @@ export default class RegisterItem extends Component {
                         <div className="row">
                             <div className="col-md-6 col-xs-12">
                                 <div className="form-group input-group">
-                                    <input type="text" name="message" placeholder="填写拒绝理由" className="form-control" />
+                                    <input type="text" name="rejectMessage" placeholder="填写拒绝理由" className="form-control"
+                                        onChange={this.handleRejectReasonChange} />
                                     <span className="input-group-btn">
-                                        <button type="submit" className="btn btn-danger btn-flat">拒绝</button>
+                                        <button type="button" className="btn btn-danger btn-flat" disabled={!enableRejectButton}>拒绝</button>
                                     </span>
                                 </div>
                             </div>
@@ -44,10 +145,8 @@ export default class RegisterItem extends Component {
                                         <Select2
                                             className="form-control"
                                             multiple
-                                            data={[
-                                                { text: "管理员", id: 1 },
-                                                { text: "驾驶员", id: 2 }
-                                            ]}
+                                            data={roles}
+                                            onChange={this.handleRolesChange}
                                             options={{
                                                 placeholder: "选择用户的角色"
                                             }}
@@ -55,7 +154,7 @@ export default class RegisterItem extends Component {
                                     </div>
 
                                     <span className="input-group-btn">
-                                        <button type="submit" className="btn btn-success btn-flat">审核通过</button>
+                                        <button type="button" className="btn btn-success btn-flat" disabled={!enablePassButton}>审核通过</button>
                                     </span>
                                 </div>
                             </div>

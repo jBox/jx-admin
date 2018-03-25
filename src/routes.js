@@ -1,3 +1,4 @@
+import "./dateFormat";
 import React from "react";
 import Layout from "./Layout";
 import Login from "./containers/Login";

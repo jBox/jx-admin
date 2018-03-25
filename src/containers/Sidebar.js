@@ -2,6 +2,11 @@ import React, { Component } from "react";
 import { Link } from "react-browser-router";
 
 export default class Sidebar extends Component {
+
+    componentDidMount(){
+        jQuery(".sidebar-menu").tree();
+    }
+
     render() {
         return (
             <aside className="main-sidebar">
@@ -26,7 +31,7 @@ export default class Sidebar extends Component {
                             </span>
                         </div>
                     </form>
-                    <ul className="sidebar-menu" data-widget="tree">
+                    <ul className="sidebar-menu">
                         <li className="header">导航</li>
                         <li className="active">
                             <Link to="/">

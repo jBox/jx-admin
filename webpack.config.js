@@ -10,7 +10,7 @@ const config = require("./package").config;
 module.exports = {
   entry: { main: Path.resolve("src/index.js") },
 
-  devtool: "source-map",
+  devtool: "inline-source-map",
 
   output: {
     filename: "[name].js",
@@ -41,6 +41,10 @@ module.exports = {
         }),
       },
     ],
+  },
+
+  externals: {
+    jquery: "jQuery"
   },
 
   plugins: [

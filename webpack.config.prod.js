@@ -19,6 +19,10 @@ module.exports = {
     path: Path.resolve("static/dist"),
   },
 
+  externals: {
+    jquery: "jQuery"
+  },
+
   module: {
     rules: [
       {
