@@ -33,21 +33,71 @@ export default class Sidebar extends Component {
                                 <i className="fa fa-home"></i> <span>主页</span>
                             </Link>
                         </li>
+                        <li className="treeview">
+                            <a href="#">
+                                <i className="fa fa-shopping-cart"></i>
+                                <span>订单管理</span>
+                                <span className="pull-right-container">
+                                    <i className="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul className="treeview-menu">
+                                <li>
+                                    <Link to="/manage/registers">
+                                        <i className="fa fa-circle-o"></i> <span>待处理订单</span>
+                                        <span className="pull-right-container">
+                                            <small className="label pull-right bg-green">2</small>
+                                        </span>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/manage/registers">
+                                        <i className="fa fa-circle-o"></i> <span>已完成订单</span>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/manage/registers">
+                                        <i className="fa fa-circle-o"></i> <span>已取消订单</span>
+                                    </Link>
+                                </li>
+                            </ul>
+                        </li>
                         <li>
-                            <Link to="/manage/orders">
-                                <i className="fa fa-edit"></i> <span>订单管理</span>
+                            <Link to="/manage/registers">
+                                <i className="fa fa-car"></i> <span>车辆管理</span>
                                 <span className="pull-right-container">
                                     <small className="label pull-right bg-green">new</small>
                                 </span>
                             </Link>
                         </li>
-                        <li>
-                            <Link to="/manage/registers">
-                                <i className="fa fa-edit"></i> <span>注册管理</span>
+                        <li className="treeview">
+                            <a href="#">
+                                <i className="fa fa-user"></i>
+                                <span>用户管理</span>
                                 <span className="pull-right-container">
-                                    <small className="label pull-right bg-green">new</small>
+                                    <i className="fa fa-angle-left pull-right"></i>
                                 </span>
-                            </Link>
+                            </a>
+                            <ul className="treeview-menu">
+                                <li>
+                                    <Link to="/manage/registers">
+                                        <i className="fa fa-circle-o"></i> <span>新注册用户</span>
+                                        <span className="pull-right-container">
+                                            <small className="label pull-right bg-green">2</small>
+                                        </span>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/manage/registers">
+                                        <i className="fa fa-circle-o"></i> <span>管理员</span>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/manage/registers">
+                                        <i className="fa fa-circle-o"></i> <span>驾驶员</span>
+                                    </Link>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </section>

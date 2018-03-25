@@ -1,0 +1,33 @@
+:global(.select2-container--default .select2-selection--multiple .select2-selection__choice) {
+    padding: 0px 10px;
+}
+:global(.select2-container--default .select2-search--inline .select2-search__field) {
+    padding: 1px 6px;
+}
+
+@keyframes show-register-item {
+    from { height: 0; }
+    to   { height: 110px; }
+}
+
+@media (min-width: 992px){
+    @keyframes show-register-item {
+        from { height: 0; }
+        to   { height: 60px; }
+    }
+}
+
+.operators {
+    clear: both;
+    overflow: hidden;
+    height: 0;
+    animation: show-register-item 0.5s ease-in forwards;
+}
+
+.operators button {
+    min-width: 100px;
+}
+
+.register {
+    cursor: pointer;
+}
