@@ -1,9 +1,8 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-browser-router";
 import isEqual from "lodash/isEqual";
-import ExLayout from "./ExLayout";
 import Light from "../components/Tabs/Light";
 import Form from "../components/Form/Login";
 
@@ -22,7 +21,7 @@ const GoRegister = () => (
     <span>我还没有账号，<Link to="/register" className="text-center">注册</Link></span>
 );
 
-class Login extends ExLayout {
+class Login extends Component {
 
     static propTypes = {
         auth: PropTypes.object,
@@ -45,8 +44,6 @@ class Login extends ExLayout {
         if (initialLogin) {
             initialLogin();
         }
-
-        super.componentDidMount();
     }
 
     componentWillReceiveProps(nextProps) {

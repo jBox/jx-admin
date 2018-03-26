@@ -1,7 +1,6 @@
-import React from "react";
-import ExLayout from "./ExLayout";
+import React, { Component } from "react";
 
-export default class RegisterSuccess extends ExLayout {
+export default class RegisterSuccess extends Component {
 
     render() {
         return (

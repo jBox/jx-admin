@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Switch, Route } from "react-browser-router";
-import Header from "./containers/Header";
-import Sidebar from "./containers/Sidebar";
+import Header from "../containers/Header";
+import Sidebar from "../containers/Sidebar";
 
 export default class Layout extends Component {
     static defaultProps = {

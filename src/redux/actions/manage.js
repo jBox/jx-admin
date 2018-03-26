@@ -8,17 +8,45 @@ import {
 } from "./ActionTypes";
 import isEmpty from "lodash/isEmpty";
 
-export const confirmRegister = (formData) => {
-
+export const passRegister = (mobile, roles) => {
+    const action = "pass";
     return {
         type: API,
-        endpoint: { url: "/api/register", method: "POST", body: formData },
-        before: ({ dispatch }) => dispatch({ type: SUBMIT_REG_REQUEST }),
-        error: ({ dispatch, error }) => dispatch({ type: SUBMIT_REG_FAILURE, error }),
+        endpoint: {
+            url: "/api/register/confirm", method: "POST", body: {
+                action,
+                mobile,
+                roles
+            }
+        },
+        before: ({ dispatch }) => dispatch({ type: MANAGE_CONFIRM_REGISTEG_REQUEST, action, mobile }),
+        error: ({ dispatch, error }) => dispatch({ type: MANAGE_CONFIRM_REGISTEG_FAILURE, action, mobile, error }),
         success: ({ data, dispatch }) => {
             dispatch({
-                profile: data,
-                type: SUBMIT_REG_SUCCESS
+                action, mobile,
+                type: MANAGE_CONFIRM_REGISTEG_SUCCESS
+            });
+        }
+    };
+};
+
+export const rejectRegister = (mobile, reason) => {
+    const action = "reject";
+    return {
+        type: API,
+        endpoint: {
+            url: "/api/register/confirm", method: "POST", body: {
+                action,
+                mobile,
+                reason
+            }
+        },
+        before: ({ dispatch }) => dispatch({ type: MANAGE_CONFIRM_REGISTEG_REQUEST, action, mobile }),
+        error: ({ dispatch, error }) => dispatch({ type: MANAGE_CONFIRM_REGISTEG_FAILURE, action, mobile, error }),
+        success: ({ data, dispatch }) => {
+            dispatch({
+                action, mobile,
+                type: MANAGE_CONFIRM_REGISTEG_SUCCESS
             });
         }
     };

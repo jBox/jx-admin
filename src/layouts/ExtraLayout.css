@@ -1,0 +1,5 @@
+@value gray from "../components/Colors.css";
+
+.extra {
+    background-color: gray;
+}

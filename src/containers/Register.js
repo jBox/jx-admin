@@ -1,8 +1,7 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import isEqual from "lodash/isEqual";
-import ExLayout from "./ExLayout";
 import { Link } from "react-browser-router";
 import Light from "../components/Tabs/Light";
 import Form from "../components/Form/Register";
@@ -25,7 +24,7 @@ const GoLogin = () => (
     </p>
 );
 
-class Register extends ExLayout {
+class Register extends Component {
 
     static propTypes = {
         history: PropTypes.object,
