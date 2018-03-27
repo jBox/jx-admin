@@ -22,8 +22,24 @@ const getSelectedValue = (select) => {
     return values;
 };
 
+const ConfirmStatus = ({ status }) => {
+    const statusIcons = {
+        "pass": "glyphicon-ok-circle",
+        "reject": "glyphicon-ban-circle"
+    };
+
+    const iconClassName = classNames("glyphicon", statusIcons[status]);
+    const className = classNames(styles.confirmStatus, styles[status]);
+    return (
+        <div className={className}>
+            <i className={iconClassName}></i>
+        </div>
+    );
+}
+
 export default class RegisterItem extends Component {
     static propTypes = {
+        confirmation: PropTypes.string,
         data: PropTypes.object,
         onPass: PropTypes.func,
         onReject: PropTypes.func
@@ -49,14 +65,19 @@ export default class RegisterItem extends Component {
     handleRejectReasonChange = (event) => {
         const { value } = event.target;
         this.options.reject = value;
-        if (value && !this.state.enableRejectButton) {
-            this.setState({ enableRejectButton: true });
+        const enableRejectButton = !!value;
+        if (enableRejectButton !== this.state.enableRejectButton) {
+            this.setState({ enableRejectButton });
         }
     }
 
     handleRolesChange = (event) => {
         const values = getSelectedValue(event.target);
         this.options.roles = values;
+        const enablePassButton = !!(values && values.length > 0);
+        if (enablePassButton !== this.state.enableRejectButton) {
+            this.setState({ enablePassButton });
+        }
     }
 
     handleRejectClick = () => {
@@ -74,7 +95,9 @@ export default class RegisterItem extends Component {
     }
 
     buildOperators = () => {
+        const { confirmation } = this.props;
         const { enablePassButton, enableRejectButton } = this.state;
+        const disabled = confirmation === "request";
         return (
             <div className={classNames(styles.operators)}>
                 <div className="box-body">
@@ -82,9 +105,12 @@ export default class RegisterItem extends Component {
                         <div className="col-md-6 col-xs-12">
                             <div className="form-group input-group">
                                 <input type="text" name="rejectMessage" placeholder="填写拒绝理由" className="form-control"
-                                    onChange={this.handleRejectReasonChange} />
+                                    onChange={this.handleRejectReasonChange} disabled={disabled} />
                                 <span className="input-group-btn">
-                                    <button type="button" className="btn btn-danger btn-flat" onClick={this.handleRejectClick} disabled={!enableRejectButton}>拒绝</button>
+                                    <button type="button" className="btn btn-danger btn-flat" onClick={this.handleRejectClick}
+                                        disabled={!enableRejectButton || disabled}>
+                                        拒绝
+                                    </button>
                                 </span>
                             </div>
                         </div>
@@ -92,6 +118,8 @@ export default class RegisterItem extends Component {
                             <div className="form-group input-group">
                                 <div>
                                     <Select2
+                                        defaultValue={this.options.roles}
+                                        disabled={disabled}
                                         className="form-control"
                                         multiple
                                         data={roles}
@@ -103,7 +131,11 @@ export default class RegisterItem extends Component {
                                 </div>
 
                                 <span className="input-group-btn">
-                                    <button type="button" className="btn btn-success btn-flat" onClick={this.handlePassClick} disabled={!enablePassButton}>审核通过</button>
+                                    <button type="button" className="btn btn-success btn-flat"
+                                        onClick={this.handlePassClick}
+                                        disabled={!enablePassButton || disabled}>
+                                        审核通过
+                                    </button>
                                 </span>
                             </div>
                         </div>
@@ -126,42 +158,8 @@ export default class RegisterItem extends Component {
                     <span className="info-box-number">{data.mobile}</span>
                     <span className="info-box-text">注册日期：{registerTime}</span>
                 </div>
-                {showOperators && (<div className={classNames(styles.operators)}>
-
-                    <div className="box-body">
-                        <div className="row">
-                            <div className="col-md-6 col-xs-12">
-                                <div className="form-group input-group">
-                                    <input type="text" name="rejectMessage" placeholder="填写拒绝理由" className="form-control"
-                                        onChange={this.handleRejectReasonChange} />
-                                    <span className="input-group-btn">
-                                        <button type="button" className="btn btn-danger btn-flat" disabled={!enableRejectButton}>拒绝</button>
-                                    </span>
-                                </div>
-                            </div>
-                            <div className="col-md-6 col-xs-12">
-                                <div className="form-group input-group">
-                                    <div>
-                                        <Select2
-                                            className="form-control"
-                                            multiple
-                                            data={roles}
-                                            onChange={this.handleRolesChange}
-                                            options={{
-                                                placeholder: "选择用户的角色"
-                                            }}
-                                        />
-                                    </div>
-
-                                    <span className="input-group-btn">
-                                        <button type="button" className="btn btn-success btn-flat" disabled={!enablePassButton}>审核通过</button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>)}
+                {!data.status && showOperators && this.buildOperators()}
+                {data.status && (<ConfirmStatus status={data.status} />)}
             </div>
         );
     }

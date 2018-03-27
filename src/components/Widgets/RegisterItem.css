@@ -1,3 +1,5 @@
+@value success, danger from "../Colors.css";
+
 :global(.select2-container--default .select2-selection--multiple .select2-selection__choice) {
     padding: 0px 10px;
 }
@@ -30,4 +32,19 @@
 
 .register {
     cursor: pointer;
+}
+
+.confirmStatus  {
+    position: absolute;
+    top: 5px;
+    right: 20px;
+    font-size: 50px;
+}
+
+.pass {
+    color: success;
+}
+
+.reject {
+    color: danger;
 }

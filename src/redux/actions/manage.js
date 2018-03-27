@@ -13,7 +13,7 @@ export const passRegister = (mobile, roles) => {
     return {
         type: API,
         endpoint: {
-            url: "/api/register/confirm", method: "POST", body: {
+            url: "/api/users/registers/confirm", method: "POST", body: {
                 action,
                 mobile,
                 roles
@@ -35,7 +35,7 @@ export const rejectRegister = (mobile, reason) => {
     return {
         type: API,
         endpoint: {
-            url: "/api/register/confirm", method: "POST", body: {
+            url: "/api/users/registers/confirm", method: "POST", body: {
                 action,
                 mobile,
                 reason

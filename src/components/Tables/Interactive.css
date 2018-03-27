@@ -1,0 +1,23 @@
+table.interactive td input {
+    width: 100%
+}
+
+.tools {
+    /* background-color: #f9f9f9; */
+}
+
+.tools td.cell {
+    border: none;
+    padding-bottom: 10px;
+}
+
+.tools .container {
+    padding: 10px 0;
+    border-top: 1px solid #f9f9f9;
+}
+
+.tools .container::after {
+    display: block;
+    content: "";
+    clear: both;
+}

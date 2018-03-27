@@ -1,0 +1,25 @@
+.nicknameCol {
+    width: 30%;
+}
+
+.titleCol {
+    width: 30%;
+}
+
+.mobileCol {
+    width: 40%;
+}
+
+.driverTools {}
+
+.driverTools button {
+    margin-left: 20px;
+}
+
+.driverTools .buttonGroup {
+    margin-left: 20px;
+}
+
+.driverTools .buttonGroup button {
+    margin-left: 5px;
+}

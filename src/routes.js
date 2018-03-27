@@ -8,6 +8,7 @@ import RegisterSuccess from "./containers/RegisterSuccess";
 import Dashboard from "./containers/Dashboard";
 import Manage from "./containers/Manage";
 import ManageRegisters from "./containers/Manage/Registers";
+import ManageDrivers from "./containers/Manage/Drivers";
 
 import { authenticate } from "./redux/common";
 
@@ -46,6 +47,10 @@ const routes = [{
                     path: "/manage/registers",
                     exact: true,
                     component: ManageRegisters
+                }, {
+                    path: "/manage/drivers",
+                    exact: true,
+                    component: ManageDrivers
                 }]
             }]
         }

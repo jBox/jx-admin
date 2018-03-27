@@ -3,7 +3,7 @@ import { Link } from "react-browser-router";
 
 export default class Sidebar extends Component {
 
-    componentDidMount(){
+    componentDidMount() {
         jQuery(".sidebar-menu").tree();
     }
 
@@ -75,9 +75,14 @@ export default class Sidebar extends Component {
                                 </span>
                             </Link>
                         </li>
+                        <li>
+                            <Link to="/manage/drivers">
+                                <i className="fa fa-user"></i> <span>司机管理</span>
+                            </Link>
+                        </li>
                         <li className="treeview">
                             <a href="#">
-                                <i className="fa fa-user"></i>
+                                <i className="fa fa-users"></i>
                                 <span>用户管理</span>
                                 <span className="pull-right-container">
                                     <i className="fa fa-angle-left pull-right"></i>
@@ -95,11 +100,6 @@ export default class Sidebar extends Component {
                                 <li>
                                     <Link to="/manage/registers">
                                         <i className="fa fa-circle-o"></i> <span>管理员</span>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link to="/manage/registers">
-                                        <i className="fa fa-circle-o"></i> <span>驾驶员</span>
                                     </Link>
                                 </li>
                             </ul>

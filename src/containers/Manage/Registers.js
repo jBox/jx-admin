@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import RegisterItem from "../../components/Widgets/RegisterItem";
 
 import manageRegistersSelector from "../../redux/selectors/manage/registers";
-import { confirmRegister, registersInitialLoad } from "../../redux/actions/manage";
+import { passRegister, rejectRegister, registersInitialLoad } from "../../redux/actions/manage";
 
 const Register = (props) => (
     <div className="col-md-12">
@@ -15,7 +15,8 @@ const Register = (props) => (
 class Registers extends Component {
     static propTypes = {
         registers: PropTypes.array,
-        confirmRegister: PropTypes.func,
+        passRegister: PropTypes.func,
+        rejectRegister: PropTypes.func,
         registersInitialLoad: PropTypes.func
     }
 
@@ -26,11 +27,20 @@ class Registers extends Component {
         }
     }
 
-    handleConfirmRegister = (reg, action) => {
-        return (data) => {
-            const { confirmRegister } = this.props;
-            if (confirmRegister) {
-                confirmRegister(action, reg.mobile, data);
+    handlePassRegister = (reg) => {
+        return (roles) => {
+            const { passRegister } = this.props;
+            if (passRegister) {
+                passRegister(reg.mobile, roles);
+            }
+        }
+    }
+
+    handleRejectRegister = (reg) => {
+        return (reason) => {
+            const { rejectRegister } = this.props;
+            if (rejectRegister) {
+                rejectRegister(reg.mobile, reason);
             }
         }
     }
@@ -38,14 +48,19 @@ class Registers extends Component {
     render() {
         const { registers } = this.props;
         return (<div className="row">
-            {registers.map((reg, index) => (<Register key={index} data={reg}
-                onPass={this.handleConfirmRegister(reg, "pass")}
-                onReject={this.handleConfirmRegister(reg, "reject")} />))}
+            {registers.map(({ register, confirmation }, index) => (
+                <Register key={index}
+                    data={register}
+                    confirmation={confirmation}
+                    onPass={this.handlePassRegister(register)}
+                    onReject={this.handleRejectRegister(register)} />
+            ))}
         </div>);
     }
 }
 
 export default connect(manageRegistersSelector, {
-    confirmRegister,
+    passRegister,
+    rejectRegister,
     registersInitialLoad
 })(Registers);
