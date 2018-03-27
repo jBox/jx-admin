@@ -97,17 +97,31 @@ const Nav = ({ onLogout }) => (
     </nav>
 );
 
+const CollapseScreenSize = 767;
+
 class Header extends Component {
     static propTypes = {
         history: PropTypes.object,
+        location: PropTypes.object,
         authenticated: PropTypes.bool,
         logout: PropTypes.func
     }
 
+    componentDidMount() {
+    }
+
     componentWillReceiveProps(nextProps) {
-        const { authenticated, history } = nextProps;
+        const { authenticated, history, location } = nextProps;
         if (!authenticated && authenticated !== this.props.authenticated) {
             history.replace("/login");
+        }
+
+        if (location !== this.props.location && window.innerWidth < CollapseScreenSize) {
+            // push menu close
+            const pushmenu = jQuery(".sidebar-toggle").data("lte.pushmenu");
+            if (pushmenu) {
+                pushmenu.close();
+            }
         }
     }
 
