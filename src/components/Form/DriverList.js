@@ -5,7 +5,6 @@ import Interactive from "../Tables/Interactive";
 import styles from "./DriverList.css";
 
 class Driver extends Component {
-
     state = {
         edit: false
     }
@@ -65,6 +64,36 @@ class Driver extends Component {
     }
 }
 
+
+class NewDriver extends Component {
+
+    render() {
+        return (
+            <Interactive.Row>
+                <Interactive.Cell>
+                    <input type="text" placeholder="姓名" />
+                </Interactive.Cell>
+                <Interactive.Cell>
+                    <input type="text" placeholder="称呼" />
+                </Interactive.Cell>
+                <Interactive.Cell>
+                    <input type="text" placeholder="联系电话" />
+                </Interactive.Cell>
+                <Interactive.Tools active>
+                    <div className={styles.driverTools}>
+                        <div key="modifyGroup" className={classNames("pull-right", styles.buttonGroup)}>
+                            <button className="btn btn-success btn-sm pull-right">
+                                创建</button>
+                            <button className="btn btn-default btn-sm pull-right">
+                                取消</button>
+                        </div>
+                    </div>
+                </Interactive.Tools>
+            </Interactive.Row>
+        );
+    }
+}
+
 export default class DriverList extends Component {
 
     state = {
@@ -85,12 +114,14 @@ export default class DriverList extends Component {
                     <Interactive.Cell className={styles.titleCol}>称呼</Interactive.Cell>
                     <Interactive.Cell className={styles.mobileCol}>联系电话</Interactive.Cell>
                 </Interactive.Head>
+<NewDriver />
+                <Driver key={1} new />
 
-                <Driver  key={1}/>
+                <Driver key={1} />
 
-                <Driver  key={2}/>
+                <Driver key={2} />
 
-                <Driver  key={3}/>
+                <Driver key={3} />
 
             </Interactive>
         );

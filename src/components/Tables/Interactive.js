@@ -46,7 +46,6 @@ class Head extends Component {
 class Row extends Component {
     static propTypes = {
         className: PropTypes.string,
-        tools: PropTypes.node,
         children: PropTypes.node
     }
 
@@ -91,8 +90,8 @@ class Row extends Component {
             </tr>
         )];
 
-        if (tools && this.state.showTools) {
-            const { className: containerClassName, ...toolsProps } = tools.props
+        if (tools && (tools.props.active || this.state.showTools)) {
+            const { className: containerClassName, active, ...toolsProps } = tools.props
             const toolsClassName = classNames(styles.tools);
             const toolsCellClassName = classNames(styles.cell);
             const toolsContainerClassName = classNames(styles.container, containerClassName);
