@@ -2,26 +2,44 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import DriverList from "../../components/Form/DriverList";
+import CreateDriver from "../../components/Widgets/CreateDriver";
+import Button from "../../components/Form/Button";
 
 export default class Drivers extends Component {
 
     state = {
-        ok: false
+        showAddDriver: false
     }
 
-    handleExClick = () => {
-        if (!this.state.ok) {
-            this.setState({ ok: true });
+    handleAddDriverClick = () => {
+        if (!this.state.showAddDriver) {
+            this.setState({ showAddDriver: true });
+        }
+    }
+
+    handleAddDriverSubmit = () => {
+        if (this.state.showAddDriver) {
+            this.setState({ showAddDriver: false });
+        }
+    }
+
+    handleAddDriverClose = () => {
+        if (this.state.showAddDriver) {
+            this.setState({ showAddDriver: false });
         }
     }
 
     render() {
+        const { showAddDriver } = this.state;
+
         return (<div className="box">
             <div className="box-header">
                 <h3 className="box-title">司机</h3>
 
                 <div className="box-tools">
-                    <button type="button" className="btn btn-success btn-sm pull-right">增加司机</button>
+                    <Button className="pull-right" onClick={this.handleAddDriverClick} success sm>
+                        增加司机
+                    </Button>
                 </div>
             </div>
 
@@ -37,6 +55,10 @@ export default class Drivers extends Component {
                     <li><a href="#">»</a></li>
                 </ul>
             </div>
+
+            {showAddDriver && (<CreateDriver
+                onSubmit={this.handleAddDriverSubmit}
+                onClose={this.handleAddDriverClose} />)}
         </div>);
     }
 }

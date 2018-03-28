@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import isEqual from "lodash/isEqual";
 import isEmpty from "lodash/isEmpty";
 import classNames from "classnames";
-import InputItem from "./InputItem";
-import CaptchaItem from "./CaptchaItem";
+import FormInput from "./FormInput";
+import FormCaptcha from "./FormCaptcha";
 
 export default class Register extends Component {
     static propTypes = {
@@ -169,20 +169,20 @@ export default class Register extends Component {
 
         return (
             <form action="/register" method="post" onSubmit={this.handleSubmit}>
-                <InputItem name="nickname" placeholder="姓名" icon="info-sign"
+                <FormInput name="nickname" placeholder="姓名" icon="info-sign"
                     hasError={error === "nickname"}
                     pattern=".+"
                     message="姓名不能为空"
                     defaultValue={formData.name}
                     onChange={this.handleInputChange} />
-                <InputItem name="mobile" placeholder="手机号码" icon="phone"
+                <FormInput name="mobile" placeholder="手机号码" icon="phone"
                     hasError={error === "mobile"}
                     pattern="^1\d{10}$"
                     message="请输入正确的手机号码"
                     verified={verification.mobile && verification.mobile.verified}
                     defaultValue={formData.mobile}
                     onChange={this.handleInputChange} />
-                <CaptchaItem name="captcha" placeholder="验证码"
+                <FormCaptcha name="captcha" placeholder="验证码"
                     hasError={error === "captcha"}
                     pattern="^\d{6}$"
                     message="验证码不正确"
@@ -191,20 +191,20 @@ export default class Register extends Component {
                     defaultValue={formData.captcha}
                     onChange={this.handleInputChange}
                     onObtain={this.handleObtainCaptcha} />
-                {intact && <InputItem name="username" placeholder="用户名" icon="user"
+                {intact && <FormInput name="username" placeholder="用户名" icon="user"
                     hasError={error === "username"}
                     pattern="^[a-zA-z][\w-]{4,}$"
                     message="密码长度不能小于5，必须以字母开头，只能包含字母和数字"
                     verified={verification.username && verification.username.verified}
                     defaultValue={formData.username}
                     onChange={this.handleInputChange} />}
-                {intact && <InputItem type="password" name="password" placeholder="密码" icon="lock"
+                {intact && <FormInput type="password" name="password" placeholder="密码" icon="lock"
                     hasError={error === "password"}
                     pattern=".{6,}"
                     message="密码长度不能小于6位数"
                     defaultValue={formData.password}
                     onChange={this.handleInputChange} />}
-                {intact && <InputItem type="password" name="confirmPassword" placeholder="再次输入密码" icon="log-in"
+                {intact && <FormInput type="password" name="confirmPassword" placeholder="再次输入密码" icon="log-in"
                     hasError={error === "confirmPassword"}
                     message="输入密码不匹配"
                     defaultValue={formData.confirmPassword}

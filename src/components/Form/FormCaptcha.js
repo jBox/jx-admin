@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import styles from "./CaptchaItem.css";
+import styles from "./FormCaptcha.css";
 
 const SENT_MESSAGE = "验证码短信已经发送至您的手机上，请注意查收！";
 
@@ -11,7 +11,7 @@ const BTN_INIT = "获取验证码";
 
 const BTN_RESET = "重新获取";
 
-export default class CaptchaItem extends Component {
+export default class FormCaptcha extends Component {
     static propTypes = {
         hasError: PropTypes.bool,
         verified: PropTypes.bool,

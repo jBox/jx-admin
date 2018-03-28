@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import isEqual from "lodash/isEqual";
 import isEmpty from "lodash/isEmpty";
-import InputItem from "./InputItem";
-import CaptchaItem from "./CaptchaItem";
+import FormInput from "./FormInput";
+import FormCaptcha from "./FormCaptcha";
 
 export default class Login extends Component {
     static defaultProps = {
@@ -157,13 +157,13 @@ export default class Login extends Component {
         const formData = this.extractFormData();
         if (mode === "mob") {
             return [
-                (<InputItem key="mobile" name="mobile" placeholder="手机号码" icon="phone"
+                (<FormInput key="mobile" name="mobile" placeholder="手机号码" icon="phone"
                     hasError={error === "mobile"}
                     pattern="^1\d{10}$"
                     message="请输入正确的手机号码"
                     defaultValue={formData.mobile}
                     onChange={this.handleInputChange} />),
-                (<CaptchaItem key="captcha" name="captcha" placeholder="验证码"
+                (<FormCaptcha key="captcha" name="captcha" placeholder="验证码"
                     hasError={error === "captcha"}
                     pattern="^\d{6}$"
                     message="验证码不正确"
@@ -176,13 +176,13 @@ export default class Login extends Component {
         }
 
         return [
-            (<InputItem key="username" name="username" placeholder="用户名" icon="user"
+            (<FormInput key="username" name="username" placeholder="用户名" icon="user"
                 hasError={error === "username"}
                 pattern="^[a-zA-z][\w-]{4,}$"
                 message="密码长度不能小于5，必须以字母开头，只能包含字母和数字"
                 defaultValue={formData.username}
                 onChange={this.handleInputChange} />),
-            (<InputItem key="password" type="password" name="password" placeholder="密码" icon="lock"
+            (<FormInput key="password" type="password" name="password" placeholder="密码" icon="lock"
                 hasError={error === "password"}
                 pattern=".{6,}"
                 message="密码长度不能小于6位数"
