@@ -1,11 +1,30 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
+import { connect } from "react-redux";
 import DriverList from "../../components/Form/DriverList";
 import CreateDriver from "../../components/Widgets/CreateDriver";
 import Button from "../../components/Form/Button";
 
-export default class Drivers extends Component {
+import manageDriversSelector from "../../redux/selectors/manage/drivers";
+import { createDriver, updateDriver, removeDriver, driversInitialLoad } from "../../redux/actions/manage";
+
+class Drivers extends Component {
+
+    static propTypes = {
+        drivers: PropTypes.array,
+        createDriver: PropTypes.func,
+        updateDriver: PropTypes.func,
+        removeDriver: PropTypes.func,
+        driversInitialLoad: PropTypes.func
+    }
+
+    componentDidMount() {
+        const { driversInitialLoad } = this.props;
+        if (driversInitialLoad) {
+            driversInitialLoad();
+        }
+    }
 
     state = {
         showAddDriver: false
@@ -17,7 +36,14 @@ export default class Drivers extends Component {
         }
     }
 
-    handleAddDriverSubmit = () => {
+    handleAddDriverSubmit = (driver) => {
+        console.log(driver);
+        const { createDriver } = this.props;
+        if (createDriver) {
+            createDriver();
+        }
+
+
         if (this.state.showAddDriver) {
             this.setState({ showAddDriver: false });
         }
@@ -47,13 +73,6 @@ export default class Drivers extends Component {
                 <DriverList />
             </div>
             <div className="box-footer clearfix">
-                <ul className="pagination pagination-sm no-margin pull-right">
-                    <li><a href="#">«</a></li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">»</a></li>
-                </ul>
             </div>
 
             {showAddDriver && (<CreateDriver
@@ -62,3 +81,10 @@ export default class Drivers extends Component {
         </div>);
     }
 }
+
+export default connect(manageDriversSelector, {
+    createDriver,
+    updateDriver,
+    removeDriver,
+    driversInitialLoad
+})(Drivers);

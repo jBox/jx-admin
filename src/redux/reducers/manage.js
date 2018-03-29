@@ -24,6 +24,24 @@ const registers = (state = [], action) => {
     }
 };
 
+const drivers = (state = [], action) => {
+    switch (action.type) {
+        case MANAGE_GET_REGISTERS_SUCCESS:
+            return action.data;
+        case MANAGE_CONFIRM_REGISTEG_SUCCESS:
+            const { mobile } = action;
+            return state.reduce((items, item) => {
+                if (item.mobile === mobile) {
+                    return items.concat({ ...item, status: action.action });
+                }
+
+                return items.concat(item);
+            }, []);
+        default:
+            return state;
+    }
+};
+
 const registerConfirmations = (state = {}, action) => {
     switch (action.type) {
         case MANAGE_CONFIRM_REGISTEG_REQUEST:
@@ -39,5 +57,6 @@ const registerConfirmations = (state = {}, action) => {
 
 export default combineReducers({
     registerConfirmations,
-    registers
+    registers,
+    drivers
 });
