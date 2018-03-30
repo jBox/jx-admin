@@ -39,6 +39,7 @@ export const LOGIN_CAP_FAILURE = "login/cap/fai";
 
 /***************** START MANAGE *****************/
 export const MANAGE_GET_DRIVERS_SUCCESS = "m/q/dris/suc";
+export const MANAGE_ADD_DRIVER_SUCCESS = "m/add/drv/suc";
 export const MANAGE_GET_REGISTERS_SUCCESS = "m/q/regs/suc";
 export const MANAGE_CONFIRM_REGISTEG_REQUEST = "m/conf/reg/req";
 export const MANAGE_CONFIRM_REGISTEG_SUCCESS = "m/conf/reg/suc";

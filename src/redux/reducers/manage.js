@@ -1,9 +1,11 @@
 import { combineReducers } from "redux";
 import {
+    MANAGE_GET_DRIVERS_SUCCESS,
     MANAGE_GET_REGISTERS_SUCCESS,
     MANAGE_CONFIRM_REGISTEG_REQUEST,
     MANAGE_CONFIRM_REGISTEG_SUCCESS,
-    MANAGE_CONFIRM_REGISTEG_FAILURE
+    MANAGE_CONFIRM_REGISTEG_FAILURE,
+    MANAGE_ADD_DRIVER_SUCCESS
 } from "../actions/ActionTypes";
 
 const registers = (state = [], action) => {
@@ -26,17 +28,11 @@ const registers = (state = [], action) => {
 
 const drivers = (state = [], action) => {
     switch (action.type) {
-        case MANAGE_GET_REGISTERS_SUCCESS:
+        case MANAGE_GET_DRIVERS_SUCCESS:
             return action.data;
-        case MANAGE_CONFIRM_REGISTEG_SUCCESS:
-            const { mobile } = action;
-            return state.reduce((items, item) => {
-                if (item.mobile === mobile) {
-                    return items.concat({ ...item, status: action.action });
-                }
-
-                return items.concat(item);
-            }, []);
+        case MANAGE_ADD_DRIVER_SUCCESS:
+            const { driver } = action;
+            return [{ ...driver, status: "new" }, ...state]
         default:
             return state;
     }

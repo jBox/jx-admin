@@ -5,7 +5,12 @@ import styles from "./Interactive.css";
 import isEqual from "lodash/isEqual";
 
 class Cell extends Component {
+    static defaultProps = {
+        colSpan: 1
+    }
+
     static propTypes = {
+        colSpan: PropTypes.number,
         children: PropTypes.node
     }
 }

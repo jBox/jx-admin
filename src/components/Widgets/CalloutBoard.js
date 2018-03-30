@@ -19,8 +19,8 @@ const CalloutTypes = {
     }
 };
 
-const CalloutItem = ({ subject, message, delay, type, onClose }) => {
-    const props = { ...CalloutTypes.get(type), delay, onClose };
+const CalloutItem = ({ id, subject, message, duration, type, onClose }) => {
+    const props = { ...CalloutTypes.get(type), id, duration, onClose };
     return (
         <Callout {...props}>
             {subject && (<Callout.Subject>{subject}</Callout.Subject>)}
@@ -35,21 +35,12 @@ export default class CalloutBoard extends Component {
         onClose: PropTypes.func
     }
 
-    handleCalloutClose = (id) => {
-        return () => {
-            const { onClose } = this.props;
-            if (onClose) {
-                onClose(id);
-            }
-        }
-    }
-
     render() {
-        const { data } = this.props;
+        const { data, onClose } = this.props;
         return (
             <div className={styles.board}>
                 {data.map((item, index) => (
-                    <CalloutItem key={item.id} {...item} onClose={this.handleCalloutClose(item.id)} />
+                    <CalloutItem key={item.id} {...item} onClose={onClose} />
                 ))}
             </div>
         );

@@ -9,7 +9,7 @@ const Message = ({ children }) => (<p>{children}</p>);
 
 export default class Callout extends Component {
     static defaultProps = {
-        delay: 3
+        duration: 3
     }
 
     static propTypes = {
@@ -19,7 +19,7 @@ export default class Callout extends Component {
         danger: PropTypes.bool,
         warning: PropTypes.bool,
         info: PropTypes.bool,
-        delay: PropTypes.number,
+        duration: PropTypes.number,
         children: PropTypes.node,
         onClose: PropTypes.func
     }
@@ -29,8 +29,8 @@ export default class Callout extends Component {
     }
 
     componentDidMount() {
-        const { delay } = this.props;
-        this.lifeTimer = setTimeout(() => this.disappear(), delay * 1000);
+        const { duration } = this.props;
+        this.lifeTimer = setTimeout(() => this.disappear(), duration * 1000);
     }
 
     componentWillUnmount() {

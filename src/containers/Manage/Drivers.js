@@ -38,10 +38,9 @@ class Drivers extends Component {
     }
 
     handleAddDriverSubmit = (driver) => {
-        console.log(driver);
         const { createDriver } = this.props;
         if (createDriver) {
-            createDriver();
+            createDriver(driver);
         }
 
 
@@ -51,15 +50,13 @@ class Drivers extends Component {
     }
 
     handleAddDriverClose = () => {
-
-        const { callout } = this.props;
-        callout({ message: "gasgasdgasgd", subject: "Abc abds"  });
-        //if (this.state.showAddDriver) {
-        // this.setState({ showAddDriver: false });
-        //}
+        if (this.state.showAddDriver) {
+            this.setState({ showAddDriver: false });
+        }
     }
 
     render() {
+        const { drivers } = this.props;
         const { showAddDriver } = this.state;
 
         return (<div className="box">
@@ -74,7 +71,7 @@ class Drivers extends Component {
             </div>
 
             <div className="box-body no-padding">
-                <DriverList />
+                <DriverList data={drivers} />
             </div>
             <div className="box-footer clearfix">
             </div>

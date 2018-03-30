@@ -3,10 +3,10 @@ import {
     CLOSE_CALLOUT
 } from "./ActionTypes";
 
-export const callout = ({ subject, message, type, delay }) => {
+export const callout = ({ subject, message, type, duration }) => {
     return {
         type: CALLOUT,
-        callout: { subject, message, type, delay }
+        callout: { subject, message, type, duration }
     };
 };
 
