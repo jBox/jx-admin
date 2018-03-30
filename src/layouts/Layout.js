@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Switch, Route } from "react-browser-router";
 import Header from "../containers/Header";
 import Sidebar from "../containers/Sidebar";
+import Callouts from "../containers/Callouts";
 
 export default class Layout extends Component {
     static defaultProps = {
@@ -18,6 +19,7 @@ export default class Layout extends Component {
         const fullYear = new Date().getFullYear();
         return (
             <div className="wrapper">
+                <Callouts {...props} />
                 <Header {...props} />
                 <Sidebar {...props} />
                 <div className="content-wrapper">

@@ -4,6 +4,11 @@ export const API = "@CALL/API";
 
 export const LOGOUT = "logout";
 
+/***************** START Callouts *****************/
+export const CALLOUT = "callout";
+export const CLOSE_CALLOUT = "callout/cls";
+/***************** END Callouts   *****************/
+
 /***************** START REGISTER *****************/
 export const SUBMIT_REG_REQUEST = "reg/submit/req";
 export const SUBMIT_REG_SUCCESS = "reg/submit/sec";

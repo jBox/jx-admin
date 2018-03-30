@@ -8,6 +8,7 @@ import Button from "../../components/Form/Button";
 
 import manageDriversSelector from "../../redux/selectors/manage/drivers";
 import { createDriver, updateDriver, removeDriver, driversInitialLoad } from "../../redux/actions/manage";
+import { callout } from "../../redux/actions/notifications";
 
 class Drivers extends Component {
 
@@ -50,9 +51,12 @@ class Drivers extends Component {
     }
 
     handleAddDriverClose = () => {
-        if (this.state.showAddDriver) {
-            this.setState({ showAddDriver: false });
-        }
+
+        const { callout } = this.props;
+        callout({ message: "gasgasdgasgd", subject: "Abc abds"  });
+        //if (this.state.showAddDriver) {
+        // this.setState({ showAddDriver: false });
+        //}
     }
 
     render() {
@@ -86,5 +90,6 @@ export default connect(manageDriversSelector, {
     createDriver,
     updateDriver,
     removeDriver,
-    driversInitialLoad
+    driversInitialLoad,
+    callout
 })(Drivers);

@@ -4,11 +4,13 @@ import settings from "./settings";
 import register from "./register";
 import login from "./login";
 import manage from "./manage";
+import notifications from "./notifications";
 
 export default combineReducers({
     auth,
     settings,
     register,
     login,
-    manage
+    manage,
+    notifications
 });
