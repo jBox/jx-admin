@@ -1,0 +1,25 @@
+.nicknameCol {
+    width: 30%;
+}
+
+.rolesCol {
+    width: 40%;
+}
+
+.mobileCol {
+    width: 30%;
+}
+
+.tools {}
+
+.tools button {
+    margin-left: 20px;
+}
+
+.tools .buttonGroup {
+    margin-left: 20px;
+}
+
+.tools .buttonGroup button {
+    margin-left: 5px;
+}

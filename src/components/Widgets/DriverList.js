@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import Interactive from "../Tables/Interactive";
-import Button from "./Button";
+import Button from "../Form/Button";
 import styles from "./DriverList.css";
 
 class Driver extends Component {

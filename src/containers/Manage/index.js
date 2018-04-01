@@ -1,11 +1,22 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Switch, Route, Link } from "react-browser-router";
+import { connect } from "react-redux";
 
-export default class Manage extends Component {
+import { loadRoles } from "../../redux/actions/manage";
+
+class Manage extends Component {
     static propTypes = {
         match: PropTypes.object,
-        routes: PropTypes.array
+        routes: PropTypes.array,
+        loadRoles: PropTypes.func
+    }
+
+    componentDidMount() {
+        const { loadRoles } = this.props;
+        if (loadRoles) {
+            loadRoles();
+        }
     }
 
     render() {
@@ -30,3 +41,7 @@ export default class Manage extends Component {
         ];
     }
 }
+
+export default connect(null, {
+    loadRoles
+})(Manage);

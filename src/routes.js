@@ -9,6 +9,7 @@ import Dashboard from "./containers/Dashboard";
 import Manage from "./containers/Manage";
 import ManageRegisters from "./containers/Manage/Registers";
 import ManageDrivers from "./containers/Manage/Drivers";
+import ManageUsers from "./containers/Manage/Users";
 
 import { authenticate } from "./redux/common";
 
@@ -41,12 +42,16 @@ const routes = [{
                 exact: true,
                 component: Dashboard
             }, {
-                path: "/manage/:category",
+                path: "/manage/:feature/:category?",
                 component: Manage,
                 routes: [{
-                    path: "/manage/registers",
+                    path: "/manage/users/registers",
                     exact: true,
                     component: ManageRegisters
+                }, {
+                    path: "/manage/users/all",
+                    exact: true,
+                    component: ManageUsers
                 }, {
                     path: "/manage/drivers",
                     exact: true,

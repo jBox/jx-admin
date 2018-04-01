@@ -1,12 +1,25 @@
 import { combineReducers } from "redux";
 import {
+    MANAGE_LOAD_USERS_REQUEST,
+    MANAGE_LOAD_USERS_SUCCESS,
+    MANAGE_LOAD_USERS_FAILURE,
     MANAGE_GET_DRIVERS_SUCCESS,
     MANAGE_GET_REGISTERS_SUCCESS,
     MANAGE_CONFIRM_REGISTEG_REQUEST,
     MANAGE_CONFIRM_REGISTEG_SUCCESS,
     MANAGE_CONFIRM_REGISTEG_FAILURE,
-    MANAGE_ADD_DRIVER_SUCCESS
+    MANAGE_ADD_DRIVER_SUCCESS,
+    MANAGE_LOADED_ROLES
 } from "../actions/ActionTypes";
+
+const roles = (state = {}, action) => {
+    switch (action.type) {
+        case MANAGE_LOADED_ROLES:
+            return action.data;
+        default:
+            return state;
+    }
+};
 
 const registers = (state = [], action) => {
     switch (action.type) {
@@ -21,6 +34,15 @@ const registers = (state = [], action) => {
 
                 return items.concat(item);
             }, []);
+        default:
+            return state;
+    }
+};
+
+const users = (state = [], action) => {
+    switch (action.type) {
+        case MANAGE_LOAD_USERS_SUCCESS:
+            return action.data;
         default:
             return state;
     }
@@ -51,8 +73,24 @@ const registerConfirmations = (state = {}, action) => {
     }
 };
 
+const status = (state = {}, action) => {
+    switch (action.type) {
+        case MANAGE_LOAD_USERS_REQUEST:
+            return { ...state, users: { loading: "request" } };
+        case MANAGE_LOAD_USERS_SUCCESS:
+            return { ...state, users: { loading: "success" } };
+        case MANAGE_LOAD_USERS_FAILURE:
+            return { ...state, users: { loading: "failure" } };
+        default:
+            return state;
+    }
+};
+
 export default combineReducers({
+    status,
     registerConfirmations,
+    roles,
     registers,
-    drivers
+    drivers,
+    users
 });

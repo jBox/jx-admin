@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
-import DriverList from "../../components/Form/DriverList";
+import DriverList from "../../components/Widgets/DriverList";
 import CreateDriver from "../../components/Widgets/CreateDriver";
 import Button from "../../components/Form/Button";
 
