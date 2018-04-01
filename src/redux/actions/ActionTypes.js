@@ -41,9 +41,15 @@ export const LOGIN_CAP_FAILURE = "login/cap/fai";
 
 export const MANAGE_LOADED_ROLES = "m/load/roles";
 
+export const MANAGE_LOADED_MODELS = "m/load/models";
+
 export const MANAGE_LOAD_USERS_REQUEST = "m/load/users/req";
 export const MANAGE_LOAD_USERS_SUCCESS = "m/load/users/suc";
 export const MANAGE_LOAD_USERS_FAILURE = "m/load/users/fai";
+
+export const MANAGE_LOAD_VEHICLES_REQUEST = "m/load/vs/req";
+export const MANAGE_LOAD_VEHICLES_SUCCESS = "m/load/vs/suc";
+export const MANAGE_LOAD_VEHICLES_FAILURE = "m/load/vs/fai";
 
 export const MANAGE_ADD_DRIVER_SUCCESS = "m/add/drv/suc";
 export const MANAGE_GET_DRIVERS_SUCCESS = "m/q/drv/suc";

@@ -9,6 +9,7 @@ import Dashboard from "./containers/Dashboard";
 import Manage from "./containers/Manage";
 import ManageRegisters from "./containers/Manage/Registers";
 import ManageDrivers from "./containers/Manage/Drivers";
+import ManageVehicles from "./containers/Manage/Vehicles";
 import ManageUsers from "./containers/Manage/Users";
 
 import { authenticate } from "./redux/common";
@@ -56,6 +57,10 @@ const routes = [{
                     path: "/manage/drivers",
                     exact: true,
                     component: ManageDrivers
+                }, {
+                    path: "/manage/vehicles",
+                    exact: true,
+                    component: ManageVehicles
                 }]
             }]
         }

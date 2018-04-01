@@ -80,14 +80,11 @@ export default class Menu extends Component {
                         <i className="fa fa-circle-o"></i> <span>已取消订单</span>
                     </NavItem>
                 </Treeview>
-                <NavItem to="/manage/registers">
-                    <i className="fa fa-car"></i> <span>车辆管理</span>
-                    <span className="pull-right-container">
-                        <small className="label pull-right bg-green">new</small>
-                    </span>
-                </NavItem>
                 <NavItem to="/manage/drivers">
                     <i className="fa fa-user"></i> <span>司机管理</span>
+                </NavItem>
+                <NavItem to="/manage/vehicles">
+                    <i className="fa fa-car"></i> <span>车辆管理</span>
                 </NavItem>
                 <Treeview to="/manage/users" icon="users" label="用户管理"
                     bridge={(<i className="fa fa-angle-left pull-right"></i>)}>

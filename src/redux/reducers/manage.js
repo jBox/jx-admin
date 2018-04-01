@@ -9,12 +9,32 @@ import {
     MANAGE_CONFIRM_REGISTEG_SUCCESS,
     MANAGE_CONFIRM_REGISTEG_FAILURE,
     MANAGE_ADD_DRIVER_SUCCESS,
-    MANAGE_LOADED_ROLES
+    MANAGE_LOADED_ROLES,
+    MANAGE_LOADED_MODELS,
+    MANAGE_LOAD_VEHICLES_SUCCESS
 } from "../actions/ActionTypes";
 
 const roles = (state = {}, action) => {
     switch (action.type) {
         case MANAGE_LOADED_ROLES:
+            return action.data;
+        default:
+            return state;
+    }
+};
+
+const models = (state = {}, action) => {
+    switch (action.type) {
+        case MANAGE_LOADED_MODELS:
+            return action.data;
+        default:
+            return state;
+    }
+};
+
+const vehicles = (state = [], action) => {
+    switch (action.type) {
+        case MANAGE_LOAD_VEHICLES_SUCCESS:
             return action.data;
         default:
             return state;
@@ -90,7 +110,9 @@ export default combineReducers({
     status,
     registerConfirmations,
     roles,
+    models,
     registers,
     drivers,
-    users
+    users,
+    vehicles
 });

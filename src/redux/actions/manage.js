@@ -9,11 +9,21 @@ import {
     MANAGE_LOAD_USERS_REQUEST,
     MANAGE_LOAD_USERS_FAILURE,
     MANAGE_LOAD_USERS_SUCCESS,
-    MANAGE_LOADED_ROLES
+    MANAGE_LOADED_ROLES,
+    MANAGE_LOADED_MODELS,
+    MANAGE_LOAD_VEHICLES_SUCCESS
 } from "./ActionTypes";
 
 import isEmpty from "lodash/isEmpty";
 import { callout } from "./notifications";
+
+export const loadModels = () => {
+    return {
+        type: API,
+        endpoint: "/api/vehicles/models",
+        success: ({ data, dispatch }) => dispatch({ data, type: MANAGE_LOADED_MODELS })
+    };
+};
 
 export const loadRoles = () => (dispatch, getState) => {
     const { manage } = getState();
@@ -91,6 +101,19 @@ export const driversInitialLoad = () => {
             dispatch({
                 data,
                 type: MANAGE_GET_DRIVERS_SUCCESS
+            });
+        }
+    };
+};
+
+export const vehiclesInitialLoad = () => {
+    return {
+        type: API,
+        endpoint: { url: `/api/vehicles` },
+        success: ({ data, dispatch }) => {
+            dispatch({
+                data,
+                type: MANAGE_LOAD_VEHICLES_SUCCESS
             });
         }
     };

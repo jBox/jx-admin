@@ -1,0 +1,21 @@
+.numberCol {
+    width: 50%;
+}
+
+.modelCol {
+    width: 50%;
+}
+
+.tools {}
+
+.tools button {
+    margin-left: 20px;
+}
+
+.tools .buttonGroup {
+    margin-left: 20px;
+}
+
+.tools .buttonGroup button {
+    margin-left: 5px;
+}
