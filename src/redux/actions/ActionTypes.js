@@ -51,7 +51,9 @@ export const MANAGE_LOAD_VEHICLES_REQUEST = "m/load/vs/req";
 export const MANAGE_LOAD_VEHICLES_SUCCESS = "m/load/vs/suc";
 export const MANAGE_LOAD_VEHICLES_FAILURE = "m/load/vs/fai";
 
+export const MANAGE_ADD_VEHICLE_SUCCESS = "m/add/vhc/suc";
 export const MANAGE_ADD_DRIVER_SUCCESS = "m/add/drv/suc";
+
 export const MANAGE_GET_DRIVERS_SUCCESS = "m/q/drv/suc";
 export const MANAGE_GET_REGISTERS_SUCCESS = "m/q/regs/suc";
 export const MANAGE_CONFIRM_REGISTEG_REQUEST = "m/conf/reg/req";

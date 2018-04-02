@@ -1,28 +1,41 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
+import Select2 from "react-select2-wrapper";
 import Control from "./Control";
-import styles from "./FormInput.css";
+import styles from "./Select.css";
 
-export default class Input extends Control {
+const getSelectedValue = (select) => {
+    const values = [];
+    const options = select.options;
+    for (let i = 0; i < options.length; i++) {
+        const opt = options[i];
+        if (opt.selected) {
+            values.push(opt.value);
+        }
+    }
+
+    return values;
+};
+
+export default class Select extends Control {
     static defaultProps = {
-        type: "text",
-        verified: false,
         required: false
     }
 
     static propTypes = {
         id: PropTypes.string,
+        name: PropTypes.string,
+        data: PropTypes.array,
         hasError: PropTypes.bool,
-        verified: PropTypes.bool,
         message: PropTypes.string,
-        pattern: PropTypes.string,
         label: PropTypes.string,
-        icon: PropTypes.string,
-        type: PropTypes.string,
+        placeholder: PropTypes.string,
+        defaultValue: PropTypes.array,
+        disabled: PropTypes.bool,
+        multiple: PropTypes.bool,
         required: PropTypes.bool,
-        onChange: PropTypes.func,
-        onBlur: PropTypes.func
+        onChange: PropTypes.func
     }
 
     constructor(props, context) {
@@ -48,14 +61,13 @@ export default class Input extends Control {
 
     validate = () => {
         let hasError = false;
-        const { required, pattern } = this.props;
+        const { required, multiple } = this.props;
         if (required) {
-            hasError = !this.value;
-        }
-
-        if (!hasError) {
-            const r = new RegExp(pattern, "ig");
-            hasError = !r.test(this.value);
+            if (multiple) {
+                hasError = !(this.value && this.value.length > 0);
+            } else {
+                hasError = !this.value;
+            }
         }
 
         if (this.state.hasError !== hasError) {
@@ -65,23 +77,24 @@ export default class Input extends Control {
         return !hasError;
     }
 
-    handleBlur = (event) => {
-        this.validate();
-
-        const { onBlur } = this.props;
-
-        if (onBlur) {
-            onBlur(event);
-        }
-    }
-
     handleChange = (event) => {
-        const { value } = event.target;
-        this.value = value;
+        const { multiple } = this.props;
+        const values = getSelectedValue(event.target);
+        this.value = values;
+        if (!multiple) {
+            this.value = this.value[0];
+        }
 
         const { onChange } = this.props;
-
         if (onChange) {
+
+            const target = {
+                id: event.target.id,
+                name: event.target.name,
+                value: this.value
+            };
+
+            event.target = target;
             onChange(event);
         }
     }
@@ -100,19 +113,6 @@ export default class Input extends Control {
         return null;
     }
 
-    icon = () => {
-        const { icon, verified } = this.props;
-        if (icon) {
-            const glyphicon = verified ? "glyphicon-ok" : `glyphicon-${icon}`;
-            const iconClass = classNames("glyphicon", glyphicon, "form-control-feedback", { [styles.verified]: verified });
-            return (
-                <span className={iconClass}></span>
-            );
-        }
-
-        return null;
-    }
-
     error = () => {
         const { hasError } = this.state;
         const { message } = this.props;
@@ -123,38 +123,30 @@ export default class Input extends Control {
         return null;
     }
 
-    extraInputProps = () => {
-        const props = [
-            "id", "name", "type", "value", "defaultValue", "disabled", "placeholder"
-        ];
-
-        return props.reduce((obj, key) => {
-            if (this.props.hasOwnProperty(key)) {
-                obj[key] = this.props[key];
-            }
-
-            return obj;
-        }, {});
-    }
-
     render() {
-        const { className } = this.props;
+        const { id, name, data, className, defaultValue, disabled, multiple, placeholder } = this.props;
         const { hasError } = this.state;
 
-        const props = {
-            ...this.extraInputProps(),
-            onChange: this.handleChange,
-            onBlur: this.handleBlur
-        };
-
         const containerClassName = classNames("form-group has-feedback", { "has-error": hasError });
-        const inputClassName = classNames("form-control", className);
+        const selectClassName = classNames("form-control", className);
 
         return (
             <div className={containerClassName}>
                 {this.label()}
-                <input {...props} className={inputClassName} />
-                {this.icon()}
+                <Select2
+                    id={id}
+                    name={name}
+                    defaultValue={defaultValue}
+                    disabled={disabled}
+                    className={selectClassName}
+                    multiple={multiple}
+                    data={data}
+                    onChange={this.handleChange}
+                    options={{
+                        placeholder,
+                        minimumResultsForSearch: Infinity
+                    }}
+                />
                 {this.error()}
             </div>
         );

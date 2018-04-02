@@ -1,0 +1,5 @@
+@value success from "../Colors.css";
+
+.verified {
+    color: success !important;
+}

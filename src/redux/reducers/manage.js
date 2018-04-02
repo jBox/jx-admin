@@ -11,7 +11,8 @@ import {
     MANAGE_ADD_DRIVER_SUCCESS,
     MANAGE_LOADED_ROLES,
     MANAGE_LOADED_MODELS,
-    MANAGE_LOAD_VEHICLES_SUCCESS
+    MANAGE_LOAD_VEHICLES_SUCCESS,
+    MANAGE_ADD_VEHICLE_SUCCESS
 } from "../actions/ActionTypes";
 
 const roles = (state = {}, action) => {
@@ -36,6 +37,8 @@ const vehicles = (state = [], action) => {
     switch (action.type) {
         case MANAGE_LOAD_VEHICLES_SUCCESS:
             return action.data;
+        case MANAGE_ADD_VEHICLE_SUCCESS:
+            return [...state, action.vehicle];
         default:
             return state;
     }

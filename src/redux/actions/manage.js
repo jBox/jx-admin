@@ -11,7 +11,8 @@ import {
     MANAGE_LOAD_USERS_SUCCESS,
     MANAGE_LOADED_ROLES,
     MANAGE_LOADED_MODELS,
-    MANAGE_LOAD_VEHICLES_SUCCESS
+    MANAGE_LOAD_VEHICLES_SUCCESS,
+    MANAGE_ADD_VEHICLE_SUCCESS
 } from "./ActionTypes";
 
 import isEmpty from "lodash/isEmpty";
@@ -129,6 +130,21 @@ export const createDriver = (driver) => {
             dispatch({
                 driver: data,
                 type: MANAGE_ADD_DRIVER_SUCCESS
+            });
+        }
+    };
+};
+
+export const createVehicle = (vehicle) => {
+    return {
+        type: API,
+        endpoint: { url: `/api/vehicles`, method: "POST", body: vehicle },
+        error: ({ dispatch, error }) => dispatch(callout({ subject: "添加车辆失败", message: error, type: "error", duration: 8 })),
+        success: ({ data, dispatch }) => {
+            dispatch(callout({ message: "车辆添加成功！", type: "success" }));
+            dispatch({
+                vehicle: data,
+                type: MANAGE_ADD_VEHICLE_SUCCESS
             });
         }
     };
