@@ -11,3 +11,15 @@
         padding-bottom: 0;
     }
 }
+
+.track {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0;
+}
+
+.track span {
+    display: inline-block;
+    width: 130px;
+    text-align: right;
+}

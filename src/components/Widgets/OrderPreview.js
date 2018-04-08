@@ -20,6 +20,35 @@ const VehicleItem = ({ model, count, withDriver, notes }) => {
     return (<p><label>{model.label}</label> / {additional.join(" / ")}</p>)
 };
 
+const OrderTrack = ({ state, time }) => {
+    return (
+        <div className={styles.track}>
+            <label>{state}</label>
+            <span>{time}</span>
+        </div>
+    );
+};
+
+const OrderStatus = ({ order }) => {
+    const traces = order.traces.reduceRight((items, item) => {
+        return items.concat({ state: item.state, time: item.time.toDateTime() });
+    }, []);
+    return (
+        <div className="box box-widget box-solid collapsed-box" style={{ boxShadow: "none" }}>
+            <div className="box-header">
+                <span>订单状态：<label>{order.status.label}</label></span>
+
+                <div className="box-tools pull-right">
+                    <button type="button" className="btn btn-box-tool" data-widget="collapse">查看详情 &gt;</button>
+                </div>
+            </div>
+            <div className="box-body" style={{ display: "none" }}>
+                {traces.map((item, index) => (<OrderTrack key={index} {...item} />))}
+            </div>
+        </div>
+    );
+}
+
 export default class OrderPreview extends Component {
     static defaultProps = {
         vehicles: [],
@@ -74,75 +103,75 @@ export default class OrderPreview extends Component {
 
         const { order, vehicles, drivers } = this.props;
 
-        if (order.status === "submitted") {
+        if (order.status.id === "submitted") {
             return (
-                <div className="row">
-                    <div className="col-md-offset-8 col-md-4 col-sm-12">
-                        <Button onClick={this.handleConfirm} block primary>确认订单</Button>
+                <div className="box-footer">
+                    <div className="row">
+                        <div className="col-md-offset-8 col-md-4 col-sm-12">
+                            <Button onClick={this.handleConfirm} block primary>确认订单</Button>
+                        </div>
                     </div>
                 </div>
             );
         }
 
-        if (order.status === "confirmed") {
+        if (order.status.id === "confirmed") {
             const vehicleItems = vehicles.map((item) => ({ id: item.number, label: item.number, description: item.model }));
             const driverItems = drivers.map((item) => {
                 const id = item.mobile;
                 return { id, label: item.title || item.nickname, description: id };
             });
             return (
-                <Form className="row" onSubmit={this.handleSchedule}>
-                    <div className="col-md-4 col-sm-12">
-                        <Autocomplete items={vehicleItems}
-                            name="vehicle"
-                            placeholder="车牌号, 车型"
-                            pattern={`^${LPN_CONTENT_PATTERN}\\s*[,|，]\\s*(商务车|轿车)$`}
-                            message="请输入车牌号与车型"
-                            required
-                            onChange={this.handleVehicleChange}
-                        />
-                    </div>
-                    <div className="col-md-4 col-sm-12">
-                        <Autocomplete items={driverItems}
-                            name="driver"
-                            pattern={`^[^\\d]+\\s*[,|，]\\s*1\\d{10}$`}
-                            placeholder="司机称呼，手机号码"
-                            message="请输入司机称呼与手机号码"
-                            required
-                            onChange={this.handleDriverChange}
-                        />
-                    </div>
-                    <div className="col-md-4 col-sm-12">
-                        <Button type="submit" block success>执行调度</Button>
-                    </div>
-                </Form>
+                <div className="box-footer">
+                    <Form className="row" onSubmit={this.handleSchedule}>
+                        <div className="col-md-4 col-sm-12">
+                            <Autocomplete items={vehicleItems}
+                                name="vehicle"
+                                placeholder="车牌号, 车型"
+                                pattern={`^${LPN_CONTENT_PATTERN}\\s*[,|，]\\s*(商务车|轿车)$`}
+                                message="请输入车牌号与车型"
+                                required
+                                onChange={this.handleVehicleChange}
+                            />
+                        </div>
+                        <div className="col-md-4 col-sm-12">
+                            <Autocomplete items={driverItems}
+                                name="driver"
+                                pattern={`^[^\\d]+\\s*[,|，]\\s*1\\d{10}$`}
+                                placeholder="司机称呼，手机号码"
+                                message="请输入司机称呼与手机号码"
+                                required
+                                onChange={this.handleDriverChange}
+                            />
+                        </div>
+                        <div className="col-md-4 col-sm-12">
+                            <Button type="submit" block success>执行调度</Button>
+                        </div>
+                    </Form>
+                </div>
             );
         }
 
-        if (order.status === "cancelling") {
+        if (order.status.id === "cancelling") {
             return (
-                <div className="row">
-                    <div className="col-md-offset-8 col-md-4 col-sm-12">
-                        <Button onClick={this.handleConfirmCancel} block danger>确认取消订单</Button>
+                <div className="box-footer">
+                    <div className="row">
+                        <div className="col-md-offset-8 col-md-4 col-sm-12">
+                            <Button onClick={this.handleConfirmCancel} block danger>确认取消订单</Button>
+                        </div>
                     </div>
                 </div>
             );
         }
 
-        return (
-            <div className="row">
-                <div className="col-md-offset-8 col-md-4 col-sm-12">
-                    <Button onClick={this.handleConfirm} block primary>确认订单</Button>
-                </div>
-            </div>
-        );
+        return null;
     }
 
     getBoxStyle = () => {
         const { order } = this.props;
 
         let boxStyle = "box-primary";
-        switch (order.status) {
+        switch (order.status.id) {
             case "confirmed":
                 boxStyle = "box-warning";
                 break;
@@ -188,9 +217,9 @@ export default class OrderPreview extends Component {
                     {order.vehicles.map((item, index) => (<VehicleItem key={index} {...item} />))}
                 </div>
 
-                <div className="box-footer">
-                    {this.renderOperation()}
-                </div>
+                <OrderStatus order={order} />
+
+                {this.renderOperation()}
             </div>
         );
     }

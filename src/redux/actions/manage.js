@@ -11,6 +11,7 @@ import {
     MANAGE_LOAD_USERS_SUCCESS,
     MANAGE_LOADED_ROLES,
     MANAGE_LOADED_MODELS,
+    MANAGE_LOADED_ORDER_STATUS,
     MANAGE_LOAD_VEHICLES_SUCCESS,
     MANAGE_ADD_VEHICLE_SUCCESS,
     MANAGE_LOAD_ORDERS_REQUEST,
@@ -20,6 +21,14 @@ import {
 
 import isEmpty from "lodash/isEmpty";
 import { callout } from "./notifications";
+
+export const loadOrderStatus = () => {
+    return {
+        type: API,
+        endpoint: "/api/orders/status",
+        success: ({ data, dispatch }) => dispatch({ data, type: MANAGE_LOADED_ORDER_STATUS })
+    };
+};
 
 export const loadModels = () => {
     return {
