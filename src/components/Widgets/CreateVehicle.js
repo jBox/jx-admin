@@ -6,6 +6,7 @@ import Form from "../Form";
 import Button from "../Form/Button";
 import FormInput from "../Form/Input";
 import Select from "../Form/Select";
+import { LPN_PATTERN } from "../utils";
 
 export default class CreateVehicle extends Component {
     static propTypes = {
@@ -50,7 +51,7 @@ export default class CreateVehicle extends Component {
                     <Modal.Body>
 
                         <FormInput id="number" name="number" label="车牌号码" placeholder="车牌号码"
-                            pattern="^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$"
+                            pattern={LPN_PATTERN}
                             message="请输入正确车牌号码"
                             required
                             onChange={this.handleInputChange} />

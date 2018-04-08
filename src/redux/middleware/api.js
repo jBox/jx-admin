@@ -16,15 +16,15 @@ const requireToken = () => {
 };
 
 const request = (endpoint) => {
-    const headers = { "cache-control": "no-cache", ...(endpoint.headers || {}) };
+    const headers = { "Cache-Control": "no-cache", ...(endpoint.headers || {}) };
 
     if (isObject(endpoint.body) && isMissingContentType(headers)) {
-        headers["content-type"] = "application/json";
+        headers["Content-Type"] = "application/json";
     }
 
     return requireToken().then((token) => {
         if (token) {
-            headers["authorization"] = `${token.token_type} ${token.access_token}`;
+            headers["Authorization"] = `${token.token_type} ${token.access_token}`;
         }
 
         const options = {

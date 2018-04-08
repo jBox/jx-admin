@@ -63,7 +63,7 @@ const routes = [{
                     exact: true,
                     component: ManageVehicles
                 }, {
-                    path: "/manage/orders/pending",
+                    path: "/manage/orders",
                     exact: true,
                     component: ManageOrders
                 }, {

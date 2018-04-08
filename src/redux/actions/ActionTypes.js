@@ -43,6 +43,12 @@ export const MANAGE_LOADED_ROLES = "m/load/roles";
 
 export const MANAGE_LOADED_MODELS = "m/load/models";
 
+export const MANAGE_LOAD_ORDERS_REQUEST = "m/load/orders/req";
+export const MANAGE_LOAD_ORDERS_SUCCESS = "m/load/orders/suc";
+export const MANAGE_LOAD_ORDERS_FAILURE = "m/load/orders/fai";
+
+export const MANAGE_ORDER_UPDATED = "m/orders/updated";
+
 export const MANAGE_LOAD_USERS_REQUEST = "m/load/users/req";
 export const MANAGE_LOAD_USERS_SUCCESS = "m/load/users/suc";
 export const MANAGE_LOAD_USERS_FAILURE = "m/load/users/fai";

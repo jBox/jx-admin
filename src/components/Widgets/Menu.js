@@ -67,7 +67,7 @@ export default class Menu extends Component {
                 </NavItem>
                 <Treeview to="/manage/orders" icon="shopping-cart" label="订单管理"
                     bridge={(<i className="fa fa-angle-left pull-right"></i>)}>
-                    <NavItem to="/manage/orders/pending">
+                    <NavItem to="/manage/orders">
                         <i className="fa fa-circle-o"></i> <span>待处理订单</span>
                         <span className="pull-right-container">
                             <small className="label pull-right bg-green">2</small>

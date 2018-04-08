@@ -25,3 +25,21 @@ Date.prototype.format = function (fmt) {
 
     return fmt;
 };
+
+String.prototype.toDateTime = function () {
+    try {
+        return new Date(this).format("yyyy-MM-dd hh:mm");
+    } catch (ex) {
+        console.error(ex);
+        return this;
+    }
+};
+
+String.prototype.toDate = function () {
+    try {
+        return new Date(this).format("yyyy-MM-dd");
+    } catch (ex) {
+        console.error(ex);
+        return this;
+    }
+};

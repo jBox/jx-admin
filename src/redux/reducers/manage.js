@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import orders from "./orders";
 import {
     MANAGE_LOAD_USERS_REQUEST,
     MANAGE_LOAD_USERS_SUCCESS,
@@ -117,5 +118,6 @@ export default combineReducers({
     registers,
     drivers,
     users,
-    vehicles
+    vehicles,
+    orders
 });

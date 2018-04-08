@@ -1,3 +1,13 @@
 .orderId {
     font-size: 22px;
 }
+
+.orderOperation {
+    padding-bottom: 10px;
+}
+
+@media (min-width: 992px) {
+    .orderOperation {
+        padding-bottom: 0;
+    }
+}
