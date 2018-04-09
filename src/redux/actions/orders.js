@@ -55,6 +55,26 @@ export const confirmOrder = (order) => {
     };
 };
 
+export const confirmCancelOrder = (order) => {
+    const body = {
+        version: order.version,
+        operation: "cancel-confirm"
+    };
+
+    return {
+        type: API,
+        endpoint: { url: `/api/orders/${order.id}`, method: "PUT", body },
+        error: ({ dispatch, error }) => dispatch(callout({ subject: "确认取消失败", message: error, type: "error", duration: 8 })),
+        success: ({ data, dispatch }) => {
+            dispatch(callout({ message: "订单已取消", type: "success" }));
+            dispatch({
+                data,
+                type: MANAGE_ORDER_UPDATED
+            });
+        }
+    };
+};
+
 export const scheduleOrder = (order, schedule) => {
     const body = {
         version: order.version,
@@ -68,6 +88,26 @@ export const scheduleOrder = (order, schedule) => {
         error: ({ dispatch, error }) => dispatch(callout({ subject: "订单安排失败", message: error, type: "error", duration: 8 })),
         success: ({ data, dispatch }) => {
             dispatch(callout({ message: "订单已安排", type: "success" }));
+            dispatch({
+                data,
+                type: MANAGE_ORDER_UPDATED
+            });
+        }
+    };
+};
+
+export const completeOrder = (order) => {
+    const body = {
+        version: order.version,
+        operation: "complete"
+    };
+
+    return {
+        type: API,
+        endpoint: { url: `/api/orders/${order.id}`, method: "PUT", body },
+        error: ({ dispatch, error }) => dispatch(callout({ subject: "无法完成订单", message: error, type: "error", duration: 8 })),
+        success: ({ data, dispatch }) => {
+            dispatch(callout({ message: "订单已完成", type: "success" }));
             dispatch({
                 data,
                 type: MANAGE_ORDER_UPDATED

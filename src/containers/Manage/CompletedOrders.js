@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import OrderPreview from "../../components/Widgets/OrderPreview";
 
 import manageOrdersSelector from "../../redux/selectors/manage/orders";
-import { confirmOrder, scheduleOrder, confirmCancelOrder, completeOrder, ordersInitialLoad } from "../../redux/actions/orders";
+import { confirmOrder, scheduleOrder, confirmCancelOrder, ordersInitialLoad } from "../../redux/actions/orders";
 import { driversInitialLoad, vehiclesInitialLoad } from "../../redux/actions/manage";
 
 class Orders extends Component {
@@ -19,7 +19,6 @@ class Orders extends Component {
         confirmOrder: PropTypes.func,
         confirmCancelOrder: PropTypes.func,
         scheduleOrder: PropTypes.func,
-        completeOrder: PropTypes.func,
         ordersInitialLoad: PropTypes.func,
         driversInitialLoad: PropTypes.func,
         vehiclesInitialLoad: PropTypes.func
@@ -28,7 +27,7 @@ class Orders extends Component {
     componentDidMount() {
         const { ordersInitialLoad, driversInitialLoad, vehiclesInitialLoad } = this.props;
         if (ordersInitialLoad) {
-            ordersInitialLoad("submitted");
+            ordersInitialLoad("completed");
         }
         if (driversInitialLoad) {
             driversInitialLoad();
@@ -59,13 +58,6 @@ class Orders extends Component {
         }
     }
 
-    handleCompleteOrder = (order, schedule) => {
-        const { completeOrder } = this.props;
-        if (completeOrder) {
-            completeOrder(order);
-        }
-    }
-
     render() {
         const { orders, drivers, vehicles } = this.props;
         return orders.map((order) => (
@@ -77,7 +69,6 @@ class Orders extends Component {
                 onConfirm={this.handleConfirmOrder}
                 onConfirmCancel={this.handleConfirmCancelOrder}
                 onSchedule={this.handleScheduleOrder}
-                onComplete={this.handleCompleteOrder}
             />
         ));
     }
@@ -87,7 +78,6 @@ export default connect(manageOrdersSelector, {
     confirmOrder,
     scheduleOrder,
     confirmCancelOrder,
-    completeOrder,
     ordersInitialLoad,
     driversInitialLoad,
     vehiclesInitialLoad

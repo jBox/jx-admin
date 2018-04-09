@@ -12,6 +12,8 @@ import ManageDrivers from "./containers/Manage/Drivers";
 import ManageVehicles from "./containers/Manage/Vehicles";
 import ManageUsers from "./containers/Manage/Users";
 import ManageOrders from "./containers/Manage/Orders";
+import ManageCancelledOrders from "./containers/Manage/CancelledOrders";
+import ManageCompletedOrders from "./containers/Manage/CompletedOrders";
 
 import { authenticate } from "./redux/common";
 
@@ -69,11 +71,11 @@ const routes = [{
                 }, {
                     path: "/manage/orders/done",
                     exact: true,
-                    component: ManageOrders
+                    component: ManageCompletedOrders
                 }, {
                     path: "/manage/orders/cancelled",
                     exact: true,
-                    component: ManageOrders
+                    component: ManageCancelledOrders
                 }]
             }]
         }

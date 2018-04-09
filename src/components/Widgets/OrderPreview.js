@@ -60,12 +60,18 @@ export default class OrderPreview extends Component {
         drivers: PropTypes.array,
         order: PropTypes.object,
         onConfirm: PropTypes.func,
-        onSchedule: PropTypes.func
+        onSchedule: PropTypes.func,
+        onConfirmCancel: PropTypes.func,
+        onComplete: PropTypes.func
     }
 
     schedule = {
         driver: null,
         vehicle: null
+    }
+
+    componentDidMount() {
+        jQuery(".box").boxWidget();
     }
 
     handleConfirm = () => {
@@ -80,6 +86,20 @@ export default class OrderPreview extends Component {
         const { order, onSchedule } = this.props;
         if (onSchedule) {
             onSchedule(order, this.schedule);
+        }
+    }
+
+    handleConfirmCancel = () => {
+        const { order, onConfirmCancel } = this.props;
+        if (onConfirmCancel) {
+            onConfirmCancel(order);
+        }
+    }
+
+    handleComplete = () => {
+        const { order, onComplete } = this.props;
+        if (onComplete) {
+            onComplete(order);
         }
     }
 
@@ -158,6 +178,23 @@ export default class OrderPreview extends Component {
                     <div className="row">
                         <div className="col-md-offset-8 col-md-4 col-sm-12">
                             <Button onClick={this.handleConfirmCancel} block danger>确认取消订单</Button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        if (order.status.id === "scheduled") {
+
+            const duration = Number(order.duration);
+            const departureTime = new Date(order.departureTime);
+            const endTime = departureTime.setDate(departureTime.getDate() + duration);
+            const disabled = endTime > Date.now();
+            return (
+                <div className="box-footer">
+                    <div className="row">
+                        <div className="col-md-offset-8 col-md-4 col-sm-12">
+                            <Button onClick={this.handleComplete} disabled={disabled} block success>完成</Button>
                         </div>
                     </div>
                 </div>
