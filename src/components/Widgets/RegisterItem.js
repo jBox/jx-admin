@@ -6,6 +6,7 @@ import styles from "./RegisterItem.css";
 
 const roles = [
     { text: "管理员", id: "admin" },
+    { text: "调度员", id: "dispatcher" },
     { text: "驾驶员", id: "driver" }
 ];
 

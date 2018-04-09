@@ -50,8 +50,9 @@ function Jwt() {
         if (isObject(token)) {
             try {
                 const data = { token };
-                const { exp } = jwtDecode(token.access_token) || {};
+                const { exp, id, nickname, roles } = jwtDecode(token.access_token) || {};
                 data.expiresAt = exp;
+                data.user = { id, nickname, roles };
 
                 const str = JSON.stringify(data);
                 if (rememberme) {
