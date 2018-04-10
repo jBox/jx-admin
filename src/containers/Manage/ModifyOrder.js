@@ -47,14 +47,24 @@ class ModifyOrder extends Component {
         }
     }
 
+    handleBack = () => {
+        const { history } = this.props;
+        history.replace("/manage/orders");
+    }
+
     render() {
         const { order, drivers, vehicles } = this.props;
         if (!order) {
-            return null;
+            return (<Loader />);
         }
 
         return (
-            <EditOrder order={order} drivers={drivers} vehicles={vehicles} />
+            <EditOrder
+                order={order}
+                drivers={drivers}
+                vehicles={vehicles}
+                onBack={this.handleBack}
+            />
         );
     }
 }

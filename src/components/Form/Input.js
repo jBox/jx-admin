@@ -124,13 +124,13 @@ export default class Input extends Control {
     }
 
     extraInputProps = () => {
-        const props = [
+        const keys = [
             "id", "name", "type", "value", "defaultValue", "disabled", "placeholder"
         ];
-
-        return props.reduce((obj, key) => {
-            if (this.props.hasOwnProperty(key)) {
-                obj[key] = this.props[key];
+        const props = this.props;
+        return keys.reduce((obj, key) => {
+            if (props.hasOwnProperty(key)) {
+                obj[key] = props[key];
             }
 
             return obj;
@@ -149,6 +149,18 @@ export default class Input extends Control {
 
         const containerClassName = classNames("form-group has-feedback", { "has-error": hasError });
         const inputClassName = classNames("form-control", className);
+
+        if (props.type === "textarea") {
+            const { type, ...rest } = props;
+            return (
+                <div className={containerClassName}>
+                    {this.label()}
+                    <textarea rows="3" {...rest} className={inputClassName} />
+                    {this.icon()}
+                    {this.error()}
+                </div>
+            );
+        }
 
         return (
             <div className={containerClassName}>
