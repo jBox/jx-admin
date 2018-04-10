@@ -45,6 +45,10 @@ export const MANAGE_LOADED_MODELS = "m/load/models";
 
 export const MANAGE_LOADED_ORDER_STATUS = "m/load/status";
 
+export const MANAGE_LOAD_MORE_ORDERS_REQUEST = "m/load-more/orders/req";
+export const MANAGE_LOAD_MORE_ORDERS_SUCCESS = "m/load-more/orders/suc";
+export const MANAGE_LOAD_MORE_ORDERS_FAILURE = "m/load-more/orders/fai";
+
 export const MANAGE_LOAD_ORDERS_REQUEST = "m/load/orders/req";
 export const MANAGE_LOAD_ORDERS_SUCCESS = "m/load/orders/suc";
 export const MANAGE_LOAD_ORDERS_FAILURE = "m/load/orders/fai";

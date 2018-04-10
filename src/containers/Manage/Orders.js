@@ -1,13 +1,20 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
 
 import OrderPreview from "../../components/Widgets/OrderPreview";
+import InfiniteScroll from "react-infinite-scroller";
 
 import manageOrdersSelector from "../../redux/selectors/manage/orders";
-import { confirmOrder, scheduleOrder, confirmCancelOrder, completeOrder, ordersInitialLoad } from "../../redux/actions/orders";
+import { loadMore, confirmOrder, scheduleOrder, confirmCancelOrder, completeOrder, ordersInitialLoad } from "../../redux/actions/orders";
 import { driversInitialLoad, vehiclesInitialLoad } from "../../redux/actions/manage";
+
+const centerAlign = { textAlign: "center" };
+
+const Loader = () => {
+    return (<div style={centerAlign}><i className="fa fa-refresh fa-spin"></i></div>);
+};
 
 class Orders extends Component {
 
@@ -20,6 +27,7 @@ class Orders extends Component {
         confirmCancelOrder: PropTypes.func,
         scheduleOrder: PropTypes.func,
         completeOrder: PropTypes.func,
+        loadMore: PropTypes.func,
         ordersInitialLoad: PropTypes.func,
         driversInitialLoad: PropTypes.func,
         vehiclesInitialLoad: PropTypes.func
@@ -66,20 +74,50 @@ class Orders extends Component {
         }
     }
 
+    handleLoadMore = () => {
+        const { hasMore, loadMore } = this.props;
+        if (hasMore && loadMore) {
+            loadMore();
+        }
+    }
+
     render() {
-        const { orders, drivers, vehicles } = this.props;
-        return orders.map((order) => (
-            <OrderPreview
-                key={order.id}
-                order={order}
-                vehicles={vehicles}
-                drivers={drivers}
-                onConfirm={this.handleConfirmOrder}
-                onConfirmCancel={this.handleConfirmCancelOrder}
-                onSchedule={this.handleScheduleOrder}
-                onComplete={this.handleCompleteOrder}
-            />
-        ));
+        const { hasMore, orders, drivers, vehicles } = this.props;
+        const noMore = !hasMore && orders.length > 0;
+        const noAny = !hasMore && orders.length === 0;
+
+        return (
+            <Fragment>
+                <InfiniteScroll
+                    initialLoad={false}
+                    pageStart={0}
+                    loadMore={this.handleLoadMore}
+                    hasMore={hasMore}
+                    loader={<Loader key={0} />}
+                >
+                    {orders.map((order) => (
+                        <OrderPreview
+                            key={order.id}
+                            order={order}
+                            vehicles={vehicles}
+                            drivers={drivers}
+                            onConfirm={this.handleConfirmOrder}
+                            onConfirmCancel={this.handleConfirmCancelOrder}
+                            onSchedule={this.handleScheduleOrder}
+                            onComplete={this.handleCompleteOrder}
+                        />
+                    ))}
+                </InfiniteScroll>
+
+                {noMore && (<div style={centerAlign}>
+                    <label>---------------- + ----------------</label>
+                </div>)}
+
+                {noAny && (<div style={centerAlign}>
+                    <label>---------------- 暂无数据 ----------------</label>
+                </div>)}
+            </Fragment>
+        );
     }
 }
 
@@ -88,6 +126,7 @@ export default connect(manageOrdersSelector, {
     scheduleOrder,
     confirmCancelOrder,
     completeOrder,
+    loadMore,
     ordersInitialLoad,
     driversInitialLoad,
     vehiclesInitialLoad

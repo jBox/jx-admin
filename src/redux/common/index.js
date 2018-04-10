@@ -1,10 +1,10 @@
 import Jwt from "./Jwt";
 
-module.exports.authenticate = () => {
+export const authenticate = () => {
     const token = Jwt.verify();
     if (token) {
         return { verified: true };
     }
 
-    return { redirect: "/login?returnUrl={0}" };
+    return { redirect: "/landing?returnUrl={0}" };
 };

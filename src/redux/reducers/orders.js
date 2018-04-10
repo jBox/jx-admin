@@ -3,7 +3,8 @@ import {
     MANAGE_LOAD_ORDERS_REQUEST,
     MANAGE_LOAD_ORDERS_SUCCESS,
     MANAGE_LOAD_ORDERS_FAILURE,
-    MANAGE_ORDER_UPDATED
+    MANAGE_ORDER_UPDATED,
+    MANAGE_LOAD_MORE_ORDERS_SUCCESS
 } from "../actions/ActionTypes";
 
 const data = (state = [], action) => {
@@ -19,6 +20,8 @@ const data = (state = [], action) => {
 
                 return items.concat({ ...item });
             }, []);
+        case MANAGE_LOAD_MORE_ORDERS_SUCCESS:
+            return [...state, ...action.data.orders];
         default:
             return state;
     }
@@ -26,6 +29,7 @@ const data = (state = [], action) => {
 
 const next = (state = "", action) => {
     switch (action.type) {
+        case MANAGE_LOAD_MORE_ORDERS_SUCCESS:
         case MANAGE_LOAD_ORDERS_SUCCESS:
             return action.data.next;
         default:

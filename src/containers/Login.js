@@ -36,8 +36,8 @@ class Login extends Component {
 
     componentDidMount() {
         const { auth, history } = this.props;
-        if (auth.authenticated) {
-            history.replace(auth.returnUrl);
+        if (auth.authenticated && history) {
+            return history.replace(auth.returnUrl);
         }
 
         const { initialLogin } = this.props;

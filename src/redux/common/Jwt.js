@@ -2,15 +2,17 @@ import jwtDecode from "jwt-decode";
 import isObject from "lodash/isObject";
 import fetch from "chaos-fetch";
 
-function memoryStorage() {
-    this.data = {};
-    this.getItem = (key) => {
+class MemoryStorage {
+    constructor() {
+        this.data = {};
+    }
+    getItem(key) {
         return this.data[key];
     }
-    this.setItem = (key, value) => {
+    setItem(key, value) {
         this.data[key] = value;
     }
-    this.removeItem = (key) => {
+    removeItem(key) {
         delete this.data[key];
     }
 }
@@ -30,8 +32,8 @@ function Jwt() {
     const baseUrl = getBaseUrl();
     const KEY = "__JWT_";
     const storage = {
-        local: typeof localStorage !== "undefined" ? localStorage : new memoryStorage(),
-        session: typeof sessionStorage !== "undefined" ? sessionStorage : new memoryStorage()
+        local: typeof localStorage !== "undefined" ? localStorage : new MemoryStorage(),
+        session: typeof sessionStorage !== "undefined" ? sessionStorage : new MemoryStorage()
     };
 
     const getToken = () => {

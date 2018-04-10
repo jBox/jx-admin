@@ -3,20 +3,18 @@ import {
     MANAGE_LOAD_ORDERS_REQUEST,
     MANAGE_LOAD_ORDERS_SUCCESS,
     MANAGE_LOAD_ORDERS_FAILURE,
-    MANAGE_ORDER_UPDATED
+    MANAGE_ORDER_UPDATED,
+    MANAGE_LOAD_MORE_ORDERS_SUCCESS
 } from "./ActionTypes";
 
 import isEmpty from "lodash/isEmpty";
 import { callout } from "./notifications";
 
-export const ordersInitialLoad = (filter, next) => {
+export const ordersInitialLoad = (filter) => {
     const pathname = "/api/orders";
     const search = [];
     if (filter) {
         search.push(`filter=${encodeURIComponent(filter)}`);
-    }
-    if (next) {
-        search.push(`next=${encodeURIComponent(next)}`);
     }
 
     const url = pathname + (search.length > 0 ? `?${search.join("&")}` : "");
@@ -33,6 +31,31 @@ export const ordersInitialLoad = (filter, next) => {
             });
         }
     };
+};
+
+export const loadMore = (filter) => (dispatch, getState) => {
+    const { manage: { orders } } = getState();
+    const pathname = "/api/orders";
+    const search = [];
+    if (filter) {
+        search.push(`filter=${encodeURIComponent(filter)}`);
+    }
+    if (orders.next) {
+        search.push(`next=${encodeURIComponent(orders.next)}`);
+    }
+
+    const url = pathname + (search.length > 0 ? `?${search.join("&")}` : "");
+
+    return dispatch({
+        type: API,
+        endpoint: { url },
+        success: ({ data, dispatch }) => {
+            dispatch({
+                data,
+                type: MANAGE_LOAD_MORE_ORDERS_SUCCESS
+            });
+        }
+    });
 };
 
 export const confirmOrder = (order) => {

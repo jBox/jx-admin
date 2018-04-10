@@ -2,6 +2,7 @@ import "./dateFormat";
 import React from "react";
 import Layout from "./layouts/Layout";
 import ExtraLayout from "./layouts/ExtraLayout";
+import Landing from "./containers/Landing";
 import Login from "./containers/Login";
 import Register from "./containers/Register";
 import RegisterSuccess from "./containers/RegisterSuccess";
@@ -21,9 +22,13 @@ const routes = [{
     id: "root",
     routes: [
         {
-            path: "/:biz(login|register)",
+            path: "/:biz(landing|login|register)",
             component: ExtraLayout,
             routes: [{
+                path: "/landing",
+                exact: true,
+                component: Landing
+            }, {
                 path: "/login",
                 exact: true,
                 component: Login
