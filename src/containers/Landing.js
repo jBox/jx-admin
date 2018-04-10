@@ -26,21 +26,18 @@ class Landing extends Component {
 
         const { initialLogin } = this.props;
         if (initialLogin) {
-            initialLogin();
+            initialLogin(true);
         }
     }
 
     componentWillReceiveProps(nextProps) {
         const { auth, history } = nextProps;
-        const isAuthChanged = !isEqual(auth, this.props.auth);
-        if (isAuthChanged && history) {
-            if (auth.authenticated) {
-                this.setState({ value: 100 }, () => {
-                    history.replace(auth.returnUrl);
-                });
-            } else {
-                history.replace(`/login?returnUrl=${encodeURIComponent(auth.returnUrl)}`);
-            }
+        if (auth.authenticated) {
+            this.setState({ value: 100 }, () => {
+                history.replace(auth.returnUrl);
+            });
+        } else if (auth.landing) {
+            history.replace(`/login?returnUrl=${encodeURIComponent(auth.returnUrl)}`);
         }
     }
 

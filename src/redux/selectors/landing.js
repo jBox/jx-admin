@@ -15,10 +15,10 @@ const getReturnUrl = (location) => {
 
 export default createSelector(
     (state, props) => {
-        const { authenticated } = state.auth;
+        const { authenticated, landing } = state.auth;
         const { location } = props;
         const returnUrl = getReturnUrl(location);
-        return { authenticated, returnUrl };
+        return { authenticated, landing, returnUrl };
     },
     (auth) => {
         return { auth };

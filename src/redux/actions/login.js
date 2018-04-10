@@ -1,6 +1,7 @@
 import {
     API,
     INIT_LOGIN,
+    LANDING_LOGIN,
     LOGIN_REQUEST,
     LOGIN_SUCCESS,
     LOGIN_FAILURE,
@@ -14,7 +15,7 @@ import Jwt from "../common/Jwt";
 
 import isEmpty from "lodash/isEmpty";
 
-export const initialLogin = () => (dispatch) => {
+export const initialLogin = (isLanding) => (dispatch) => {
     const token = Jwt.verify();
     if (token) {
         Jwt.refresh().catch(() => {/* ignore */ });
@@ -28,7 +29,12 @@ export const initialLogin = () => (dispatch) => {
                 type: INIT_LOGIN,
                 data
             })
-        }).catch(() => {/* ignore */ });
+        }).catch(() => {
+            /* ignore */
+            if (isLanding) {
+                dispatch({ type: LANDING_LOGIN });
+            }
+        });
     }
 };
 

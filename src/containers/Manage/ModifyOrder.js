@@ -3,10 +3,9 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
 
-import OrderPreview from "../../components/Widgets/OrderPreview";
-import InfiniteScroll from "react-infinite-scroller";
+import EditOrder from "../../components/Widgets/EditOrder";
 
-import manageOrdersSelector from "../../redux/selectors/manage/orders";
+import { modifyOrderSelector } from "../../redux/selectors/manage/orders";
 import { modifyOrder, orderInitialLoad } from "../../redux/actions/orders";
 import { driversInitialLoad, vehiclesInitialLoad } from "../../redux/actions/manage";
 
@@ -48,88 +47,21 @@ class ModifyOrder extends Component {
         }
     }
 
-    handleConfirmOrder = (order) => {
-        const { confirmOrder } = this.props;
-        if (confirmOrder) {
-            confirmOrder(order);
-        }
-    }
-
-    handleConfirmCancelOrder = (order) => {
-        const { confirmCancelOrder } = this.props;
-        if (confirmCancelOrder) {
-            confirmCancelOrder(order);
-        }
-    }
-
-    handleScheduleOrder = (order, schedule) => {
-        const { scheduleOrder } = this.props;
-        if (scheduleOrder) {
-            scheduleOrder(order, schedule);
-        }
-    }
-
-    handleCompleteOrder = (order, schedule) => {
-        const { completeOrder } = this.props;
-        if (completeOrder) {
-            completeOrder(order);
-        }
-    }
-
-    handleLoadMore = () => {
-        const { hasMore, loadMore } = this.props;
-        if (hasMore && loadMore) {
-            loadMore();
-        }
-    }
-
     render() {
-        const { hasMore, orders, drivers, vehicles } = this.props;
-        const noMore = !hasMore && orders.length > 0;
-        const noAny = !hasMore && orders.length === 0;
+        const { order, drivers, vehicles } = this.props;
+        if (!order) {
+            return null;
+        }
 
         return (
-            <Fragment>
-                <InfiniteScroll
-                    initialLoad={false}
-                    pageStart={0}
-                    loadMore={this.handleLoadMore}
-                    hasMore={hasMore}
-                    loader={<Loader key={0} />}
-                >
-                    {orders.map((order) => (
-                        <OrderPreview
-                            key={order.id}
-                            order={order}
-                            vehicles={vehicles}
-                            drivers={drivers}
-                            onConfirm={this.handleConfirmOrder}
-                            onConfirmCancel={this.handleConfirmCancelOrder}
-                            onSchedule={this.handleScheduleOrder}
-                            onComplete={this.handleCompleteOrder}
-                        />
-                    ))}
-                </InfiniteScroll>
-
-                {noMore && (<div style={centerAlign}>
-                    <label>---------------- + ----------------</label>
-                </div>)}
-
-                {noAny && (<div style={centerAlign}>
-                    <label>---------------- 暂无数据 ----------------</label>
-                </div>)}
-            </Fragment>
+            <EditOrder order={order} drivers={drivers} vehicles={vehicles} />
         );
     }
 }
 
-export default connect(manageOrdersSelector, {
-    confirmOrder,
-    scheduleOrder,
-    confirmCancelOrder,
-    completeOrder,
-    loadMore,
-    ordersInitialLoad,
+export default connect(modifyOrderSelector, {
+    modifyOrder,
+    orderInitialLoad,
     driversInitialLoad,
     vehiclesInitialLoad
-})(Orders);
+})(ModifyOrder);

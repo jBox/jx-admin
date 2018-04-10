@@ -24,7 +24,7 @@ const data = (state = [], action) => {
         case MANAGE_LOAD_MORE_ORDERS_SUCCESS:
             return [...state, ...action.data.orders];
         case MANAGE_GET_ORDER_SUCCESS:
-            return [...state, ...action.orderId];
+            return [...state, action.data];
         default:
             return state;
     }

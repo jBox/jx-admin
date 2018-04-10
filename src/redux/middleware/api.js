@@ -6,7 +6,6 @@ import Jwt from "../common/Jwt";
 const isMissingContentType = (headers) => Object.keys(headers).every(x => x.toLowerCase() !== "content-type");
 
 const requireToken = () => {
-    console.log("require token");
     const token = Jwt.verify();
     if (token) {
         return Promise.resolve(token);
