@@ -62,7 +62,8 @@ export default class OrderPreview extends Component {
         onConfirm: PropTypes.func,
         onSchedule: PropTypes.func,
         onConfirmCancel: PropTypes.func,
-        onComplete: PropTypes.func
+        onComplete: PropTypes.func,
+        onModify: PropTypes.func
     }
 
     schedule = {
@@ -78,6 +79,13 @@ export default class OrderPreview extends Component {
         const { order, onConfirm } = this.props;
         if (onConfirm) {
             onConfirm(order);
+        }
+    }
+
+    handleModify = () => {
+        const { order, onModify } = this.props;
+        if (onModify) {
+            onModify(order);
         }
     }
 
@@ -235,7 +243,9 @@ export default class OrderPreview extends Component {
                     </div>
 
                     <div className="box-tools">
-                        <button type="button" className="btn btn-box-tool"><i className="fa fa-edit"></i></button>
+                        <button type="button" className="btn btn-box-tool" onClick={this.handleModify}>
+                        <i className="fa fa-edit"></i>
+                        </button>
                     </div>
 
                 </div>

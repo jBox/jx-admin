@@ -13,6 +13,7 @@ import ManageDrivers from "./containers/Manage/Drivers";
 import ManageVehicles from "./containers/Manage/Vehicles";
 import ManageUsers from "./containers/Manage/Users";
 import ManageOrders from "./containers/Manage/Orders";
+import ManageModifyOrder from "./containers/Manage/ModifyOrder";
 import ManageCancelledOrders from "./containers/Manage/CancelledOrders";
 import ManageCompletedOrders from "./containers/Manage/CompletedOrders";
 
@@ -81,6 +82,10 @@ const routes = [{
                     path: "/manage/orders/cancelled",
                     exact: true,
                     component: ManageCancelledOrders
+                }, {
+                    path: "/manage/orders/:orderId",
+                    exact: true,
+                    component: ManageModifyOrder
                 }]
             }]
         }

@@ -7,7 +7,7 @@ import OrderPreview from "../../components/Widgets/OrderPreview";
 import InfiniteScroll from "react-infinite-scroller";
 
 import manageOrdersSelector from "../../redux/selectors/manage/orders";
-import { loadMore, confirmOrder, scheduleOrder, confirmCancelOrder, completeOrder, ordersInitialLoad } from "../../redux/actions/orders";
+import { modifyOrder, orderInitialLoad } from "../../redux/actions/orders";
 import { driversInitialLoad, vehiclesInitialLoad } from "../../redux/actions/manage";
 
 const centerAlign = { textAlign: "center" };
@@ -16,28 +16,29 @@ const Loader = () => {
     return (<div style={centerAlign}><i className="fa fa-refresh fa-spin"></i></div>);
 };
 
-class Orders extends Component {
+class ModifyOrder extends Component {
 
     static propTypes = {
+        match: PropTypes.object,
         history: PropTypes.object,
         vehicles: PropTypes.array,
         drivers: PropTypes.array,
-        orders: PropTypes.array,
-        hasMore: PropTypes.bool,
-        confirmOrder: PropTypes.func,
-        confirmCancelOrder: PropTypes.func,
-        scheduleOrder: PropTypes.func,
-        completeOrder: PropTypes.func,
-        loadMore: PropTypes.func,
-        ordersInitialLoad: PropTypes.func,
+        order: PropTypes.object,
+        modifyOrder: PropTypes.func,
+        orderInitialLoad: PropTypes.func,
         driversInitialLoad: PropTypes.func,
         vehiclesInitialLoad: PropTypes.func
     }
 
     componentDidMount() {
-        const { ordersInitialLoad, driversInitialLoad, vehiclesInitialLoad } = this.props;
-        if (ordersInitialLoad) {
-            ordersInitialLoad("submitted");
+        const {
+            match: { params },
+            orderInitialLoad,
+            driversInitialLoad,
+            vehiclesInitialLoad
+        } = this.props;
+        if (orderInitialLoad) {
+            orderInitialLoad(params.orderId);
         }
         if (driversInitialLoad) {
             driversInitialLoad();
@@ -75,13 +76,6 @@ class Orders extends Component {
         }
     }
 
-    handleModifyOrder = (order) => {
-        const { history } = this.props;
-        if (history) {
-            history.push(`/manage/orders/${order.id}`);
-        }
-    }
-
     handleLoadMore = () => {
         const { hasMore, loadMore } = this.props;
         if (hasMore && loadMore) {
@@ -113,7 +107,6 @@ class Orders extends Component {
                             onConfirmCancel={this.handleConfirmCancelOrder}
                             onSchedule={this.handleScheduleOrder}
                             onComplete={this.handleCompleteOrder}
-                            onModify={this.handleModifyOrder}
                         />
                     ))}
                 </InfiniteScroll>

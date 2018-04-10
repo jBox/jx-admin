@@ -53,6 +53,10 @@ export const MANAGE_LOAD_ORDERS_REQUEST = "m/load/orders/req";
 export const MANAGE_LOAD_ORDERS_SUCCESS = "m/load/orders/suc";
 export const MANAGE_LOAD_ORDERS_FAILURE = "m/load/orders/fai";
 
+export const MANAGE_GET_ORDER_REQUEST = "m/load/orders/req";
+export const MANAGE_GET_ORDER_SUCCESS = "m/load/orders/suc";
+export const MANAGE_GET_ORDER_FAILURE = "m/load/orders/fai";
+
 export const MANAGE_ORDER_UPDATED = "m/orders/updated";
 
 export const MANAGE_LOAD_USERS_REQUEST = "m/load/users/req";

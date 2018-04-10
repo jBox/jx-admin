@@ -4,7 +4,8 @@ import {
     MANAGE_LOAD_ORDERS_SUCCESS,
     MANAGE_LOAD_ORDERS_FAILURE,
     MANAGE_ORDER_UPDATED,
-    MANAGE_LOAD_MORE_ORDERS_SUCCESS
+    MANAGE_LOAD_MORE_ORDERS_SUCCESS,
+    MANAGE_GET_ORDER_SUCCESS
 } from "../actions/ActionTypes";
 
 const data = (state = [], action) => {
@@ -22,6 +23,8 @@ const data = (state = [], action) => {
             }, []);
         case MANAGE_LOAD_MORE_ORDERS_SUCCESS:
             return [...state, ...action.data.orders];
+        case MANAGE_GET_ORDER_SUCCESS:
+            return [...state, ...action.orderId];
         default:
             return state;
     }

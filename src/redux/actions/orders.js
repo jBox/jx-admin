@@ -4,7 +4,10 @@ import {
     MANAGE_LOAD_ORDERS_SUCCESS,
     MANAGE_LOAD_ORDERS_FAILURE,
     MANAGE_ORDER_UPDATED,
-    MANAGE_LOAD_MORE_ORDERS_SUCCESS
+    MANAGE_LOAD_MORE_ORDERS_SUCCESS,
+    MANAGE_GET_ORDER_REQUEST,
+    MANAGE_GET_ORDER_SUCCESS,
+    MANAGE_GET_ORDER_FAILURE
 } from "./ActionTypes";
 
 import isEmpty from "lodash/isEmpty";
@@ -32,6 +35,28 @@ export const ordersInitialLoad = (filter) => {
         }
     };
 };
+
+export const orderInitialLoad = (orderId) => (dispatch, getState) => {
+    const { manage: { orders } } = getState();
+    const found = orders.data.some(x => x.id === orderId);
+    if (found) {
+        return;
+    }
+
+    return dispatch({
+        type: API,
+        endpoint: `/api/orders/${orderId}`,
+        before: ({ dispatch }) => dispatch({ type: MANAGE_GET_ORDER_REQUEST, orderId }),
+        error: ({ dispatch, error }) => dispatch({ type: MANAGE_GET_ORDER_FAILURE, error, orderId }),
+        success: ({ data, dispatch }) => {
+            dispatch({
+                orderId,
+                data,
+                type: MANAGE_GET_ORDER_SUCCESS
+            });
+        }
+    });
+}
 
 export const loadMore = (filter) => (dispatch, getState) => {
     const { manage: { orders } } = getState();
