@@ -23,16 +23,19 @@ export default class OrderPreview extends Component {
         vehicles: PropTypes.array,
         drivers: PropTypes.array,
         order: PropTypes.object,
-        onBack: PropTypes.func,
+        onCancel: PropTypes.func,
         onSubmit: PropTypes.func
     }
 
     handleSubmit = () => {
-
+        const { onSubmit } = this.props;
+        if (onSubmit) {
+            onSubmit();
+        }
     }
 
     render() {
-        const { order, onBack } = this.props;
+        const { order, onCancel } = this.props;
 
         return (
             <div className="box box-primary">
@@ -58,8 +61,8 @@ export default class OrderPreview extends Component {
                     </div>
 
                     <div className="box-footer">
-                        <Button default onClick={onBack}>返回订单列表</Button>
-                        <Button type="submit" className="pull-right" info>提交修改</Button>
+                        <Button danger flat onClick={onCancel}>取消订单</Button>
+                        <Button type="submit" className="pull-right" flat primary>提交修改</Button>
                     </div>
                 </Form>
             </div>

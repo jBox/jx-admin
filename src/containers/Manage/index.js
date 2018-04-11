@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { Switch, Route, Link } from "react-browser-router";
 import { connect } from "react-redux";
@@ -27,26 +27,77 @@ class Manage extends Component {
         }
     }
 
-    render() {
-        const { match: { params: { category } }, routes } = this.props;
+    breadcrumb = () => {
+        const { match: { params: { feature, category } }, routes } = this.props;
+        const info = { title: "管理中心", feature: "", active: "" };
+        if (feature === "orders") {
+            info.title = "订单管理中心";
+            switch (category) {
+                case "done":
+                    info.active = "已完成订单列表";
+                    break;
+                case "cancelled":
+                    info.active = "已取消订单列表";
+                    break;
+                default:
+                    if (category) {
+                        info.feature = "待处理订单";
+                        info.active = `订单: ${category}`;
+                    } else {
+                        info.active = "待处理订单列表";
+                    }
+                    break;
+            }
+        } else if (feature === "drivers") {
+            info.title = "司机管理中心";
+            info.active = "司机列表";
+        } else if (feature === "vehicles") {
+            info.title = "车辆管理中心";
+            info.active = "车辆列表";
+        } else if (feature === "users") {
+            info.title = "用户管理中心";
+            switch (category) {
+                case "registers":
+                    info.active = "新注册用户列表";
+                    break;
+                default:
+                    info.active = "用户列表";
+                    break;
+            }
+        }
 
-        return [
-            (<section key="content-header" className="content-header">
-                <h1>
-                    服务管理中心 <small>健湖租车</small>
-                </h1>
+        return (
+            <section className="content-header">
+                <h1>{info.title} <small>健湖租车</small></h1>
                 <ol className="breadcrumb">
                     <li><Link to="/"><i className="fa fa-dashboard"></i> 主页</Link></li>
-                    <li className="active">{category}</li>
+                    {info.feature && (
+                        <li>
+                            <Link to={`/manage/${feature}`}><i className="fa fa-list"></i> {info.feature}</Link>
+                        </li>
+                    )}
+                    {info.active && (
+                        <li className="active">{info.active}</li>
+                    )}
                 </ol>
-            </section>),
+            </section>
+        );
+    }
 
-            (<section key="content" className="content container-fluid">
-                <Switch>
-                    {routes.map((route, index) => (<Route key={index} {...route} />))}
-                </Switch>
-            </section>)
-        ];
+    render() {
+        const { match: { params: { feature, category } }, routes } = this.props;
+
+        return (
+            <Fragment>
+                {this.breadcrumb()}
+
+                <section className="content container-fluid">
+                    <Switch>
+                        {routes.map((route, index) => (<Route key={index} {...route} />))}
+                    </Switch>
+                </section>
+            </Fragment>
+        );
     }
 }
 

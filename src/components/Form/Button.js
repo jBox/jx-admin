@@ -24,7 +24,7 @@ export default class Button extends Component {
     }
 
     render() {
-        const { children, type, className, block, primary, success, info, warning, danger, lg, sm, xs, ...props } = this.props;
+        const { children, type, className, block, primary, success, info, warning, danger, flat, lg, sm, xs, ...props } = this.props;
         let buttonBackgroundStyle = "btn-default";
         if (primary) {
             buttonBackgroundStyle = "btn-primary";
@@ -49,7 +49,16 @@ export default class Button extends Component {
 
         const buttonBlock = block ? "btn-block" : "";
 
-        const buttonClassNames = classNames("btn", buttonBackgroundStyle, buttonSize, buttonBlock, className);
+        const buttonFlat = flat ? "btn-flat" : "";
+
+        const buttonClassNames = classNames(
+            "btn",
+            buttonBackgroundStyle,
+            buttonSize,
+            buttonBlock,
+            buttonFlat,
+            className
+        );
 
         return (
             <button {...props} type={type} className={buttonClassNames} >

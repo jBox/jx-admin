@@ -94,7 +94,7 @@ export default class Menu extends Component {
                             <small className="label pull-right bg-green">2</small>
                         </span>
                     </NavItem>
-                    <NavItem to="/manage/users/all">
+                    <NavItem to="/manage/users">
                         <i className="fa fa-circle-o"></i> <span>用户</span>
                     </NavItem>
                 </Treeview>

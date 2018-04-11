@@ -59,7 +59,7 @@ const routes = [{
                     exact: true,
                     component: ManageRegisters
                 }, {
-                    path: "/manage/users/all",
+                    path: "/manage/users",
                     exact: true,
                     component: ManageUsers
                 }, {

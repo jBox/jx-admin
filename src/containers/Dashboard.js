@@ -1,19 +1,11 @@
 import React, { Component } from "react";
 
 export default class Dashboard extends Component {
-    componentDidMount() {
-        console.log("Dashboard");
-    }
-
-    componentWillUnmount() {
-        console.log("Unmount", "Dashboard");
-    }
-
     render() {
         return [
             (<section key="content-header" className="content-header">
                 <h1>
-                    服务管理中心 <small>健湖租车</small>
+                    管理中心 <small>健湖租车</small>
                 </h1>
                 <ol className="breadcrumb">
                     <li className="active">主页</li>

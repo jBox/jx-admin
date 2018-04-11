@@ -47,9 +47,10 @@ class ModifyOrder extends Component {
         }
     }
 
-    handleBack = () => {
-        const { history } = this.props;
-        history.replace("/manage/orders");
+    handleSubmit = () => {
+    }
+
+    handleCancel = () => {
     }
 
     render() {
@@ -63,7 +64,8 @@ class ModifyOrder extends Component {
                 order={order}
                 drivers={drivers}
                 vehicles={vehicles}
-                onBack={this.handleBack}
+                onSubmit={this.handleSubmit}
+                onCancel={this.handleCancel}
             />
         );
     }
