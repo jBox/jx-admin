@@ -2,12 +2,12 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
+import isEqual from "lodash/isEqual";
 
-import EditOrder from "../../components/Widgets/EditOrder";
+import OrderEditor from "../../components/Widgets/OrderEditor";
 
 import { modifyOrderSelector } from "../../redux/selectors/manage/orders";
-import { modifyOrder, orderInitialLoad } from "../../redux/actions/orders";
-import { driversInitialLoad, vehiclesInitialLoad } from "../../redux/actions/manage";
+import { cancelOrder, modifyOrder, orderInitialLoad } from "../../redux/actions/orders";
 
 const centerAlign = { textAlign: "center" };
 
@@ -20,50 +20,66 @@ class ModifyOrder extends Component {
     static propTypes = {
         match: PropTypes.object,
         history: PropTypes.object,
-        vehicles: PropTypes.array,
-        drivers: PropTypes.array,
+        models: PropTypes.object,
         order: PropTypes.object,
+        modify: PropTypes.object,
         modifyOrder: PropTypes.func,
-        orderInitialLoad: PropTypes.func,
-        driversInitialLoad: PropTypes.func,
-        vehiclesInitialLoad: PropTypes.func
+        cancelOrder: PropTypes.func,
+        orderInitialLoad: PropTypes.func
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const { modify } = nextProps;
+        if (!isEqual(modify, prevState.modify)) {
+            return modify;
+        }
+
+        return null;
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            modify: { ...props.modify }
+        };
     }
 
     componentDidMount() {
         const {
             match: { params },
-            orderInitialLoad,
-            driversInitialLoad,
-            vehiclesInitialLoad
+            orderInitialLoad
         } = this.props;
         if (orderInitialLoad) {
             orderInitialLoad(params.orderId);
         }
-        if (driversInitialLoad) {
-            driversInitialLoad();
-        }
-        if (vehiclesInitialLoad) {
-            vehiclesInitialLoad();
+    }
+
+    handleSubmit = (order) => {
+        console.log("SUBMIT", order);
+        const { modifyOrder } = this.props;
+        if (modifyOrder) {
+            modifyOrder(order);
         }
     }
 
-    handleSubmit = () => {
-    }
-
-    handleCancel = () => {
+    handleCancel = (order) => {
+        const { cancelOrder } = this.props;
+        if (cancelOrder) {
+            cancelOrder(order);
+        }
     }
 
     render() {
-        const { order, drivers, vehicles } = this.props;
+        const { order, models } = this.props;
         if (!order) {
             return (<Loader />);
         }
 
         return (
-            <EditOrder
+            <OrderEditor
+                loading={this.state.modify.state === "request"}
                 order={order}
-                drivers={drivers}
-                vehicles={vehicles}
+                models={models}
                 onSubmit={this.handleSubmit}
                 onCancel={this.handleCancel}
             />
@@ -73,7 +89,6 @@ class ModifyOrder extends Component {
 
 export default connect(modifyOrderSelector, {
     modifyOrder,
-    orderInitialLoad,
-    driversInitialLoad,
-    vehiclesInitialLoad
+    cancelOrder,
+    orderInitialLoad
 })(ModifyOrder);

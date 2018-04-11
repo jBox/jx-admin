@@ -7,7 +7,10 @@ import {
     MANAGE_LOAD_MORE_ORDERS_SUCCESS,
     MANAGE_GET_ORDER_REQUEST,
     MANAGE_GET_ORDER_SUCCESS,
-    MANAGE_GET_ORDER_FAILURE
+    MANAGE_GET_ORDER_FAILURE,
+    MANAGE_MODIFY_ORDER_REQUEST,
+    MANAGE_MODIFY_ORDER_SUCCESS,
+    MANAGE_MODIFY_ORDER_FAILURE
 } from "./ActionTypes";
 
 import isEmpty from "lodash/isEmpty";
@@ -106,7 +109,7 @@ export const confirmOrder = (order) => {
 export const confirmCancelOrder = (order) => {
     const body = {
         version: order.version,
-        operation: "cancel-confirm"
+        operation: "confirmcan"
     };
 
     return {
@@ -159,6 +162,52 @@ export const completeOrder = (order) => {
             dispatch({
                 data,
                 type: MANAGE_ORDER_UPDATED
+            });
+        }
+    };
+};
+
+export const cancelOrder = (order) => {
+    const body = {
+        version: order.version,
+        operation: "executecan"
+    };
+
+    return {
+        type: API,
+        endpoint: { url: `/api/orders/${order.id}`, method: "PUT", body },
+        error: ({ dispatch, error }) => dispatch(callout({ subject: "无法取消订单", message: error, type: "error", duration: 8 })),
+        success: ({ data, dispatch }) => {
+            dispatch(callout({ message: "订单已取消", type: "success" }));
+            dispatch({
+                data,
+                type: MANAGE_ORDER_UPDATED
+            });
+        }
+    };
+};
+
+export const modifyOrder = (order) => {
+    const body = {
+        order,
+        version: order.version,
+        operation: "modify"
+    };
+
+    return {
+        type: API,
+        endpoint: { url: `/api/orders/${order.id}`, method: "PUT", body },
+        before: ({ dispatch, error }) => dispatch({ type: MANAGE_MODIFY_ORDER_REQUEST, id: order.id }),
+        error: ({ dispatch, error }) => {
+            dispatch({ type: MANAGE_MODIFY_ORDER_FAILURE, error, id: order.id });
+            dispatch(callout({ subject: "修改订单失败", message: error, type: "error", duration: 8 }));
+        },
+        success: ({ data, dispatch }) => {
+            dispatch(callout({ message: "修改订单成功", type: "success" }));
+            dispatch({
+                type: MANAGE_MODIFY_ORDER_SUCCESS,
+                data,
+                id: order.id
             });
         }
     };

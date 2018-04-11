@@ -1,34 +1,30 @@
 import { createSelector } from "reselect";
 
 export const modifyOrderSelector = createSelector(
+    (state) => state.manage.orders.modify,
     (state, props) => {
         const { orders } = state.manage;
         const { match: { params: { orderId } } } = props;
         return orders.data.find(x => x.id === orderId);
     },
-    (state) => state.manage.drivers,
-    (state) => state.manage.vehicles,
     (state) => state.manage.models,
     (state) => state.manage.orderStatus,
-    (order, drivers, vehicles, models, status) => {
-        const vehicleItems = vehicles.map((item) => {
-            const model = models[item.model] || { label: "" };
-            return { ...item, model: model.label };
-        });
-
+    (ordersModify, order, models, status) => {
+        const initModify = { state: "init" };
         if (!order) {
             return {
                 order,
-                drivers,
-                vehicles: vehicleItems
+                models,
+                modify: initModify
             };
         }
 
+        const modify = ordersModify[order.id] || initModify;
         const s = status[order.status] ? { ...status[order.status] } : { id: order.status };
         return {
             order: { ...order, status: s },
-            drivers,
-            vehicles: vehicleItems
+            models,
+            modify
         };
     }
 );

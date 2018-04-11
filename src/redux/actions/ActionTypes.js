@@ -60,6 +60,10 @@ export const MANAGE_GET_ORDER_FAILURE = "m/get/order/fai";
 
 export const MANAGE_ORDER_UPDATED = "m/orders/updated";
 
+export const MANAGE_MODIFY_ORDER_REQUEST = "m/mod/order/req";
+export const MANAGE_MODIFY_ORDER_SUCCESS = "m/mod/order/suc";
+export const MANAGE_MODIFY_ORDER_FAILURE = "m/mod/order/fai";
+
 export const MANAGE_LOAD_USERS_REQUEST = "m/load/users/req";
 export const MANAGE_LOAD_USERS_SUCCESS = "m/load/users/suc";
 export const MANAGE_LOAD_USERS_FAILURE = "m/load/users/fai";

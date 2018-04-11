@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import isFunction from "lodash/isFunction";
 import classNames from "classnames";
 import Control from "./Control";
 import styles from "./FormInput.css";
@@ -22,7 +23,8 @@ export default class Input extends Control {
         type: PropTypes.string,
         required: PropTypes.bool,
         onChange: PropTypes.func,
-        onBlur: PropTypes.func
+        onBlur: PropTypes.func,
+        validator: PropTypes.func
     }
 
     constructor(props, context) {
@@ -47,17 +49,24 @@ export default class Input extends Control {
     }
 
     validate = () => {
-        let hasError = false;
         const { required, pattern } = this.props;
-        if (required) {
-            hasError = !this.value;
-        }
+        const validator = isFunction(this.props.validator) ?
+            this.props.validator :
+            (value) => {
+                let valid = true;
+                if (required) {
+                    valid = !!this.value;
+                }
 
-        if (!hasError) {
-            const r = new RegExp(pattern, "ig");
-            hasError = !r.test(this.value);
-        }
+                if (valid) {
+                    const r = new RegExp(pattern, "ig");
+                    valid = r.test(this.value);
+                }
 
+                return valid;
+            };
+
+        const hasError = !validator(this.value);
         if (this.state.hasError !== hasError) {
             this.setState({ hasError });
         }
@@ -125,7 +134,7 @@ export default class Input extends Control {
 
     extraInputProps = () => {
         const keys = [
-            "id", "name", "type", "value", "defaultValue", "disabled", "placeholder"
+            "id", "name", "type", "value", "defaultValue", "disabled", "placeholder", "readOnly"
         ];
         const props = this.props;
         return keys.reduce((obj, key) => {
@@ -138,7 +147,7 @@ export default class Input extends Control {
     }
 
     render() {
-        const { className } = this.props;
+        const { className, icon } = this.props;
         const { hasError } = this.state;
 
         const props = {
@@ -147,7 +156,10 @@ export default class Input extends Control {
             onBlur: this.handleBlur
         };
 
-        const containerClassName = classNames("form-group has-feedback", { "has-error": hasError });
+        const containerClassName = classNames("form-group", {
+            "has-feedback": !!icon,
+            "has-error": hasError
+        });
         const inputClassName = classNames("form-control", className);
 
         if (props.type === "textarea") {
