@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import isEqual from "lodash/isEqual";
+import isEmpty from "lodash/isEmpty";
 import { LPN_CONTENT_PATTERN } from "../utils";
 
 import Form from "../Form";
@@ -19,6 +20,13 @@ const EDITABLE_FIELDS = [
     "vehicles", "name", "mobile", "departureTime", "departurePlace", "destination", "duration", "notes"
 ];
 
+const editableOrder = (order) => {
+    return EDITABLE_FIELDS.reduce((obj, key) => {
+        obj[key] = order[key];
+        return obj;
+    }, { id: order.id });
+};
+
 export default class OrderEditor extends Component {
     static defaultProps = {
         loading: false,
@@ -33,27 +41,45 @@ export default class OrderEditor extends Component {
         onSubmit: PropTypes.func
     }
 
-    state = {
-        changed: false
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const { order } = nextProps;
+        const stateOrder = editableOrder(order);
+        const changed = !isEqual(stateOrder, prevState.order);
+
+        const state = {};
+        if (changed) {
+            state.order = stateOrder;
+            state.changed = false;
+        }
+
+        if (order.version !== prevState.version) {
+            state.version = order.version;
+        }
+
+        if (!isEmpty(state)) {
+            return state;
+        }
+
+        return null;
     }
 
     constructor(props) {
         super(props);
-        this.order = this.original();
-    }
+        const { order } = props;
+        this.form = editableOrder(order);
 
-    original = () => {
-        const { order } = this.props;
-        return EDITABLE_FIELDS.reduce((obj, key) => {
-            obj[key] = order[key];
-            return obj;
-        }, { id: order.id, version: order.version });
+        this.state = {
+            order: this.form,
+            version: order.version,
+            changed: false
+        };
+
     }
 
     handleSubmit = () => {
         const { onSubmit } = this.props;
         if (onSubmit) {
-            onSubmit(this.order);
+            onSubmit({ ...this.form, version: this.state.version });
         }
     }
 
@@ -65,27 +91,26 @@ export default class OrderEditor extends Component {
     }
 
     handleVehiclesChange = (items) => {
-        this.order.vehicles = items;
-        this.checkIsChanged();
+        this.updateOrder("vehicles", items);
     }
 
     handleInputChange = (event) => {
         const { name, value } = event.target;
-        this.order[name] = value;
-        this.checkIsChanged();
+        this.updateOrder(name, value);
     }
 
-    checkIsChanged = () => {
-        const changed = !isEqual(this.order, this.original());
-        if (this.state.changed !== changed) {
+    updateOrder = (name, value) => {
+        const { order } = this.props;
+        this.form[name] = value;
+        const changed = !isEqual(this.form, order);
+        if (changed !== this.state.changed) {
             this.setState({ changed });
         }
     }
 
     render() {
-        const { loading, order: original, models } = this.props;
-        const editable = !["cancelling", "cancelled", "completed"].includes(original.status.id);
-        const order = this.order;
+        const { loading, order, models } = this.props;
+        const editable = !["cancelling", "cancelled", "completed"].includes(order.status.id);
 
         return (
             <div className="box box-primary">
@@ -94,9 +119,8 @@ export default class OrderEditor extends Component {
                 </div>
                 <Form onSubmit={this.handleSubmit}>
                     <div className="box-body">
-                        <h4><label>订单号：</label>{original.id}</h4>
-                        <p><label>订单状态：</label>{original.status.label}</p>
-
+                        <h4><label>订单号：</label>{order.id}</h4>
+                        <p><label>订单状态：</label>{order.status.label}</p>
 
                         <Input id="name" name="name" label="联系人"
                             defaultValue={order.name}

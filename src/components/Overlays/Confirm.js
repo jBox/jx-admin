@@ -19,8 +19,8 @@ export default class Confirm extends Component {
                 </Modal.Header>
                 <Modal.Body>{children}</Modal.Body>
                 <Modal.Footer>
-                    <Button className="pull-left" onClick={onClose}>取消</Button>
-                    <button primary onClick={onConfirm}>确认</button>
+                    <Button className="pull-left" onClick={onClose} flat> 取消 </Button>
+                    <Button primary onClick={onConfirm} flat> 确认 </Button>
                 </Modal.Footer>
             </Modal>
         );

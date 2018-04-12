@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
+import isEqual from "lodash/isEqual";
 import uuid from "uuid/v4";
 import styles from "./VehiclesEditor.css";
 
@@ -135,9 +136,22 @@ export default class VehiclesEditor extends Component {
         onChange: PropTypes.func
     }
 
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const { vehicles } = nextProps;
+        if (!isEqual(vehicles, prevState.defaultVehicles)) {
+            return {
+                defaultVehicles: vehicles,
+                vehicles: vehicles.map((item) => ({ ...item, id: uuid() }))
+            };
+        }
+
+        return null;
+    }
+
     constructor(props) {
         super(props);
         this.state = {
+            defaultVehicles: props.vehicles,
             vehicles: props.vehicles.map((item) => ({ ...item, id: uuid() }))
         };
     }

@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import isEqual from "lodash/isEqual";
 
 import OrderEditor from "../../components/Widgets/OrderEditor";
+import Confirm from "../../components/Overlays/Confirm";
 
 import { modifyOrderSelector } from "../../redux/selectors/manage/orders";
 import { cancelOrder, modifyOrder, orderInitialLoad } from "../../redux/actions/orders";
@@ -40,6 +41,7 @@ class ModifyOrder extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            confirm: { display: false },
             modify: { ...props.modify }
         };
     }
@@ -63,10 +65,21 @@ class ModifyOrder extends Component {
     }
 
     handleCancel = (order) => {
-        const { cancelOrder } = this.props;
-        if (cancelOrder) {
-            cancelOrder(order);
-        }
+        this.setState({ confirm: { display: true, order } });
+    }
+
+    handleConfirmCancelOrder = () => {
+        const { confirm: { order } } = this.state;
+        this.setState({ confirm: { display: false } }, () => {
+            const { cancelOrder } = this.props;
+            if (cancelOrder) {
+                cancelOrder(order);
+            }
+        });
+    }
+
+    handleCloseCancelOrder = () => {
+        this.setState({ confirm: { display: false } });
     }
 
     render() {
@@ -76,13 +89,24 @@ class ModifyOrder extends Component {
         }
 
         return (
-            <OrderEditor
-                loading={this.state.modify.state === "request"}
-                order={order}
-                models={models}
-                onSubmit={this.handleSubmit}
-                onCancel={this.handleCancel}
-            />
+            <Fragment>
+                <OrderEditor
+                    loading={this.state.modify.state === "request"}
+                    order={order}
+                    models={models}
+                    onSubmit={this.handleSubmit}
+                    onCancel={this.handleCancel}
+                />
+
+                {this.state.confirm.display && (<Confirm
+                    title="取消订单"
+                    onConfirm={this.handleConfirmCancelOrder}
+                    onClose={this.handleCloseCancelOrder}
+                    warning
+                >
+                    你知道吗，你正在取消这个订单，你确定要这么做吗？
+                </Confirm>)}
+            </Fragment>
         );
     }
 }
