@@ -19,8 +19,13 @@ export default class DriverEditor extends Component {
         status: PropTypes.string
     }
 
+    constructor(props) {
+        
+    }
+
     state = {
-        edit: false
+        edit: false,
+        changed: false
     }
 
     handleEditClick = () => {
@@ -36,7 +41,7 @@ export default class DriverEditor extends Component {
     }
 
     render() {
-        const { edit } = this.state;
+        const { edit, changed } = this.state;
 
         const buttons = [];
         if (!edit) {
@@ -48,7 +53,10 @@ export default class DriverEditor extends Component {
         } else {
             buttons.push(
                 <div key="modifyGroup" className={classNames("pull-right", styles.buttonGroup)}>
-                    <Button type="submit" className="pull-right" onClick={this.handleEditClick} sm success>
+                    <Button type="submit" className="pull-right"
+                        onClick={this.handleEditClick}
+                        disabled={!changed}
+                        sm success>
                         保存
                     </Button>
                     <Button className="pull-right" onClick={this.handleEditCancelClick} sm>
