@@ -11,10 +11,10 @@ import {
     MANAGE_MODIFY_ORDER_REQUEST,
     MANAGE_MODIFY_ORDER_SUCCESS,
     MANAGE_MODIFY_ORDER_FAILURE
-} from "./ActionTypes";
+} from "../ActionTypes";
 
 import isEmpty from "lodash/isEmpty";
-import { callout } from "./notifications";
+import { callout } from "../notifications";
 
 export const ordersInitialLoad = (filter) => {
     const pathname = "/api/orders";

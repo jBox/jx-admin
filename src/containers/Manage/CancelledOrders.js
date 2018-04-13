@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import OrderPreview from "../../components/Widgets/OrderPreview";
 
 import manageOrdersSelector from "../../redux/selectors/manage/orders";
-import { confirmOrder, scheduleOrder, confirmCancelOrder, ordersInitialLoad } from "../../redux/actions/orders";
+import { ordersInitialLoad } from "../../redux/actions/manage/orders";
 import { driversInitialLoad, vehiclesInitialLoad } from "../../redux/actions/manage";
 
 class CancelledOrders extends Component {

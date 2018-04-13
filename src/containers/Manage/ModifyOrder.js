@@ -8,7 +8,7 @@ import OrderEditor from "../../components/Widgets/OrderEditor";
 import Confirm from "../../components/Overlays/Confirm";
 
 import { modifyOrderSelector } from "../../redux/selectors/manage/orders";
-import { cancelOrder, modifyOrder, orderInitialLoad } from "../../redux/actions/orders";
+import { cancelOrder, modifyOrder, orderInitialLoad } from "../../redux/actions/manage/orders";
 
 const centerAlign = { textAlign: "center" };
 

@@ -24,6 +24,7 @@ export default class Input extends Control {
         required: PropTypes.bool,
         onChange: PropTypes.func,
         onBlur: PropTypes.func,
+        onError: PropTypes.func,
         validator: PropTypes.func
     }
 
@@ -49,7 +50,7 @@ export default class Input extends Control {
     }
 
     validate = () => {
-        const { required, pattern } = this.props;
+        const { required, pattern, id, name, message, onError } = this.props;
         const validator = isFunction(this.props.validator) ?
             this.props.validator :
             (value) => {
@@ -69,6 +70,10 @@ export default class Input extends Control {
         const hasError = !validator(this.value);
         if (this.state.hasError !== hasError) {
             this.setState({ hasError });
+        }
+
+        if (hasError && onError) {
+            onError({ id, name, message });
         }
 
         return !hasError;

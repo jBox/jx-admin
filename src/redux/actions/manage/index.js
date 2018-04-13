@@ -5,7 +5,6 @@ import {
     MANAGE_CONFIRM_REGISTEG_REQUEST,
     MANAGE_CONFIRM_REGISTEG_SUCCESS,
     MANAGE_CONFIRM_REGISTEG_FAILURE,
-    MANAGE_ADD_DRIVER_SUCCESS,
     MANAGE_LOAD_USERS_REQUEST,
     MANAGE_LOAD_USERS_FAILURE,
     MANAGE_LOAD_USERS_SUCCESS,
@@ -17,10 +16,10 @@ import {
     MANAGE_LOAD_ORDERS_REQUEST,
     MANAGE_LOAD_ORDERS_SUCCESS,
     MANAGE_LOAD_ORDERS_FAILURE
-} from "./ActionTypes";
+} from "../ActionTypes";
 
 import isEmpty from "lodash/isEmpty";
-import { callout } from "./notifications";
+import { callout } from "../notifications";
 
 export const loadOrderStatus = () => {
     return {
@@ -127,21 +126,6 @@ export const vehiclesInitialLoad = () => {
             dispatch({
                 data,
                 type: MANAGE_LOAD_VEHICLES_SUCCESS
-            });
-        }
-    };
-};
-
-export const createDriver = (driver) => {
-    return {
-        type: API,
-        endpoint: { url: `/api/users/drivers`, method: "POST", body: driver },
-        error: ({ dispatch, error }) => dispatch(callout({ subject: "添加司机失败", message: error, type: "error", duration: 8 })),
-        success: ({ data, dispatch }) => {
-            dispatch(callout({ message: "司机添加成功！", type: "success" }));
-            dispatch({
-                driver: data,
-                type: MANAGE_ADD_DRIVER_SUCCESS
             });
         }
     };

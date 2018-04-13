@@ -44,7 +44,6 @@ export default class Form extends Component {
     render() {
         const { horizontal, children, className, ...props } = this.props;
         const formClassName = classNames({ "form-horizontal": horizontal }, className);
-
         return (
             <form {...props} className={formClassName} onSubmit={this.handleSubmit}>
                 {children}

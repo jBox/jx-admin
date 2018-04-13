@@ -7,7 +7,14 @@ import OrderPreview from "../../components/Widgets/OrderPreview";
 import InfiniteScroll from "react-infinite-scroller";
 
 import manageOrdersSelector from "../../redux/selectors/manage/orders";
-import { loadMore, confirmOrder, scheduleOrder, confirmCancelOrder, completeOrder, ordersInitialLoad } from "../../redux/actions/orders";
+import {
+    loadMore,
+    confirmOrder,
+    scheduleOrder,
+    confirmCancelOrder,
+    completeOrder,
+    ordersInitialLoad
+} from "../../redux/actions/manage/orders";
 import { driversInitialLoad, vehiclesInitialLoad } from "../../redux/actions/manage";
 
 const centerAlign = { textAlign: "center" };

@@ -75,6 +75,14 @@ export const MANAGE_LOAD_VEHICLES_FAILURE = "m/load/vs/fai";
 export const MANAGE_ADD_VEHICLE_SUCCESS = "m/add/vhc/suc";
 export const MANAGE_ADD_DRIVER_SUCCESS = "m/add/drv/suc";
 
+export const MANAGE_UPDATE_DRIVER_REQUEST = "m/u/drv/req";
+export const MANAGE_UPDATE_DRIVER_SUCCESS = "m/u/drv/suc";
+export const MANAGE_UPDATE_DRIVER_FAILURE = "m/u/drv/fai";
+
+export const MANAGE_DEL_DRIVER_REQUEST = "m/d/drv/req";
+export const MANAGE_DEL_DRIVER_SUCCESS = "m/d/drv/suc";
+export const MANAGE_DEL_DRIVER_FAILURE = "m/d/drv/fai";
+
 export const MANAGE_GET_DRIVERS_SUCCESS = "m/q/drv/suc";
 export const MANAGE_GET_REGISTERS_SUCCESS = "m/q/regs/suc";
 export const MANAGE_CONFIRM_REGISTEG_REQUEST = "m/conf/reg/req";

@@ -1,3 +1,12 @@
+.list :global(.form-group) {
+    margin-bottom: 0;
+}
+
+.list :global(input.form-control) {
+    height: 24px;
+    padding: 0;
+}
+
 .nicknameCol {
     width: 30%;
 }

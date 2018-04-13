@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 export default class Control extends Component {
     static contextTypes = {
-        validator: PropTypes.object.isRequired
+        validator: PropTypes.object
     }
 
     componentDidMount() {

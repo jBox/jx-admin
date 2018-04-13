@@ -7,7 +7,8 @@ import CreateDriver from "../../components/Widgets/CreateDriver";
 import Button from "../../components/Form/Button";
 
 import manageDriversSelector from "../../redux/selectors/manage/drivers";
-import { createDriver, updateDriver, removeDriver, driversInitialLoad } from "../../redux/actions/manage";
+import { driversInitialLoad } from "../../redux/actions/manage";
+import { createDriver, updateDriver, removeDriver } from "../../redux/actions/manage/drivers";
 import { callout } from "../../redux/actions/notifications";
 
 class Drivers extends Component {
