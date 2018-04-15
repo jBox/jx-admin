@@ -27,7 +27,7 @@ export default class TextEditor extends Component {
         this.state = {
             input: { defaultValue, value },
             value: value || defaultValue || ""
-        }
+        };
     }
 
     handleChange = (event) => {

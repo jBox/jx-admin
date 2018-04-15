@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import DriverList from "../../components/Widgets/DriverList";
 import CreateDriver from "../../components/Widgets/CreateDriver";
 import Button from "../../components/Form/Button";
+import Confirm from "../../components/Overlays/Confirm";
 
 import manageDriversSelector from "../../redux/selectors/manage/drivers";
 import { driversInitialLoad } from "../../redux/actions/manage";
@@ -29,7 +30,8 @@ class Drivers extends Component {
     }
 
     state = {
-        showAddDriver: false
+        showAddDriver: false,
+        confirm: { display: false }
     }
 
     handleAddDriverClick = () => {
@@ -56,9 +58,27 @@ class Drivers extends Component {
         }
     }
 
+    handleRemoveDriver = (driver) => {
+        this.setState({ confirm: { display: true, driver } });
+    }
+
+    handleConfirmRemoveDriver = () => {
+        const { removeDriver } = this.props;
+        const { confirm } = this.state;
+        this.setState({ confirm: { display: false } }, () => {
+            if (removeDriver && confirm.driver) {
+                removeDriver(confirm.driver);
+            }
+        });
+    }
+
+    handleCloseRemoveDriver = () => {
+        this.setState({ confirm: { display: false } });
+    }
+
     render() {
-        const { drivers } = this.props;
-        const { showAddDriver } = this.state;
+        const { drivers, updateDriver } = this.props;
+        const { showAddDriver, confirm } = this.state;
 
         return (<div className="box">
             <div className="box-header">
@@ -72,7 +92,7 @@ class Drivers extends Component {
             </div>
 
             <div className="box-body no-padding">
-                <DriverList data={drivers} />
+                <DriverList data={drivers} onUpdate={updateDriver} onDelete={this.handleRemoveDriver} />
             </div>
             <div className="box-footer clearfix">
             </div>
@@ -80,6 +100,15 @@ class Drivers extends Component {
             {showAddDriver && (<CreateDriver
                 onSubmit={this.handleAddDriverSubmit}
                 onClose={this.handleAddDriverClose} />)}
+
+            {confirm.display && (<Confirm
+                title="取消订单"
+                onConfirm={this.handleConfirmRemoveDriver}
+                onClose={this.handleCloseRemoveDriver}
+                warning
+            >
+                你知道吗，你正在取消这个订单，你确定要这么做吗？
+                </Confirm>)}
         </div>);
     }
 }

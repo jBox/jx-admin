@@ -8,11 +8,13 @@ import DriverEditor from "./DriverEditor";
 
 export default class DriverList extends Component {
     static propTypes = {
-        data: PropTypes.array
+        data: PropTypes.array,
+        onUpdate: PropTypes.func,
+        onDelete: PropTypes.func
     }
 
     list = () => {
-        const { data } = this.props;
+        const { data, onUpdate, onDelete } = this.props;
         if (data.length === 0) {
             return (
                 <Interactive.Row>
@@ -24,7 +26,7 @@ export default class DriverList extends Component {
         }
 
         return data.map((driver, index) => {
-            return (<DriverEditor {...driver} key={driver.mobile} />);
+            return (<DriverEditor {...driver} key={driver.mobile} onUpdate={onUpdate} onDelete={onDelete} />);
         });
     }
 

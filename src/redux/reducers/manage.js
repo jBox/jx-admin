@@ -1,15 +1,14 @@
 import { combineReducers } from "redux";
 import orders from "./orders";
+import drivers from "./drivers";
 import {
     MANAGE_LOAD_USERS_REQUEST,
     MANAGE_LOAD_USERS_SUCCESS,
     MANAGE_LOAD_USERS_FAILURE,
-    MANAGE_GET_DRIVERS_SUCCESS,
     MANAGE_GET_REGISTERS_SUCCESS,
     MANAGE_CONFIRM_REGISTEG_REQUEST,
     MANAGE_CONFIRM_REGISTEG_SUCCESS,
     MANAGE_CONFIRM_REGISTEG_FAILURE,
-    MANAGE_ADD_DRIVER_SUCCESS,
     MANAGE_LOADED_ROLES,
     MANAGE_LOADED_MODELS,
     MANAGE_LOADED_ORDER_STATUS,
@@ -77,18 +76,6 @@ const users = (state = [], action) => {
     switch (action.type) {
         case MANAGE_LOAD_USERS_SUCCESS:
             return action.data;
-        default:
-            return state;
-    }
-};
-
-const drivers = (state = [], action) => {
-    switch (action.type) {
-        case MANAGE_GET_DRIVERS_SUCCESS:
-            return action.data;
-        case MANAGE_ADD_DRIVER_SUCCESS:
-            const { driver } = action;
-            return [{ ...driver, status: "new" }, ...state]
         default:
             return state;
     }
