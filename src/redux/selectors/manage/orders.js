@@ -46,7 +46,7 @@ export default createSelector(
                 const s = status[item.status] ? { ...status[item.status] } : { id: item.status };
                 return { ...item, status: s };
             }),
-            drivers,
+            drivers: drivers.data,
             vehicles: vehicleItems,
             hasMore: !!orders.next
         };
