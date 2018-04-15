@@ -13,7 +13,9 @@ import {
     MANAGE_LOADED_MODELS,
     MANAGE_LOADED_ORDER_STATUS,
     MANAGE_LOAD_VEHICLES_SUCCESS,
-    MANAGE_ADD_VEHICLE_SUCCESS
+    MANAGE_ADD_VEHICLE_SUCCESS,
+    MANAGE_DEL_VEHICLE_SUCCESS,
+    MANAGE_DEL_USER_SUCCESS
 } from "../actions/ActionTypes";
 
 const roles = (state = {}, action) => {
@@ -49,6 +51,16 @@ const vehicles = (state = [], action) => {
             return action.data;
         case MANAGE_ADD_VEHICLE_SUCCESS:
             return [...state, action.vehicle];
+        case MANAGE_DEL_VEHICLE_SUCCESS: {
+            const { id } = action.vehicle;
+            const vehicles = [...state];
+            const index = vehicles.findIndex(x => x.id === id);
+            if (index !== -1) {
+                vehicles.splice(index, 1);
+            }
+
+            return vehicles;
+        }
         default:
             return state;
     }
@@ -76,6 +88,16 @@ const users = (state = [], action) => {
     switch (action.type) {
         case MANAGE_LOAD_USERS_SUCCESS:
             return action.data;
+        case MANAGE_DEL_USER_SUCCESS: {
+            const users = [...state];
+            const { user: { id } } = action;
+            const index = users.findIndex(x => x.id === id);
+            if (index !== -1) {
+                users.splice(index, 1);
+            }
+
+            return users;
+        }
         default:
             return state;
     }

@@ -102,13 +102,13 @@ class Drivers extends Component {
                 onClose={this.handleAddDriverClose} />)}
 
             {confirm.display && (<Confirm
-                title="取消订单"
+                title="删除司机"
                 onConfirm={this.handleConfirmRemoveDriver}
                 onClose={this.handleCloseRemoveDriver}
                 warning
             >
-                你知道吗，你正在取消这个订单，你确定要这么做吗？
-                </Confirm>)}
+                你知道吗，你正在删除一个司机，你确定要这么做吗？
+            </Confirm>)}
         </div>);
     }
 }

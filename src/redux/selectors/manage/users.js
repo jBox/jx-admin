@@ -8,6 +8,7 @@ export default createSelector(
 
         return {
             users: users.map((user) => ({
+                id: user.id,
                 nickname: user.nickname,
                 mobile: user.mobile,
                 roles: user.roles.map((role) => (roles[role]))

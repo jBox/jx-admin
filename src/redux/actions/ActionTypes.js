@@ -73,7 +73,9 @@ export const MANAGE_LOAD_VEHICLES_SUCCESS = "m/load/vs/suc";
 export const MANAGE_LOAD_VEHICLES_FAILURE = "m/load/vs/fai";
 
 export const MANAGE_ADD_VEHICLE_SUCCESS = "m/add/vhc/suc";
+export const MANAGE_DEL_VEHICLE_SUCCESS = "m/del/vhc/suc";
 export const MANAGE_ADD_DRIVER_SUCCESS = "m/add/drv/suc";
+export const MANAGE_DEL_USER_SUCCESS = "m/del/user/suc";
 
 export const MANAGE_UPDATE_DRIVER_REQUEST = "m/u/drv/req";
 export const MANAGE_UPDATE_DRIVER_SUCCESS = "m/u/drv/suc";

@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
 
 import UserList from "../../components/Widgets/UserList";
+import Confirm from "../../components/Overlays/Confirm";
 
 import manageUsersSelector from "../../redux/selectors/manage/users";
 import { deleteUser, usersInitialLoad } from "../../redux/actions/manage";
@@ -17,6 +18,10 @@ class Users extends Component {
         usersInitialLoad: PropTypes.func
     }
 
+    state = {
+        confirm: { display: false }
+    }
+
     componentDidMount() {
         const { usersInitialLoad } = this.props;
         if (usersInitialLoad) {
@@ -24,20 +29,52 @@ class Users extends Component {
         }
     }
 
+    handleDeleteUser = (user) => {
+        this.setState({ confirm: { display: true, user } });
+    }
+
+    handleConfirmRemoveUser = () => {
+        const { confirm: { user } } = this.state;
+        this.setState({ confirm: { display: false } }, () => {
+            const { deleteUser } = this.props;
+            if (deleteUser) {
+                deleteUser(user);
+            }
+        });
+    }
+
+    handleCloseRemoveUser = () => {
+        this.setState({ confirm: { display: false } });
+    }
+
     render() {
         const { users } = this.props;
+        const { confirm } = this.state;
 
-        return (<div className="box">
-            <div className="box-header">
-                <h3 className="box-title">用户</h3>
-            </div>
+        return (
+            <Fragment>
+                <div className="box">
+                    <div className="box-header">
+                        <h3 className="box-title">用户</h3>
+                    </div>
 
-            <div className="box-body no-padding">
-                <UserList data={users} />
-            </div>
-            <div className="box-footer clearfix">
-            </div>
-        </div>);
+                    <div className="box-body no-padding">
+                        <UserList data={users} onDelete={this.handleDeleteUser} />
+                    </div>
+                    <div className="box-footer clearfix">
+                    </div>
+                </div>
+
+                {confirm.display && (<Confirm
+                    title="删除用户"
+                    onConfirm={this.handleConfirmRemoveUser}
+                    onClose={this.handleCloseRemoveUser}
+                    warning
+                >
+                    你知道吗，你正在删除用户 {confirm.user.nickname}，你确定要这么做吗？
+                </Confirm>)}
+            </Fragment>
+        );
     }
 }
 

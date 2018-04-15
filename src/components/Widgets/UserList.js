@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import Interactive from "../Tables/Interactive";
 import Button from "../Form/Button";
-import styles from "./UserList.css";
 
+import styles from "./UserList.css";
 
 const Role = ({ children }) => {
     const bgs = {
@@ -16,15 +16,19 @@ const Role = ({ children }) => {
 };
 
 class User extends Component {
-    static defaultProps = {
-        status: "normal"
-    }
-
     static propTypes = {
+        id: PropTypes.string,
         nickname: PropTypes.string,
         mobile: PropTypes.string,
         roles: PropTypes.array,
-        status: PropTypes.string
+        onDelete: PropTypes.func
+    }
+
+    handleDelete = () => {
+        const { id, nickname, mobile, roles, onDelete } = this.props;
+        if (onDelete) {
+            onDelete({ id, nickname, mobile, roles });
+        }
     }
 
     render() {
@@ -38,11 +42,11 @@ class User extends Component {
                     {mobile}
                 </Interactive.Cell>
                 <Interactive.Cell>
-                    {roles.map((role) => (<Role key={role}>{role}</Role>))}
+                    {roles.map((role, index) => (<Role key={index}>{role}</Role>))}
                 </Interactive.Cell>
                 <Interactive.Tools>
                     <div className={styles.tools}>
-                        <Button key="del" className="pull-right" danger sm>删除</Button>
+                        <Button key="del" className="pull-right" onClick={this.handleDelete} danger sm>删除</Button>
                     </div>
                 </Interactive.Tools>
             </Interactive.Row>
@@ -52,11 +56,12 @@ class User extends Component {
 
 export default class UserList extends Component {
     static propTypes = {
-        data: PropTypes.array
+        data: PropTypes.array,
+        onDelete: PropTypes.func
     }
 
     list = () => {
-        const { data } = this.props;
+        const { data, onDelete } = this.props;
         if (data.length === 0) {
             return (
                 <Interactive.Row>
@@ -68,7 +73,7 @@ export default class UserList extends Component {
         }
 
         return data.map((user) => {
-            return (<User {...user} key={user.mobile} />);
+            return (<User {...user} key={user.mobile} onDelete={onDelete} />);
         });
     }
 

@@ -13,9 +13,11 @@ import {
     MANAGE_LOADED_ORDER_STATUS,
     MANAGE_LOAD_VEHICLES_SUCCESS,
     MANAGE_ADD_VEHICLE_SUCCESS,
+    MANAGE_DEL_VEHICLE_SUCCESS,
     MANAGE_LOAD_ORDERS_REQUEST,
     MANAGE_LOAD_ORDERS_SUCCESS,
-    MANAGE_LOAD_ORDERS_FAILURE
+    MANAGE_LOAD_ORDERS_FAILURE,
+    MANAGE_DEL_USER_SUCCESS
 } from "../ActionTypes";
 
 import isEmpty from "lodash/isEmpty";
@@ -146,6 +148,21 @@ export const createVehicle = (vehicle) => {
     };
 };
 
+export const removeVehicle = (vehicle) => {
+    return {
+        type: API,
+        endpoint: { url: `/api/vehicles/${vehicle.id}`, method: "DELETE" },
+        error: ({ dispatch, error }) => dispatch(callout({ subject: "删除车辆失败", message: error, type: "error", duration: 8 })),
+        success: ({ data, dispatch }) => {
+            dispatch(callout({ message: `车辆${vehicle.number}已删除！`, type: "success" }));
+            dispatch({
+                type: MANAGE_DEL_VEHICLE_SUCCESS,
+                vehicle
+            });
+        }
+    };
+};
+
 export const usersInitialLoad = () => {
     return {
         type: API,
@@ -161,9 +178,17 @@ export const usersInitialLoad = () => {
     };
 };
 
-export const deleteUser = (userId) => {
+export const deleteUser = (user) => {
     return {
         type: API,
-        endpoint: { url: `/api/users/${userId}`, method: "DELETE" }
+        endpoint: { url: `/api/users/${user.id}`, method: "DELETE" },
+        error: ({ dispatch, error }) => dispatch(callout({ subject: "删除用户失败", message: error, type: "error", duration: 8 })),
+        success: ({ data, dispatch }) => {
+            dispatch(callout({ message: `用户${user.nickname}已删除！`, type: "success" }));
+            dispatch({
+                type: MANAGE_DEL_USER_SUCCESS,
+                user
+            });
+        }
     };
 };
