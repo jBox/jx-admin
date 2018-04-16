@@ -9,9 +9,13 @@ import { getUserInfo } from "../redux/actions";
 import sidebarSelector from "../redux/selectors/sidebar";
 
 class Sidebar extends Component {
+    static defaultProps = {
+        navs: []
+    }
 
     static propTypes = {
         user: PropTypes.object,
+        navs: PropTypes.array,
         getUserInfo: PropTypes.func
     }
 
@@ -23,12 +27,12 @@ class Sidebar extends Component {
     }
 
     render() {
-        const { user } = this.props;
+        const { user, navs } = this.props;
         return (
             <aside className="main-sidebar">
                 <section className="sidebar">
                     <Nameplate profile={user} exquisite />
-                    <Menu />
+                    {navs.length > 0 && (<Menu navs={navs} />)}
                 </section>
             </aside>
         );

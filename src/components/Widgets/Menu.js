@@ -5,8 +5,6 @@ import { Route, Link } from "react-browser-router";
 
 const NavItem = ({ to, exact, children }) => {
     const path = typeof to === "object" ? to.pathname : to;
-
-    // Regex taken from: https://github.com/pillarjs/path-to-regexp/blob/master/index.js#L202
     const escapedPath = path && path.replace(/([.+*?=^!:${}()[\]|/\\])/g, "\\$1");
 
     return (
@@ -25,14 +23,12 @@ const NavItem = ({ to, exact, children }) => {
 
 const Treeview = ({ to, icon, label, bridge, children }) => {
     const path = typeof to === "object" ? to.pathname : to;
-
-    // Regex taken from: https://github.com/pillarjs/path-to-regexp/blob/master/index.js#L202
     const escapedPath = path && path.replace(/([.+*?=^!:${}()[\]|/\\])/g, "\\$1");
 
     return (
         <Route path={escapedPath} children={({ location, match }) => {
             const isActive = !!match;
-            const className = classNames("treeview", { "active": isActive });
+            const className = classNames("treeview", { "active": isActive, "menu-open": isActive });
             return (
                 <li className={className}>
                     <a href="#">
@@ -52,52 +48,41 @@ const Treeview = ({ to, icon, label, bridge, children }) => {
     );
 };
 
+const Nav = ({ data }) => {
+    const { label, icon, to, children } = data;
+    if (children && children.length > 0) {
+        // tree
+        const bridge = (<i className="fa fa-angle-left pull-right"></i>);
+        return (
+            <Treeview to={to} icon={icon} label={label} bridge={bridge}>
+                {children.map((item) => (<Nav key={item.to} data={item} />))}
+            </Treeview>
+        );
+    } else {
+        // item
+        return (
+            <NavItem to={to} exact>
+                {icon && (<i className={classNames("fa", `fa-${icon}`)}></i>)} <span>{label}</span>
+            </NavItem>
+        );
+    }
+};
+
 export default class Menu extends Component {
+    static propTypes = {
+        navs: PropTypes.array
+    }
 
     componentDidMount() {
         jQuery("#sidebar_menu").tree();
     }
 
     render() {
+        const { navs } = this.props;
         return (
             <ul id="sidebar_menu" className="sidebar-menu">
                 <li className="header">导航</li>
-                <NavItem to="/" exact>
-                    <i className="fa fa-home"></i> <span>主页</span>
-                </NavItem>
-                <Treeview to="/manage/orders" icon="shopping-cart" label="订单管理"
-                    bridge={(<i className="fa fa-angle-left pull-right"></i>)}>
-                    <NavItem to="/manage/orders">
-                        <i className="fa fa-circle-o"></i> <span>待处理订单</span>
-                        <span className="pull-right-container">
-                            <small className="label pull-right bg-green">2</small>
-                        </span>
-                    </NavItem>
-                    <NavItem to="/manage/orders/done">
-                        <i className="fa fa-circle-o"></i> <span>已完成订单</span>
-                    </NavItem>
-                    <NavItem to="/manage/orders/cancelled">
-                        <i className="fa fa-circle-o"></i> <span>已取消订单</span>
-                    </NavItem>
-                </Treeview>
-                <NavItem to="/manage/drivers">
-                    <i className="fa fa-user"></i> <span>司机管理</span>
-                </NavItem>
-                <NavItem to="/manage/vehicles">
-                    <i className="fa fa-car"></i> <span>车辆管理</span>
-                </NavItem>
-                <Treeview to="/manage/users" icon="users" label="用户管理"
-                    bridge={(<i className="fa fa-angle-left pull-right"></i>)}>
-                    <NavItem to="/manage/users/registers">
-                        <i className="fa fa-circle-o"></i> <span>新注册用户</span>
-                        <span className="pull-right-container">
-                            <small className="label pull-right bg-green">2</small>
-                        </span>
-                    </NavItem>
-                    <NavItem to="/manage/users">
-                        <i className="fa fa-circle-o"></i> <span>用户</span>
-                    </NavItem>
-                </Treeview>
+                {navs.length > 0 && navs.map((item) => (<Nav key={item.to} data={item} />))}
             </ul>
         );
     }

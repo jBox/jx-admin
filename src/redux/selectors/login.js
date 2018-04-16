@@ -13,11 +13,22 @@ const getReturnUrl = (location) => {
     return "/";
 };
 
+const driverOnly = (user) => {
+    return user && user.roles && user.roles.length === 1 && user.roles.includes("driver");
+}
+
 export default createSelector(
     (state, props) => {
-        const { authenticated } = state.auth;
+        const { authenticated, user } = state.auth;
         const { location } = props;
-        const returnUrl = getReturnUrl(location);
+
+        let returnUrl = getReturnUrl(location);
+        if (authenticated &&
+            returnUrl === "/" &&
+            driverOnly(user)) {
+            returnUrl = "/driver";
+        }
+
         return { authenticated, returnUrl };
     },
     (state) => state.login,

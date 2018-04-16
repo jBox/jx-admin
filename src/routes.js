@@ -16,6 +16,9 @@ import ManageOrders from "./containers/Manage/Orders";
 import ManageModifyOrder from "./containers/Manage/ModifyOrder";
 import ManageCancelledOrders from "./containers/Manage/CancelledOrders";
 import ManageCompletedOrders from "./containers/Manage/CompletedOrders";
+import Driver from "./containers/Driver";
+import DriverHome from "./containers/Driver/Home";
+import DriverTrips from "./containers/Driver/Trips";
 
 import { authenticate } from "./redux/common";
 
@@ -86,6 +89,18 @@ const routes = [{
                     path: "/manage/orders/:orderId",
                     exact: true,
                     component: ManageModifyOrder
+                }]
+            }, {
+                path: "/driver/:feature?",
+                component: Driver,
+                routes: [{
+                    path: "/driver",
+                    exact: true,
+                    component: DriverHome
+                }, {
+                    path: "/driver/trips",
+                    exact: true,
+                    component: DriverTrips
                 }]
             }]
         }
