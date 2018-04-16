@@ -1,6 +1,7 @@
 @value bgColor, primary from "../Colors.css";
 
 .avatar {
+    display: inline-block;
     border-radius: 50%;
     margin: auto;
     text-align: center;
