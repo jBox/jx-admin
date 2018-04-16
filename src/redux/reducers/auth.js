@@ -3,7 +3,8 @@ import {
     LOGIN_SUCCESS,
     INIT_LOGIN,
     LOGOUT,
-    LANDING_LOGIN
+    LANDING_LOGIN,
+    GET_USER_IFNO
 } from "../actions/ActionTypes";
 
 const landing = (state = false, action) => {
@@ -39,8 +40,18 @@ const token = (state = {}, action) => {
     }
 };
 
+const user = (state = { nickname: "Anonymous", roles: [] }, action) => {
+    switch (action.type) {
+        case GET_USER_IFNO:
+            return action.data;
+        default:
+            return state;
+    }
+};
+
 export default combineReducers({
     landing,
     authenticated,
-    token
+    token,
+    user
 });

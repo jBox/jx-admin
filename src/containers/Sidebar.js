@@ -1,35 +1,40 @@
 import React, { Component } from "react";
-import Menu from "../components/Widgets/Menu";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-export default class Sidebar extends Component {
+import Menu from "../components/Widgets/Menu";
+import Nameplate from "../components/Widgets/Nameplate";
+
+import { getUserInfo } from "../redux/actions";
+import sidebarSelector from "../redux/selectors/sidebar";
+
+class Sidebar extends Component {
+
+    static propTypes = {
+        user: PropTypes.object,
+        getUserInfo: PropTypes.func
+    }
+
+    componentDidMount() {
+        const { getUserInfo } = this.props;
+        if (getUserInfo) {
+            getUserInfo();
+        }
+    }
 
     render() {
+        const { user } = this.props;
         return (
             <aside className="main-sidebar">
                 <section className="sidebar">
-
-                    <div className="user-panel">
-                        <div className="pull-left image">
-                            <img src="/static/AdminLTE-2.4.3/dist/img/user2-160x160.jpg" className="img-circle" alt="User Image" />
-                        </div>
-                        <div className="pull-left info">
-                            <p>Alexander Pierce</p>
-                            <a href="#"><i className="fa fa-circle text-success"></i> Online</a>
-                        </div>
-                    </div>
-
-                    <form action="#" method="get" className="sidebar-form">
-                        <div className="input-group">
-                            <input type="text" name="q" className="form-control" placeholder="Search..." />
-                            <span className="input-group-btn">
-                                <button type="submit" name="search" id="search-btn" className="btn btn-flat"><i className="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </form>
+                    <Nameplate profile={user} exquisite />
                     <Menu />
                 </section>
             </aside>
         );
     }
 }
+
+export default connect(sidebarSelector, {
+    getUserInfo
+})(Sidebar);

@@ -5,7 +5,7 @@ import ExtraLayout from "./layouts/ExtraLayout";
 import Landing from "./containers/Landing";
 import Login from "./containers/Login";
 import Register from "./containers/Register";
-import RegisterSuccess from "./containers/RegisterSuccess";
+import RegisterSuccess from "./containers/Register/Success";
 import Dashboard from "./containers/Dashboard";
 import Manage from "./containers/Manage";
 import ManageRegisters from "./containers/Manage/Registers";

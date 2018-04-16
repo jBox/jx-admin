@@ -16,6 +16,6 @@ const getReturnUrl = (location) => {
 export default createSelector(
     (state) => state.auth,
     (auth) => {
-        return { authenticated: auth.authenticated };
+        return { authenticated: auth.authenticated, user: auth.user };
     }
 );

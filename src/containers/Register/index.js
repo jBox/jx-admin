@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import isEqual from "lodash/isEqual";
 import { Link } from "react-browser-router";
-import Light from "../components/Tabs/Light";
-import Form from "../components/Form/Register";
+import Light from "../../components/Tabs/Light";
+import Form from "../../components/Form/Register";
 
-import registerSelector from "../redux/selectors/register";
-import { submit, validateIdentity, obtainCaptcha, resetSubmission } from "../redux/actions/register";
+import registerSelector from "../../redux/selectors/register";
+import { submit, validateIdentity, obtainCaptcha, resetSubmission } from "../../redux/actions/register";
 
 const isMobilenumberValid = (num) => (
     /^1\d{10}$/g.test(num)

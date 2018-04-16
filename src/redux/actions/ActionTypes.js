@@ -33,6 +33,8 @@ export const RESET_LOGIN = "login/reset";
 export const INIT_LOGIN = "login/initial";
 export const LANDING_LOGIN = "landing/login";
 
+export const GET_USER_IFNO = "user/info";
+
 export const LOGIN_CAP_REQUEST = "login/cap/req";
 export const LOGIN_CAP_SUCCESS = "login/cap/sec";
 export const LOGIN_CAP_FAILURE = "login/cap/fai";

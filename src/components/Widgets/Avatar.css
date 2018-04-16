@@ -1,0 +1,66 @@
+@value bgColor, primary from "../Colors.css";
+
+.avatar {
+    border-radius: 50%;
+    margin: auto;
+    text-align: center;
+}
+
+.avatar .bg {
+    background-color: bgColor;
+    border-radius: 50%;
+}
+
+.avatar span {
+    color: primary;
+}
+
+.small {
+    width: 25px;
+    height: 25px;
+}
+
+.small.bg {
+    height: 25px;
+    width: 25px;
+}
+
+.small span {
+    font-size: 14px;
+    line-height: 25px;
+    font-weight: bold;
+}
+
+.middle {
+    height: 45px;
+    width: 45px;
+}
+
+.middle.bg {
+    height: 45px;
+    width: 45px;
+}
+
+.middle span {
+    font-size: 26px;
+    line-height: 45px;
+    font-weight: bold;
+}
+
+.large {
+    height: 90px;
+    width: 90px;
+    border: 3px solid;
+    border-color: transparent;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.large .bg {
+    height: 84px;
+    width: 84px;
+}
+
+.large span {
+    font-size: 58px;
+    line-height: 80px;
+}
