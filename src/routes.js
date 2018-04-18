@@ -5,6 +5,7 @@ import ExtraLayout from "./layouts/ExtraLayout";
 import Landing from "./containers/Landing";
 import Login from "./containers/Login";
 import Register from "./containers/Register";
+import AccessDenied from "./containers/AccessDenied";
 import RegisterSuccess from "./containers/Register/Success";
 import Dashboard from "./containers/Dashboard";
 import Manage from "./containers/Manage";
@@ -20,13 +21,17 @@ import Driver from "./containers/Driver";
 import DriverHome from "./containers/Driver/Home";
 import DriverTrips from "./containers/Driver/Trips";
 
-import { authenticate } from "./redux/common";
+import {
+    authenticate,
+    driverAuthorize,
+    adminAuthorize
+} from "./redux/common";
 
 const routes = [{
     id: "root",
     routes: [
         {
-            path: "/:biz(landing|login|register)",
+            path: "/:biz(landing|login|register|access)",
             component: ExtraLayout,
             routes: [{
                 path: "/landing",
@@ -44,6 +49,10 @@ const routes = [{
                 path: "/register/success",
                 exact: true,
                 component: RegisterSuccess
+            }, {
+                path: "/access/denied",
+                exact: true,
+                component: AccessDenied
             }]
         },
         {
@@ -53,10 +62,12 @@ const routes = [{
             routes: [{
                 path: "/dashboard",
                 exact: true,
-                component: Dashboard
+                component: Dashboard,
+                authorize: adminAuthorize
             }, {
                 path: "/manage/:feature/:category?",
                 component: Manage,
+                authorize: adminAuthorize,
                 routes: [{
                     path: "/manage/users/registers",
                     exact: true,
@@ -93,6 +104,7 @@ const routes = [{
             }, {
                 path: "/driver/:feature?",
                 component: Driver,
+                authorize: driverAuthorize,
                 routes: [{
                     path: "/driver",
                     exact: true,

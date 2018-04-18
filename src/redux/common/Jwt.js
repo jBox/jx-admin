@@ -80,6 +80,11 @@ function Jwt() {
         return null;
     };
 
+    this.user = () => {
+        const { user } = getToken();
+        return user;
+    };
+
     this.refresh = () => {
         const { token: { refresh_token }, rememberme } = getToken();
         if (!refresh_token) {

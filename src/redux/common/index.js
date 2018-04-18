@@ -47,3 +47,31 @@ export const authenticate = () => {
 
     return { redirect: "/landing?returnUrl={0}" };
 };
+
+export const driverAuthorize = () => {
+    const auth = authenticate();
+    if (auth.verified) {
+        const user = Jwt.user();
+        if (user.roles.length === 1 && user.roles.includes("driver")) {
+            return { verified: true };
+        }
+
+        return { redirect: "/access/denied" };
+    }
+
+    return auth;
+};
+
+export const adminAuthorize = () => {
+    const auth = authenticate();
+    if (auth.verified) {
+        const user = Jwt.user();
+        if (user.roles.includes("admin") || user.roles.includes("super")) {
+            return { verified: true };
+        }
+
+        return { redirect: "/access/denied" };
+    }
+
+    return auth;
+};
