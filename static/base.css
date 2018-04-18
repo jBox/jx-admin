@@ -1,0 +1,19 @@
+.sub-logo {
+    display: none;
+}
+@media (max-width: 767px){
+    .main-header .logo {
+        display: none;
+    }
+    .main-sidebar, .fixed .content-wrapper, .fixed .right-side {
+        padding-top: 50px;
+    }
+
+    .sub-logo {
+        display: inline;
+        font-size: 20px;
+        line-height: 50px;
+        padding: 0px 5px;
+        color: white;
+    }
+}

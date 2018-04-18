@@ -42,7 +42,7 @@
     width: 45px;
 }
 
-.middle.bg {
+.middle .bg {
     height: 45px;
     width: 45px;
 }
@@ -50,6 +50,22 @@
 .middle span {
     font-size: 26px;
     line-height: 45px;
+    font-weight: bold;
+}
+
+:global(.sidebar-collapse) .middle {
+    height: 30px;
+    width: 30px;
+}
+
+:global(.sidebar-collapse) .middle .bg {
+    height: 30px;
+    width: 30px;
+}
+
+:global(.sidebar-collapse) .middle span {
+    font-size: 20px;
+    line-height: 30px;
     font-weight: bold;
 }
 

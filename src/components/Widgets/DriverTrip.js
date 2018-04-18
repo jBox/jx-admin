@@ -100,12 +100,6 @@ export default class DriverTrip extends Component {
                         <li className={styles.itemHeader}><label>车辆信息</label></li>
                         <li>车牌号码：<label>{trip.licenseNunber}</label></li>
                         <li>车型：<label>{trip.vehicleModel}</label></li>
-                        {trip.notes && (
-                            <Fragment>
-                                <li className={styles.itemHeader}><label>其他信息</label></li>
-                                <li>备注：<label>{trip.notes}</label></li>
-                            </Fragment>
-                        )}
                     </ul>
 
                     <Progress data={trip.progress} onChange={this.handleProgressChange} />

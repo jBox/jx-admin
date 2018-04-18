@@ -7,10 +7,12 @@ import headerSelector from "../redux/selectors/header";
 import { getUserInfo } from "../redux/actions";
 import { logout } from "../redux/actions/header";
 
+const logoText = "健湖租车";
+
 const Logo = () => (
     <a href="/" className="logo">
-        <span className="logo-mini"><b>健湖</b></span>
-        <span className="logo-lg">健湖租车</span>
+        <span className="logo-mini"><b>JH</b></span>
+        <span className="logo-lg">{logoText}</span>
     </a>
 );
 
@@ -19,6 +21,7 @@ const Nav = ({ user, onLogout }) => (
         <a href="#" className="sidebar-toggle" data-toggle="push-menu" role="button">
             <span className="sr-only">Toggle navigation</span>
         </a>
+        <span className="sub-logo">健湖租车</span>
         <div className="navbar-custom-menu">
             <ul className="nav navbar-nav">
                 <li className="dropdown user user-menu">
