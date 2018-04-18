@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import isEqual from "lodash/isEqual";
+import { Redirect } from "react-browser-router";
 
 import landingSelector from "../redux/selectors/landing";
 import { initialLogin } from "../redux/actions/login";
@@ -10,18 +11,39 @@ class Landing extends Component {
 
     static propTypes = {
         auth: PropTypes.object,
-        history: PropTypes.object,
         initialLogin: PropTypes.func
     }
 
-    state = {
-        value: 0
+    static getDerivedStateFromProps = (nextProps, prevState) => {
+        console.log("Landing", nextProps, prevState);
+        const { auth } = nextProps;
+        if (!isEqual(auth, prevState.auth)) {
+            const state = { auth, value: 100 };
+            if (auth.authenticated) {
+                state.returnUrl = auth.returnUrl;
+            } else if (auth.landing) {
+                state.returnUrl = `/login?returnUrl=${encodeURIComponent(auth.returnUrl || "/")}`;
+            }
+
+            return state;
+        }
+
+        return null;
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            auth: { ...props.auth },
+            returnUrl: props.auth.returnUrl,
+            value: 0
+        };
     }
 
     componentDidMount() {
-        const { auth, history } = this.props;
+        const { auth } = this.props;
         if (auth.authenticated) {
-            this.setState({ value: 100 }, () => history.replace(auth.returnUrl));
+            this.setState({ value: 100, returnUrl: auth.returnUrl });
         }
 
         const { initialLogin } = this.props;
@@ -30,19 +52,13 @@ class Landing extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { auth, history } = nextProps;
-        if (auth.authenticated) {
-            this.setState({ value: 100 }, () => {
-                history.replace(auth.returnUrl);
-            });
-        } else if (auth.landing) {
-            history.replace(`/login?returnUrl=${encodeURIComponent(auth.returnUrl)}`);
-        }
-    }
-
     render() {
-        const { value } = this.state;
+        const { value, returnUrl } = this.state;
+
+        if (returnUrl) {
+            return (<Redirect to={returnUrl} />);
+        }
+
         return (
             <div className="progress progress-xxs">
                 <div className="progress-bar progress-bar-success progress-bar-striped"

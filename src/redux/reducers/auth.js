@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import jwtDecode from "jwt-decode";
 import {
     LOGIN_SUCCESS,
     INIT_LOGIN,
@@ -44,6 +45,13 @@ const user = (state = { nickname: "Anonymous", roles: [] }, action) => {
     switch (action.type) {
         case GET_USER_IFNO:
             return action.data;
+        case LOGIN_SUCCESS:
+        case INIT_LOGIN: {
+            const { id, nickname, roles } = jwtDecode(action.data.access_token) || {};
+            return { id, nickname, roles };
+        }
+        case LOGOUT:
+            return { nickname: "Anonymous", roles: [] };
         default:
             return state;
     }

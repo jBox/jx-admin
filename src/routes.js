@@ -51,7 +51,7 @@ const routes = [{
             component: Layout,
             authorize: authenticate,
             routes: [{
-                path: "/",
+                path: "/dashboard",
                 exact: true,
                 component: Dashboard
             }, {

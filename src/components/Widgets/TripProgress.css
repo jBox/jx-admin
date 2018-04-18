@@ -1,0 +1,9 @@
+.progress {
+    margin-top: 10px;
+}
+
+.progress>li>a {
+    padding: 8px 0;
+    font-size: 12px;
+    border-left: none;
+}

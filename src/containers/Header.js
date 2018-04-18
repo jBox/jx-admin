@@ -22,7 +22,7 @@ const Nav = ({ user, onLogout }) => (
         <div className="navbar-custom-menu">
             <ul className="nav navbar-nav">
                 <li className="dropdown user user-menu">
-                    <Nameplate profile={user} onLogout={onLogout}/>
+                    <Nameplate profile={user} onLogout={onLogout} />
                 </li>
             </ul>
         </div>
@@ -70,6 +70,7 @@ class Header extends Component {
         const { logout } = this.props;
         if (logout) {
             logout();
+            location.href = "/";
         }
     }
 
