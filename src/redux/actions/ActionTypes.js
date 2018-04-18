@@ -93,4 +93,10 @@ export const MANAGE_GET_REGISTERS_SUCCESS = "m/q/regs/suc";
 export const MANAGE_CONFIRM_REGISTEG_REQUEST = "m/conf/reg/req";
 export const MANAGE_CONFIRM_REGISTEG_SUCCESS = "m/conf/reg/suc";
 export const MANAGE_CONFIRM_REGISTEG_FAILURE = "m/conf/reg/fai";
-/***************** END LOGIN   *****************/
+/***************** END MANAGE   *****************/
+
+/***************** START DRIVER *****************/
+export const DRIVER_TRIP_UPDATE_REQUEST = "drv/trip/u/req";
+export const DRIVER_TRIP_UPDATE_SUCCESS = "drv/trip/u/suc";
+export const DRIVER_TRIP_UPDATE_FAILURE = "drv/trip/u/fai";
+/***************** END DRIVER   *****************/

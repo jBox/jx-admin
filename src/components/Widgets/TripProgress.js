@@ -25,7 +25,7 @@ const isDataEmpty = (data) => {
 
 class ProgressEditor extends Component {
     static defaultProps = {
-        availableDates: [],
+        terms: [],
         data: {
             date: "", // 日期
             milage: "", // 里程
@@ -38,18 +38,19 @@ class ProgressEditor extends Component {
 
     static propTypes = {
         data: PropTypes.object,
-        availableDates: PropTypes.array,
+        terms: PropTypes.array,
         onSubmit: PropTypes.func,
         onClose: PropTypes.func
     }
 
     static getDerivedStateFromProps = (nextProps, prevState) => {
-        const { data, mode } = nextProps;
+        const { data, terms } = nextProps;
         if (!isEqual(data, prevState.original)) {
+            const isEdit = !isDataEmpty(data);
             return {
                 original: { ...data },
-                data: { ...data },
-                isEdit: !isDataEmpty(data)
+                data: isEdit ? { ...data } : { ...data, date: terms[0] },
+                isEdit
             };
         }
 
@@ -60,10 +61,11 @@ class ProgressEditor extends Component {
         super(props, context);
 
         const data = { ...props.data };
+        const isEdit = !isDataEmpty(data);
         this.state = {
-            original: data,
-            data,
-            isEdit: !isDataEmpty(data)
+            original: { ...data },
+            data: isEdit ? { ...data } : { ...data, date: props.terms[0] },
+            isEdit
         };
     }
 
@@ -80,7 +82,7 @@ class ProgressEditor extends Component {
     }
 
     render() {
-        const { onClose, availableDates } = this.props;
+        const { onClose, terms } = this.props;
         const { isEdit, data } = this.state;
         const title = isEdit ? `编辑进度 （${data.date}）` : "汇报进度";
         const submitButton = isEdit ? `提交修改` : "提交汇报";
@@ -95,7 +97,7 @@ class ProgressEditor extends Component {
                             <Dropdown id="date" name="date" label="行车日期"
                                 defaultValue={data.date}
                                 options={
-                                    availableDates.map((item) => (
+                                    terms.map((item) => (
                                         { value: item, label: item }
                                     ))
                                 }
@@ -136,9 +138,38 @@ class ProgressEditor extends Component {
     }
 }
 
+const ProgressItem = ({ date, milage, duration, fuelFee, tollFee, parkingFee, onClick }) => {
+
+    const infos = [`${milage}KM`, `${duration}H`, `燃油${Number(fuelFee).toFixed(1)}￥`];
+    if (tollFee) {
+        infos.push(`过路${Number(tollFee).toFixed(1)}￥`);
+    }
+    if (parkingFee) {
+        infos.push(`停车${Number(parkingFee).toFixed(1)}￥`);
+    }
+
+    const dateTime = new Date(date).format("MM-dd");
+    const handleClick = () => {
+        const data = { date, milage, duration, fuelFee, tollFee, parkingFee };
+        return (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            onClick(data);
+        }
+    };
+    return (
+        <li>
+            <a onClick={handleClick()}>
+                {infos.join(", ")} <span className="pull-right badge bg-aqua">{dateTime}</span>
+            </a>
+        </li>
+    );
+};
+
 export default class TripProgress extends Component {
 
     static propTypes = {
+        terms: PropTypes.array,
         data: PropTypes.array,
         onChange: PropTypes.func
     }
@@ -154,62 +185,57 @@ export default class TripProgress extends Component {
         this.setState({ dialog: { display: false } });
     }
 
-    handleDialogSubmit = (data) => {
-        this.setState({ dialog: { display: false } });
+    handleDialogSubmit = (item) => {
+        this.setState({ dialog: { display: false } }, () => {
+            const { onChange, data } = this.props;
+            const updated = [...data];
+            const index = updated.findIndex(x => x.date === item.date);
+            if (index !== -1) {
+                //edit
+                updated[index] = { ...item };
+            } else {
+                //create
+                updated.push({ ...item });
+            }
+
+            onChange(updated);
+        });
     }
 
     handleReport = () => {
         this.setState({ dialog: { display: true } });
     }
 
-    handleReportClick = (evnet) => {
-        event.preventDefault();
-        event.stopPropagation();
-
+    handleReportClick = (item) => {
         this.setState({
             dialog: {
                 display: true,
-                data: {
-                    date: "2018-09-08",
-                    milage: "30",
-                    duration: "14",
-                    tollFee: "34",
-                    fuelFee: "45",
-                    parkingFee: "56"
-                }
+                data: item
             }
         });
     }
 
     render() {
+        const { data, terms } = this.props;
         const { dialog } = this.state;
         return (
             <Fragment>
                 <ul className={classNames("nav nav-stacked", styles.progress)}>
                     <li>
                         <label>行程进度</label>
-                        <Button className="pull-right" onClick={this.handleReport} flat xs>汇报进度</Button>
+                        {terms.length > 0 && (
+                            <Button className="pull-right" onClick={this.handleReport} flat xs>汇报进度</Button>
+                        )}
                     </li>
-                    <li>
-                        <a href="#/progress/report/" onClick={this.handleReportClick}>
-                            行驶80公里, 13小时，过路费225元，油费320元 <span className="pull-right badge bg-aqua">04-12</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#/progress/report/" onClick={this.handleReportClick}>
-                            行驶80公里, 13小时，过路费225元，油费320元 <span className="pull-right badge bg-aqua">04-13</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#/progress/report/" onClick={this.handleReportClick}>
-                            行驶800公里, 13小时, 过路费225元, 油费320元, 停车费234元 <span className="pull-right badge bg-aqua">04-14</span>
-                        </a>
-                    </li>
+                    {data.map((item, index) => (
+                        <ProgressItem key={index} {...item} onClick={this.handleReportClick} />
+                    ))}
+
                 </ul>
 
                 {dialog.display && (
                     <ProgressEditor
-                        availableDates={["2018-09-09","2018-09-10","2018-09-11"]}
+                        terms={terms}
                         data={dialog.data}
                         onClose={this.handleDialogClose}
                         onSubmit={this.handleDialogSubmit}

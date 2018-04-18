@@ -15,7 +15,8 @@ export default class DriverTrip extends Component {
     static propTypes = {
         data: PropTypes.object,
         onDispatch: PropTypes.func,
-        onRecovery: PropTypes.func
+        onRecovery: PropTypes.func,
+        onProgress: PropTypes.func
     }
 
     componentDidMount() {
@@ -38,8 +39,9 @@ export default class DriverTrip extends Component {
     getTripInfo = () => {
         const { data } = this.props;
         const departureTime = new Date(data.departureTime);
-        departureTime.setDate(departureTime.getDate() + data.duration);
+        departureTime.setDate(departureTime.getDate() + data.duration - 1);
         const backTime = departureTime.toISOString().toDate();
+
         return {
             id: data.id,
             name: data.name,
@@ -51,12 +53,17 @@ export default class DriverTrip extends Component {
             notes: data.notes,
             licenseNunber: data.licenseNunber,
             vehicleModel: data.vehicleModel,
-            progress: []
+            progress: data.progress,
+            terms: data.terms
         }
     }
 
     handleProgressChange = (progress) => {
         console.log("progress", progress);
+        const { data, onProgress } = this.props;
+        if (onProgress) {
+            onProgress(data, progress);
+        }
     }
 
     renderOperation = () => {
@@ -93,7 +100,7 @@ export default class DriverTrip extends Component {
                         <li>出发地点：<label>{trip.departurePlace}</label></li>
                         <li>目的地：<label>{trip.destination}</label></li>
                         <li>发车时间：<label>{trip.departureTime.toDateTime()}</label></li>
-                        <li>收车时间：<label>{trip.backTime}</label></li>
+                        <li>计划收车时间：<label>{trip.backTime}</label></li>
                         <li className={styles.itemHeader}><label>客户信息</label></li>
                         <li>联系人：<label>{trip.name}</label></li>
                         <li>联系电话：<label>{trip.mobile}</label></li>
@@ -102,7 +109,7 @@ export default class DriverTrip extends Component {
                         <li>车型：<label>{trip.vehicleModel}</label></li>
                     </ul>
 
-                    <Progress data={trip.progress} onChange={this.handleProgressChange} />
+                    <Progress data={trip.progress} terms={trip.terms} onChange={this.handleProgressChange} />
 
                 </div>
 
