@@ -5,7 +5,7 @@ import {
 
 export const getUserInfo = () => (dispatch, getState) => {
     const { auth } = getState();
-    if (auth.authenticated && auth.user.nickname === "Anonymous") {
+    if (auth.authenticated) {
         return dispatch({
             type: API,
             endpoint: { url: "/api/users/userinfo", method: "GET" },
