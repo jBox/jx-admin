@@ -244,20 +244,22 @@ export default class OrderPreview extends Component {
 
                     <div className="box-tools">
                         <button type="button" className="btn btn-box-tool" onClick={this.handleModify}>
-                        <i className="fa fa-edit"></i>
+                            <i className="fa fa-edit"></i>
                         </button>
                     </div>
 
                 </div>
 
                 <div className="box-body">
-                    <p>联系人：<label>{order.name}</label></p>
-                    <p>联系电话：<label>{order.mobile}</label></p>
-                    <p>出发时间：<label>{order.departureTime.toDateTime()}</label></p>
-                    <p>出发地点：<label>{order.departurePlace}</label></p>
-                    <p>目的地：<label>{order.destination}</label></p>
-                    <p>租车天数：<label>{`${order.duration} 天`}</label></p>
-                    <p>下单时间：<label>{order.createTime.toDateTime()}</label></p>
+                    <ul className="list-unstyled">
+                        <li>联系人：<label>{order.name}</label></li>
+                        <li>联系电话：<label>{order.mobile}</label></li>
+                        <li>出发时间：<label>{order.departureTime.toDateTime()}</label></li>
+                        <li>出发地点：<label>{order.departurePlace}</label></li>
+                        <li>目的地：<label>{order.destination}</label></li>
+                        <li>租车天数：<label>{`${order.duration} 天`}</label></li>
+                        <li>下单时间：<label>{order.createTime.toDateTime()}</label></li>
+                    </ul>
                 </div>
 
                 <div className="box-footer box-comments">
