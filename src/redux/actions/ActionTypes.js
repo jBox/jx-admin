@@ -96,7 +96,16 @@ export const MANAGE_CONFIRM_REGISTEG_FAILURE = "m/conf/reg/fai";
 /***************** END MANAGE   *****************/
 
 /***************** START DRIVER *****************/
+export const DRIVER_TRIP_DEPART_REQUEST = "drv/trip/d/req";
+export const DRIVER_TRIP_DEPART_SUCCESS = "drv/trip/d/suc";
+export const DRIVER_TRIP_DEPART_FAILURE = "drv/trip/d/fai";
+
+export const DRIVER_TRIP_REVERT_REQUEST = "drv/trip/r/req";
+export const DRIVER_TRIP_REVERT_SUCCESS = "drv/trip/r/suc";
+export const DRIVER_TRIP_REVERT_FAILURE = "drv/trip/r/fai";
+
 export const DRIVER_TRIP_UPDATE_REQUEST = "drv/trip/u/req";
 export const DRIVER_TRIP_UPDATE_SUCCESS = "drv/trip/u/suc";
 export const DRIVER_TRIP_UPDATE_FAILURE = "drv/trip/u/fai";
+
 /***************** END DRIVER   *****************/

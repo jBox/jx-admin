@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import homeSelector from "../../redux/selectors/driver";
 import DriverTrip from "../../components/Widgets/DriverTrip";
-import { updateProgress } from "../../redux/actions/driver";
+import { depart, revert, updateProgress } from "../../redux/actions/driver";
 
 class Home extends Component {
 
@@ -14,13 +14,20 @@ class Home extends Component {
     }
 
     render() {
-        const { trips, updateProgress } = this.props;
+        const { trips, depart, revert, updateProgress } = this.props;
         return trips.map((trip, index) => (
-            <DriverTrip key={index} data={trip} onProgress={updateProgress} />
+            <DriverTrip key={index}
+                data={trip}
+                onDepart={depart}
+                onRevert={revert}
+                onProgress={updateProgress}
+            />
         ))
     }
 }
 
 export default connect(homeSelector, {
+    depart,
+    revert,
     updateProgress
 })(Home);
