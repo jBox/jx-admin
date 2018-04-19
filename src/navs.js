@@ -1,5 +1,5 @@
 export const manage = [
-    { label: "主页", icon: "home", to: "/" },
+    { label: "主页", icon: "home", to: "/dashboard" },
     {
         label: "订单管理",
         icon: "shopping-cart",

@@ -10,7 +10,7 @@ const NavItem = ({ to, exact, children }) => {
     return (
         <Route path={escapedPath} exact={exact} children={({ location, match }) => {
             const isActive = !!match;
-            const className = classNames({ "active": isActive, "menu-open": isActive });
+            const className = classNames({ "active": isActive });
             return (
                 <li className={className}>
                     <Link to={to}>{children}</Link>

@@ -15,7 +15,6 @@ class Landing extends Component {
     }
 
     static getDerivedStateFromProps = (nextProps, prevState) => {
-        console.log("Landing", nextProps, prevState);
         const { auth } = nextProps;
         if (!isEqual(auth, prevState.auth)) {
             const state = { auth, value: 100 };
