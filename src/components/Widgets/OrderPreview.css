@@ -6,9 +6,16 @@
     padding-bottom: 10px;
 }
 
+:global(.box-footer .col-md-4) {
+    margin-bottom: 5px;
+}
+
 @media (min-width: 992px) {
     .orderOperation {
         padding-bottom: 0;
+    }
+    :global(.box-footer .col-md-4) {
+        margin-bottom: 0;
     }
 }
 
