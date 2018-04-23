@@ -8,6 +8,19 @@ import {
 import isEmpty from "lodash/isEmpty";
 import { callout } from "../notifications";
 
+export const tripsInitialLoad = () => {
+    return {
+        type: API,
+        endpoint: { url: `/api/drivers/trips` },
+        success: ({ data, dispatch }) => {
+            dispatch({
+                data,
+                type: MANAGE_LOAD_VEHICLES_SUCCESS
+            });
+        }
+    };
+};
+
 export const depart = (trip) => (dispatch) => {
     dispatch(callout({ message: `行程${trip.id}已确认发车！`, type: "success" }));
     dispatch({
