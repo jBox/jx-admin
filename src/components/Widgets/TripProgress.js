@@ -140,13 +140,8 @@ class ProgressEditor extends Component {
 
 const ProgressItem = ({ date, milage, duration, fuelFee, tollFee, parkingFee, onClick }) => {
 
-    const infos = [`${milage}KM`, `${duration}H`, `燃油${Number(fuelFee).toFixed(1)}￥`];
-    if (tollFee) {
-        infos.push(`过路${Number(tollFee).toFixed(1)}￥`);
-    }
-    if (parkingFee) {
-        infos.push(`停车${Number(parkingFee).toFixed(1)}￥`);
-    }
+    const fee = Number(fuelFee) + Number(tollFee) + Number(parkingFee);
+    const infos = [`行驶${duration}小时`, `${milage}公里`, `其他费用${fee.toFixed(1)}￥`];
 
     const dateTime = new Date(date).format("MM-dd");
     const handleClick = () => {

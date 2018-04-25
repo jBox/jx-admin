@@ -99,7 +99,7 @@ export default class DriverTrip extends Component {
     renderOperation = () => {
         const { data } = this.props;
         // //scheduled,departure
-        const status = data.status.id;
+        const status = data.status;
         switch (status) {
             case "scheduled":
                 return (
@@ -155,7 +155,7 @@ export default class DriverTrip extends Component {
                             <li>车型：<label>{trip.vehicleModel}</label></li>
                         </ul>
 
-                        {trip.status.id !== "scheduled" && (
+                        {trip.status !== "scheduled" && (
                             <Progress data={trip.progress} terms={trip.terms} onChange={this.handleProgressChange} />
                         )}
                     </div>

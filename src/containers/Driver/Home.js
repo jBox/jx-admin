@@ -4,30 +4,44 @@ import { connect } from "react-redux";
 
 import homeSelector from "../../redux/selectors/driver";
 import DriverTrip from "../../components/Widgets/DriverTrip";
-import { depart, revert, updateProgress } from "../../redux/actions/driver";
+import { depart, revert, updateProgress, currentTripInitialLoad } from "../../redux/actions/driver";
 
 class Home extends Component {
 
     static propTypes = {
-        trips: PropTypes.array,
-        updateProgress: PropTypes.func
+        data: PropTypes.object,
+        depart: PropTypes.func,
+        revert: PropTypes.func,
+        updateProgress: PropTypes.func,
+        currentTripInitialLoad: PropTypes.func
+    }
+
+    componentDidMount() {
+        const { currentTripInitialLoad } = this.props;
+        if (currentTripInitialLoad) {
+            currentTripInitialLoad();
+        }
     }
 
     render() {
-        const { trips, depart, revert, updateProgress } = this.props;
-        return trips.map((trip, index) => (
-            <DriverTrip key={index}
-                data={trip}
+        const { data, depart, revert, updateProgress } = this.props;
+        if (!data) {
+            return "目前没有行程";
+        }
+
+        return (
+            <DriverTrip data={data}
                 onDepart={depart}
                 onRevert={revert}
                 onProgress={updateProgress}
             />
-        ))
+        );
     }
 }
 
 export default connect(homeSelector, {
     depart,
     revert,
-    updateProgress
+    updateProgress,
+    currentTripInitialLoad
 })(Home);

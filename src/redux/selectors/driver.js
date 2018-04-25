@@ -1,4 +1,5 @@
 import { createSelector } from "reselect";
+import isEmpty from "lodash/isEmpty";
 
 const calcTerms = (dateFrom, duration, progress) => {
     const FORMAT = "yyyy-MM-dd";
@@ -20,15 +21,17 @@ const calcTerms = (dateFrom, duration, progress) => {
 export default createSelector(
     (state) => state.driver,
     (driver) => {
+        const { current } = driver;
+        if (isEmpty(current)) {
+            return { data: null };
+        }
 
+        const dateFrom = current.departureTime.toDate();
+        const duration = Number(current.duration);
+        const progress = (current.progress || []).map((item) => (item.date));
+        const terms = calcTerms(dateFrom, duration, progress);
         return {
-            trips: driver.trips.map((trip) => {
-                const dateFrom = trip.departureTime.toDate();
-                const duration = Number(trip.duration);
-                const progress = (trip.progress || []).map((item) => (item.date));
-                const terms = calcTerms(dateFrom, duration, progress);
-                return { ...trip, terms };
-            })
+            data: { ...current, terms }
         };
     }
 );

@@ -2,8 +2,21 @@ import { combineReducers } from "redux";
 import {
     DRIVER_TRIP_DEPART_SUCCESS,
     DRIVER_TRIP_REVERT_SUCCESS,
-    DRIVER_TRIP_UPDATE_SUCCESS
+    DRIVER_TRIP_UPDATE_SUCCESS,
+    DRIVER_LOAD_CURR_TRIP
 } from "../actions/ActionTypes";
+
+const current = (state = {}, action) => {
+    switch (action.type) {
+        case DRIVER_TRIP_DEPART_SUCCESS:
+        case DRIVER_TRIP_REVERT_SUCCESS:
+        case DRIVER_TRIP_UPDATE_SUCCESS:
+        case DRIVER_LOAD_CURR_TRIP:
+            return action.data;
+        default:
+            return state;
+    }
+}
 
 const trips = (state = [
 
@@ -15,7 +28,7 @@ const trips = (state = [
         "notes": "其他信息", "id": "20180410000005",
         "version": 1524018704140, "licenseNunber": "粤A23233",
         "vehicleModel": "商务车",
-        "status": { id: "scheduled" }, //scheduled,departure,reverted
+        "status": "scheduled", //scheduled,departure,reverted
         "progress": []
     },
 
@@ -24,11 +37,15 @@ const trips = (state = [
         case DRIVER_TRIP_DEPART_SUCCESS:
         case DRIVER_TRIP_REVERT_SUCCESS:
         case DRIVER_TRIP_UPDATE_SUCCESS: {
-            const { trip } = action;
+            const { data } = action;
             const updated = [...state];
-            const index = updated.findIndex(x => x.id === trip.id);
-            updated[index] = trip;
-            return updated;
+            const index = updated.findIndex(x => x.id === data.id);
+            if (index !== -1) {
+                updated[index] = data;
+                return updated;
+            }
+
+            return state;
         }
         default:
             return state;
@@ -36,5 +53,6 @@ const trips = (state = [
 };
 
 export default combineReducers({
+    current,
     trips
 });

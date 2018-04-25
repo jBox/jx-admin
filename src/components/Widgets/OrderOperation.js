@@ -149,13 +149,47 @@ export default class OrderOperation extends Component {
         onComplete: PropTypes.func
     }
 
+    handleConfirm = () => {
+        const { onConfirm, order } = this.props;
+        if (onConfirm) {
+            onConfirm(order);
+        }
+    }
+
+    handleConfirmCancel = () => {
+        const { onConfirmCancel, order } = this.props;
+        if (onConfirmCancel) {
+            onConfirmCancel(order);
+        }
+    }
+
+    handleDepart = () => {
+        const { onDepart, order } = this.props;
+        if (onDepart) {
+            onDepart(order);
+        }
+    }
+
+    handleRevert = () => {
+        const { onRevert, order } = this.props;
+        if (onRevert) {
+            onRevert(order);
+        }
+    }
+
+    handleComplete = () => {
+        const { onComplete, order } = this.props;
+        if (onComplete) {
+            onComplete(order);
+        }
+    }
+
     confirmCancel = () => {
-        const { onConfirmCancel } = this.props;
         return (
             <div className="box-footer">
                 <div className="row">
                     <div className="col-md-offset-8 col-md-4 col-sm-12">
-                        <Button onClick={onConfirmCancel} block danger>确认取消订单</Button>
+                        <Button onClick={this.handleConfirmCancel} block danger>确认取消订单</Button>
                     </div>
                 </div>
             </div>
@@ -163,12 +197,11 @@ export default class OrderOperation extends Component {
     }
 
     confirm = () => {
-        const { onConfirm } = this.props;
         return (
             <div className="box-footer">
                 <div className="row">
                     <div className="col-md-offset-8 col-md-4 col-sm-12">
-                        <Button onClick={this.onConfirm} block primary>确认订单</Button>
+                        <Button onClick={this.handleConfirm} block primary>确认订单</Button>
                     </div>
                 </div>
             </div>
@@ -176,7 +209,7 @@ export default class OrderOperation extends Component {
     }
 
     scheduleAndDepart = () => {
-        const { order, vehicles, drivers, onSchedule, onDepart } = this.props;
+        const { order, vehicles, drivers, onSchedule } = this.props;
         return (
             <div className="box-footer">
                 <Scheduler
@@ -187,7 +220,7 @@ export default class OrderOperation extends Component {
                 >
                     {order.status.id === "scheduled" && (
                         <div className="col-md-4 col-sm-12">
-                            <Button onClick={onDepart} block danger>确认发车</Button>
+                            <Button onClick={this.handleDepart} block danger>确认发车</Button>
                         </div>
                     )}
                 </Scheduler>
@@ -196,12 +229,11 @@ export default class OrderOperation extends Component {
     }
 
     revert = () => {
-        const { onRevert } = this.props;
         return (
             <div className="box-footer">
                 <div className="row">
                     <div className="col-md-offset-8 col-md-4 col-sm-12">
-                        <Button onClick={onRevert} block danger>确认收车</Button>
+                        <Button onClick={this.handleRevert} block danger>确认收车</Button>
                     </div>
                 </div>
             </div>
@@ -209,12 +241,11 @@ export default class OrderOperation extends Component {
     }
 
     complete = () => {
-        const { onComplete } = this.props;
         return (
             <div className="box-footer">
                 <div className="row">
                     <div className="col-md-offset-8 col-md-4 col-sm-12">
-                        <Button onClick={onComplete} block success>完成</Button>
+                        <Button onClick={this.handleComplete} block success>完成</Button>
                     </div>
                 </div>
             </div>

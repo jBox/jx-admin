@@ -1,3 +1,4 @@
+import "babel-polyfill";
 import routes from "./routes";
 import middleware from "./redux/middleware";
 import reducers from "./redux/reducers";

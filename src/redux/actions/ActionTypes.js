@@ -96,6 +96,9 @@ export const MANAGE_CONFIRM_REGISTEG_FAILURE = "m/conf/reg/fai";
 /***************** END MANAGE   *****************/
 
 /***************** START DRIVER *****************/
+export const DRIVER_LOAD_CURR_TRIP = "drv/ld/curr/trip";
+export const DRIVER_LOAD_TRIPS = "drv/ld/trips";
+
 export const DRIVER_TRIP_DEPART_REQUEST = "drv/trip/d/req";
 export const DRIVER_TRIP_DEPART_SUCCESS = "drv/trip/d/suc";
 export const DRIVER_TRIP_DEPART_FAILURE = "drv/trip/d/fai";
