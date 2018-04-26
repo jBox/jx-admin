@@ -148,7 +148,7 @@ export default class DriverTrip extends Component {
                             <li>发车时间：<label>{trip.departureTime.toDateTime()}</label></li>
                             <li>计划收车时间：<label>{trip.revertTime}</label></li>
                             <li className={styles.itemHeader}><label>客户信息</label></li>
-                            <li>联系人：<label>{trip.name}</label></li>
+                            <li>联系人：<label>{trip.contact}</label></li>
                             <li>联系电话：<label>{trip.mobile}</label></li>
                             <li className={styles.itemHeader}><label>车辆信息</label></li>
                             <li>车牌号码：<label>{trip.licenseNunber}</label></li>

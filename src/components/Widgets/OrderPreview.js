@@ -122,7 +122,7 @@ export default class OrderPreview extends Component {
 
                 <div className="box-body">
                     <ul className="list-unstyled">
-                        <li>联系人：<label>{order.name}</label></li>
+                        <li>联系人：<label>{order.contact}</label></li>
                         <li>联系电话：<label>{order.mobile}</label></li>
                         <li>出发时间：<label>{order.departureTime.toDateTime()}</label></li>
                         <li>出发地点：<label>{order.departurePlace}</label></li>

@@ -17,7 +17,7 @@ const localDepartureTime = (departureTime) => {
 };
 
 const EDITABLE_FIELDS = [
-    "vehicles", "name", "mobile", "departureTime", "departurePlace", "destination", "duration", "notes"
+    "vehicles", "contact", "mobile", "departureTime", "departurePlace", "destination", "duration", "notes"
 ];
 
 const editableOrder = (order) => {
@@ -122,8 +122,8 @@ export default class OrderEditor extends Component {
                         <h4><label>订单号：</label>{order.id}</h4>
                         <p><label>订单状态：</label>{order.status.label}</p>
 
-                        <Input id="name" name="name" label="联系人"
-                            defaultValue={order.name}
+                        <Input id="contact" name="contact" label="联系人"
+                            defaultValue={order.contact}
                             onChange={this.handleInputChange}
                             plaseholder="联系人姓名"
                             message="请输入联系人"
