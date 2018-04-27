@@ -21,16 +21,17 @@ const reducers = requireDefault(require("../src/redux/reducers"));
 const express = require("express");
 const router = express.Router();
 const cv = require("config-vars");
+const foundation = require("./foundation");
 
 const apiBaseUrl = cv.env.jx.inExternalHost;
 const CompanyName = cv.env.jx.company;
 
 /* GET pages. */
-router.get("/:any*?", (req, res, next) => {
+router.get("/:any*?", foundation, (req, res, next) => {
     const { originalUrl } = req;
     const routerContext = {};
     const preloadedState = {
-        settings: { apiBaseUrl }
+        settings: { apiBaseUrl, ...req.foundation }
     };
     const magician = chaos(routes, reducers, middlewares);
     magician.serverRender({ url: originalUrl, routerContext, preloadedState }).done((comp) => {

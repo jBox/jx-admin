@@ -10,7 +10,6 @@ const cv = require("config-vars");
 const viewEngine = require("./engines/html");
 const router = require("./router");
 
-
 const app = express();
 const ROOT = Path.resolve(__dirname, "../");
 

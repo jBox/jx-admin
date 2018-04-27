@@ -8,6 +8,7 @@ module.exports = cv.setup((getenv) => ({
     host: getenv("JX_ADMIN_HOST"),
     jx: {
         company: getenv("JX_COMPANY_NAME"),
-        inExternalHost: getenv("JX_IN_EXTERNAL_HOST"),
+        inPort: getenv("JX_IN_PORT"),
+        inExternalHost: getenv("JX_IN_EXTERNAL_HOST")
     }
 }));
