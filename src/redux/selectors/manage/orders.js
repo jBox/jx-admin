@@ -7,9 +7,8 @@ export const modifyOrderSelector = createSelector(
         const { match: { params: { orderId } } } = props;
         return orders.data.find(x => x.id === orderId);
     },
-    (state) => state.manage.models,
-    (state) => state.manage.orderStatus,
-    (ordersModify, order, models, status) => {
+    (state) => state.settings.models,
+    (ordersModify, order, models) => {
         const initModify = { state: "init" };
         if (!order) {
             return {
@@ -20,9 +19,8 @@ export const modifyOrderSelector = createSelector(
         }
 
         const modify = ordersModify[order.id] || initModify;
-        const s = status[order.status] ? { ...status[order.status] } : { id: order.status };
         return {
-            order: { ...order, status: s },
+            order: { ...order },
             models,
             modify
         };
@@ -33,19 +31,15 @@ export default createSelector(
     (state) => state.manage.orders,
     (state) => state.manage.drivers,
     (state) => state.manage.vehicles,
-    (state) => state.manage.models,
-    (state) => state.manage.orderStatus,
-    (orders, drivers, vehicles, models, status) => {
+    (state) => state.settings.models,
+    (orders, drivers, vehicles, models) => {
         const vehicleItems = vehicles.map((item) => {
             const model = models[item.model] || { label: "" };
             return { ...item, model: model.label };
         });
 
         return {
-            orders: orders.data.map((item) => {
-                const s = status[item.status] ? { ...status[item.status] } : { id: item.status };
-                return { ...item, status: s };
-            }),
+            orders: orders.data.map((item) => ({ ...item})),
             drivers: drivers.data,
             vehicles: vehicleItems,
             hasMore: !!orders.next

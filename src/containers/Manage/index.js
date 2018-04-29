@@ -3,27 +3,19 @@ import PropTypes from "prop-types";
 import { Switch, Route, Link } from "react-browser-router";
 import { connect } from "react-redux";
 
-import { loadRoles, loadModels, loadOrderStatus } from "../../redux/actions/manage";
+import { loadRoles } from "../../redux/actions/manage";
 
 class Manage extends Component {
     static propTypes = {
         match: PropTypes.object,
         routes: PropTypes.array,
-        loadRoles: PropTypes.func,
-        loadModels: PropTypes.func,
-        loadOrderStatus: PropTypes.func
+        loadRoles: PropTypes.func
     }
 
     componentDidMount() {
-        const { loadRoles, loadModels, loadOrderStatus } = this.props;
+        const { loadRoles } = this.props;
         if (loadRoles) {
             loadRoles();
-        }
-        if (loadModels) {
-            loadModels();
-        }
-        if (loadOrderStatus) {
-            loadOrderStatus();
         }
     }
 
@@ -102,7 +94,5 @@ class Manage extends Component {
 }
 
 export default connect(null, {
-    loadRoles,
-    loadModels,
-    loadOrderStatus
+    loadRoles
 })(Manage);

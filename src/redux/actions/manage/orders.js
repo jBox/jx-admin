@@ -126,11 +126,11 @@ export const confirmCancelOrder = (order) => {
     };
 };
 
-export const scheduleOrder = (order, schedule) => {
+export const scheduleOrder = (order) => {
     const body = {
         version: order.version,
         operation: "schedule",
-        schedule
+        schedules: order.schedules
     };
 
     return {

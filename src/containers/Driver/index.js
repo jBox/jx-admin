@@ -3,24 +3,10 @@ import PropTypes from "prop-types";
 import { Switch, Route, Link } from "react-browser-router";
 import { connect } from "react-redux";
 
-import { loadModels, loadOrderStatus } from "../../redux/actions/manage";
-
-class Manage extends Component {
+export default class Driver extends Component {
     static propTypes = {
         match: PropTypes.object,
-        routes: PropTypes.array,
-        loadModels: PropTypes.func,
-        loadOrderStatus: PropTypes.func
-    }
-
-    componentDidMount() {
-        const { loadModels, loadOrderStatus } = this.props;
-        if (loadModels) {
-            loadModels();
-        }
-        if (loadOrderStatus) {
-            loadOrderStatus();
-        }
+        routes: PropTypes.array
     }
 
     breadcrumb = () => {
@@ -64,8 +50,3 @@ class Manage extends Component {
         );
     }
 }
-
-export default connect(null, {
-    loadModels,
-    loadOrderStatus
-})(Manage);

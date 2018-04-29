@@ -23,22 +23,6 @@ import {
 import isEmpty from "lodash/isEmpty";
 import { callout } from "../notifications";
 
-export const loadOrderStatus = () => {
-    return {
-        type: API,
-        endpoint: "/api/orders/status",
-        success: ({ data, dispatch }) => dispatch({ data, type: MANAGE_LOADED_ORDER_STATUS })
-    };
-};
-
-export const loadModels = () => {
-    return {
-        type: API,
-        endpoint: "/api/vehicles/models",
-        success: ({ data, dispatch }) => dispatch({ data, type: MANAGE_LOADED_MODELS })
-    };
-};
-
 export const loadRoles = () => (dispatch, getState) => {
     const { manage } = getState();
     if (isEmpty(manage.roles)) {

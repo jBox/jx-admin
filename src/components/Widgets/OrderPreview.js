@@ -4,22 +4,12 @@ import classNames from "classnames";
 import styles from "./OrderPreview.css";
 import Form from "../Form";
 import Autocomplete from "../Form/Autocomplete";
-import { LPN_CONTENT_PATTERN, SERVICE_STATUS } from "../utils";
+import { SERVICE_STATUS } from "../utils";
 
 import Button from "../Form/Button";
 import OrderOperation from "./OrderOperation";
-
-const VehicleItem = ({ model, count, withDriver, notes }) => {
-    const additional = [`${count} 辆`];
-    if (withDriver) {
-        additional.push("带驾");
-    }
-    if (notes) {
-        additional.push(notes);
-    }
-
-    return (<p><label>{model.label}</label> / {additional.join(" / ")}</p>)
-};
+import ScheduleVehicles from "./ScheduleVehicles";
+import { scheduleOrder } from "../../redux/actions/manage/orders";
 
 const OrderTrack = ({ state, time }) => {
     return (
@@ -103,7 +93,7 @@ export default class OrderPreview extends Component {
     }
 
     render() {
-        const { order } = this.props;
+        const { order, vehicles, drivers, onSchedule } = this.props;
 
         return (
             <div className={classNames("box", this.getBoxStyle())}>
@@ -132,9 +122,12 @@ export default class OrderPreview extends Component {
                     </ul>
                 </div>
 
-                <div className="box-footer box-comments">
-                    {order.vehicles.map((item, index) => (<VehicleItem key={index} {...item} />))}
-                </div>
+                <ScheduleVehicles
+                    order={order}
+                    vehicles={vehicles}
+                    drivers={drivers}
+                    onSchedule={onSchedule}
+                />
 
                 <OrderStatus order={order} />
 

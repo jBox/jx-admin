@@ -27,24 +27,6 @@ const roles = (state = {}, action) => {
     }
 };
 
-const models = (state = {}, action) => {
-    switch (action.type) {
-        case MANAGE_LOADED_MODELS:
-            return action.data;
-        default:
-            return state;
-    }
-};
-
-const orderStatus = (state = {}, action) => {
-    switch (action.type) {
-        case MANAGE_LOADED_ORDER_STATUS:
-            return action.data;
-        default:
-            return state;
-    }
-};
-
 const vehicles = (state = [], action) => {
     switch (action.type) {
         case MANAGE_LOAD_VEHICLES_SUCCESS:
@@ -130,14 +112,12 @@ const status = (state = {}, action) => {
 };
 
 export default combineReducers({
-    status,
     registerConfirmations,
     roles,
-    models,
+    status,
     registers,
     drivers,
     users,
     vehicles,
-    orders,
-    orderStatus
+    orders
 });
