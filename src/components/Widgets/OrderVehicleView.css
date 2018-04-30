@@ -1,0 +1,45 @@
+@value success from "../Colors.css";
+
+.scheduledIcon {
+    float: left;
+    color: success;  
+    padding-top: 3px;
+}
+
+.scheduleItem {
+    padding-right: 5px;
+}
+
+.departure {
+    font-size: 9px;
+    display: inline;
+    padding: 2px 7px;
+    vertical-align: unset;
+}
+
+.content {
+    margin-left: 20px;
+    color: #555;
+}
+
+.item {
+    color: #444;
+    font-weight: 600;
+    padding-right: 10px;
+}
+
+.list {
+    margin-bottom: 8px;
+}
+
+.list:last-child{
+    margin-bottom: 0px;
+}
+
+.buttonGroup button{
+    margin-right: 5px;
+}
+
+.buttonGroup button:last-child{
+    margin-right: 0px;
+}

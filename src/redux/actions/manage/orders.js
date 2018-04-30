@@ -167,6 +167,27 @@ export const completeOrder = (order) => {
     };
 };
 
+export const departSchedule = (order, schedule) => {
+    const body = {
+        version: order.version,
+        operation: "depart",
+        schedule
+    };
+
+    return {
+        type: API,
+        endpoint: { url: `/api/orders/${order.id}`, method: "PUT", body },
+        error: ({ dispatch, error }) => dispatch(callout({ subject: `${schedule.licenseNumber}发车失败`, message: error, type: "error", duration: 8 })),
+        success: ({ data, dispatch }) => {
+            dispatch(callout({ message: `${schedule.licenseNumber}已发车`, type: "success" }));
+            dispatch({
+                data,
+                type: MANAGE_ORDER_UPDATED
+            });
+        }
+    };
+}
+
 export const cancelOrder = (order) => {
     const body = {
         version: order.version,

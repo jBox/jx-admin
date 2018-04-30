@@ -9,6 +9,8 @@ import Modal from "../Overlays/Modal";
 import Form from "../Form";
 import Button from "../Form/Button";
 import Autocomplete from "../Form/Autocomplete";
+import OrderVehicleView from "./OrderVehicleView";
+import OrderProgress from "./OrderProgress";
 
 class Scheduler extends Component {
     static propTypes = {
@@ -83,46 +85,12 @@ class Scheduler extends Component {
                     />
                 </div>
                 <div className="col-md-4 col-sm-12">
-                    <Button type="submit" block success>添加调度</Button>
+                    <Button type="submit" className="pull-right" friable success>添加调度</Button>
                 </div>
             </Form>
         );
     }
 }
-
-const VehicleItem = ({ schedulable, data, onSchedule }) => {
-    const { model, count, withDriver, scheduled } = data;
-    const additional = [`${count} 辆`];
-    if (withDriver) {
-        additional.push("带驾");
-    }
-
-    const handleScheduleClick = (item) => {
-        return () => {
-            if (onSchedule) {
-                onSchedule(item);
-            }
-        }
-    }
-
-    const textColor = classNames({ [styles.scheduledColor]: scheduled });
-
-    return (<p>
-        <label className={textColor}>{model.label}</label><span className={textColor}> / {additional.join(" / ")}</span>
-        {scheduled && (
-            <i className={classNames("fa fa-fw fa-check-circle-o", styles.scheduledColor)}></i>
-        )}
-        {schedulable && (
-            <Button className="pull-right"
-                onClick={handleScheduleClick(data)}
-                primary={!scheduled}
-                flat xs
-            >
-                {scheduled ? "重新安排" : "安排车辆"}
-            </Button>
-        )}
-    </p>)
-};
 
 const VehicleText = ({ data }) => {
     const { model, count, withDriver, notes } = data;
@@ -162,6 +130,7 @@ const ScheduleItem = ({ id, licenseNumber, model, driver, mobile, onDelete }) =>
 
 class SchedulePopup extends Component {
     static propTypes = {
+        defaultValue: PropTypes.array,
         vehicles: PropTypes.array,
         drivers: PropTypes.array,
         data: PropTypes.object,
@@ -169,8 +138,12 @@ class SchedulePopup extends Component {
         onSubmit: PropTypes.func
     }
 
-    state = {
-        schedules: []
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            schedules: props.defaultValue
+        };
     }
 
     handleSubmit = () => {
@@ -235,7 +208,7 @@ class SchedulePopup extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button className="pull-left" onClick={onClose}>取消</Button>
-                    <Button type="submit" primary disabled={showScheduler} onClick={this.handleSubmit}>提交</Button>
+                    <Button type="submit" primary friable disabled={showScheduler} onClick={this.handleSubmit}>确定</Button>
                 </Modal.Footer>
             </Modal>
         );
@@ -252,7 +225,8 @@ export default class ScheduleVehicles extends Component {
         vehicles: PropTypes.array,
         drivers: PropTypes.array,
         order: PropTypes.object,
-        onSchedule: PropTypes.func
+        onSchedule: PropTypes.func,
+        onDepart: PropTypes.func
     }
 
     constructor(props) {
@@ -263,7 +237,20 @@ export default class ScheduleVehicles extends Component {
     }
 
     handleScheduleVehicle = (vehicle) => {
-        this.setState({ dialog: { display: true, vehicle } });
+        const { order: { schedules } } = this.props;
+        let defaultValue = [];
+        if (schedules.length > 0) {
+            defaultValue = schedules.filter(x => x.belongs === vehicle.id);
+        }
+
+        this.setState({ dialog: { display: true, vehicle, defaultValue } });
+    }
+
+    handleScheduleDepart = (schedule) => {
+        const { order, onDepart } = this.props;
+        if (onDepart) {
+            onDepart(order, schedule);
+        }
     }
 
     handleSchedulePopupClose = () => {
@@ -301,23 +288,29 @@ export default class ScheduleVehicles extends Component {
     render() {
         const { order, vehicles, drivers } = this.props;
         const { dialog } = this.state;
-        const schedulable = order.status.id === "confirmed";
+        const schedulable = ["confirmed", "scheduled"].includes(order.status.id);
 
         return (
             <Fragment>
                 <div className="box-footer box-comments">
                     {order.vehicles.map((item) => (
-                        <VehicleItem key={item.id}
+                        <OrderVehicleView key={item.id}
                             schedulable={schedulable}
                             data={item}
+                            schedules={order.schedules.filter(x => x.belongs === item.id)}
                             onSchedule={this.handleScheduleVehicle}
+                            onDepart={this.handleScheduleDepart}
                         />
                     ))}
+
+                    <OrderProgress order={order} />
+
                 </div>
 
                 {dialog.display && (
                     <SchedulePopup
                         data={dialog.vehicle}
+                        defaultValue={dialog.defaultValue}
                         vehicles={vehicles}
                         drivers={drivers}
                         onClose={this.handleSchedulePopupClose}

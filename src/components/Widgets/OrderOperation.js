@@ -17,8 +17,6 @@ export default class OrderOperation extends Component {
         order: PropTypes.object,
         onConfirm: PropTypes.func,
         onConfirmCancel: PropTypes.func,
-        onDepart: PropTypes.func,
-        onRevert: PropTypes.func,
         onComplete: PropTypes.func
     }
 
@@ -81,31 +79,6 @@ export default class OrderOperation extends Component {
         );
     }
 
-    depart = () => {
-        const { order, vehicles, drivers } = this.props;
-        return (
-            <div className="box-footer">
-                <div className="row">
-                    <div className="col-md-offset-8 col-md-4 col-sm-12">
-                        <Button onClick={this.handleDepart} block danger>确认发车</Button>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    revert = () => {
-        return (
-            <div className="box-footer">
-                <div className="row">
-                    <div className="col-md-offset-8 col-md-4 col-sm-12">
-                        <Button onClick={this.handleRevert} block danger>确认收车</Button>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
     complete = () => {
         return (
             <div className="box-footer">
@@ -128,14 +101,6 @@ export default class OrderOperation extends Component {
 
         if (order.status.id === "submitted") {
             return this.confirm();
-        }
-
-        if (order.status.id === "confirmed") {
-            return this.depart();
-        }
-
-        if (order.status.id === "departure") {
-            return this.revert();
         }
 
         if (order.status.id === "reverted") {

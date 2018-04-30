@@ -13,6 +13,7 @@ import {
     scheduleOrder,
     confirmCancelOrder,
     completeOrder,
+    departSchedule,
     ordersInitialLoad
 } from "../../redux/actions/manage/orders";
 import { driversInitialLoad, vehiclesInitialLoad } from "../../redux/actions/manage";
@@ -35,6 +36,7 @@ class Orders extends Component {
         confirmCancelOrder: PropTypes.func,
         scheduleOrder: PropTypes.func,
         completeOrder: PropTypes.func,
+        departSchedule: PropTypes.func,
         loadMore: PropTypes.func,
         ordersInitialLoad: PropTypes.func,
         driversInitialLoad: PropTypes.func,
@@ -75,7 +77,7 @@ class Orders extends Component {
         }
     }
 
-    handleCompleteOrder = (order, schedule) => {
+    handleCompleteOrder = (order) => {
         const { completeOrder } = this.props;
         if (completeOrder) {
             completeOrder(order);
@@ -97,7 +99,7 @@ class Orders extends Component {
     }
 
     render() {
-        const { hasMore, orders, drivers, vehicles } = this.props;
+        const { hasMore, orders, drivers, vehicles, departSchedule } = this.props;
         const noMore = !hasMore && orders.length > 0;
         const noAny = !hasMore && orders.length === 0;
 
@@ -121,6 +123,7 @@ class Orders extends Component {
                             onSchedule={this.handleScheduleOrder}
                             onComplete={this.handleCompleteOrder}
                             onModify={this.handleModifyOrder}
+                            onDepart={departSchedule}
                         />
                     ))}
                 </InfiniteScroll>
@@ -143,6 +146,7 @@ export default connect(manageOrdersSelector, {
     confirmCancelOrder,
     completeOrder,
     loadMore,
+    departSchedule,
     ordersInitialLoad,
     driversInitialLoad,
     vehiclesInitialLoad

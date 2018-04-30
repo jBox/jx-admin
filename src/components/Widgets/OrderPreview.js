@@ -36,7 +36,7 @@ const OrderStatus = ({ order }) => {
                     <button type="button" className="btn btn-box-tool" data-widget="collapse">查看详情 &gt;</button>
                 </div>
             </div>
-            <div className="box-body" style={{ display: "none" }}>
+            <div className="box-body" style={{ display: "none", paddingTop: "0" }}>
                 {traces.map((item, index) => (<OrderTrack key={index} {...item} />))}
             </div>
         </div>
@@ -93,7 +93,7 @@ export default class OrderPreview extends Component {
     }
 
     render() {
-        const { order, vehicles, drivers, onSchedule } = this.props;
+        const { order, vehicles, drivers, onSchedule, onDepart } = this.props;
 
         return (
             <div className={classNames("box", this.getBoxStyle())}>
@@ -127,6 +127,7 @@ export default class OrderPreview extends Component {
                     vehicles={vehicles}
                     drivers={drivers}
                     onSchedule={onSchedule}
+                    onDepart={onDepart}
                 />
 
                 <OrderStatus order={order} />

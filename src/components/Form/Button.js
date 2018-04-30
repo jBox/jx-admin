@@ -2,12 +2,15 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
+import styles from "./Button.css";
+
 export default class Button extends Component {
     static defaultProps = {
         type: "button"
     }
 
     static propTypes = {
+        friable: PropTypes.bool,
         primary: PropTypes.bool,
         success: PropTypes.bool,
         danger: PropTypes.bool,
@@ -24,7 +27,7 @@ export default class Button extends Component {
     }
 
     render() {
-        const { children, type, className, block, primary, success, info, warning, danger, flat, lg, sm, xs, ...props } = this.props;
+        const { children, type, className, block, friable, primary, success, info, warning, danger, flat, lg, sm, xs, ...props } = this.props;
         let buttonBackgroundStyle = "btn-default";
         if (primary) {
             buttonBackgroundStyle = "btn-primary";
@@ -51,12 +54,15 @@ export default class Button extends Component {
 
         const buttonFlat = flat ? "btn-flat" : "";
 
+        const buttonFriable = friable ? styles.friable : "";
+
         const buttonClassNames = classNames(
             "btn",
             buttonBackgroundStyle,
             buttonSize,
             buttonBlock,
             buttonFlat,
+            buttonFriable,
             className
         );
 

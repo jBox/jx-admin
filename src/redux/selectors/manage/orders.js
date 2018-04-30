@@ -1,5 +1,22 @@
 import { createSelector } from "reselect";
 
+const calcTerms = (dateFrom, duration, progress) => {
+    const FORMAT = "yyyy-MM-dd";
+    const dateStart = new Date(dateFrom);
+    const initialDate = dateStart.getDate();
+    const terms = [];
+    for (let i = 0; i < duration; i++) {
+        dateStart.setDate(initialDate + i);
+        let dateStr = dateStart.format(FORMAT);
+        let inProgress = progress.find(x => x === dateStr);
+        if (!inProgress) {
+            terms.push(dateStr);
+        }
+    }
+
+    return terms;
+};
+
 export const modifyOrderSelector = createSelector(
     (state) => state.manage.orders.modify,
     (state, props) => {
@@ -39,7 +56,15 @@ export default createSelector(
         });
 
         return {
-            orders: orders.data.map((item) => ({ ...item})),
+            orders: orders.data.map((order) => ({
+                ...order, schedules: order.schedules.map((schedule) => {
+                    const dateFrom = order.departureTime.toDate();
+                    const duration = Number(order.duration);
+                    const progress = (order.progress || []).map((item) => (item.date));
+                    const terms = calcTerms(dateFrom, duration, progress);
+                    return { ...schedule, terms };
+                })
+            })),
             drivers: drivers.data,
             vehicles: vehicleItems,
             hasMore: !!orders.next

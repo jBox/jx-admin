@@ -1,0 +1,16 @@
+@value success from "../Colors.css";
+
+.content {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.progress {
+    margin: 0;
+    flex: 1;
+}
+
+.percentage{
+    padding-left: 10px;
+}
