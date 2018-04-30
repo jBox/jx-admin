@@ -60,7 +60,7 @@ export default createSelector(
                 ...order, schedules: order.schedules.map((schedule) => {
                     const dateFrom = order.departureTime.toDate();
                     const duration = Number(order.duration);
-                    const progress = (order.progress || []).map((item) => (item.date));
+                    const progress = (schedule.progress || []).map((item) => (item.date));
                     const terms = calcTerms(dateFrom, duration, progress);
                     return { ...schedule, terms };
                 })

@@ -59,6 +59,7 @@ export default class OrderPreview extends Component {
         onSchedule: PropTypes.func,
         onDepart: PropTypes.func,
         onRevert: PropTypes.func,
+        onProgress: PropTypes.func,
         onComplete: PropTypes.func
     }
 
@@ -93,7 +94,7 @@ export default class OrderPreview extends Component {
     }
 
     render() {
-        const { order, vehicles, drivers, onSchedule, onDepart } = this.props;
+        const { order, vehicles, drivers, onSchedule, onDepart, onProgress, onRevert } = this.props;
 
         return (
             <div className={classNames("box", this.getBoxStyle())}>
@@ -128,6 +129,8 @@ export default class OrderPreview extends Component {
                     drivers={drivers}
                     onSchedule={onSchedule}
                     onDepart={onDepart}
+                    onProgress={onProgress}
+                    onRevert={onRevert}
                 />
 
                 <OrderStatus order={order} />

@@ -103,7 +103,10 @@ export default class OrderOperation extends Component {
             return this.confirm();
         }
 
-        if (order.status.id === "reverted") {
+        if (order.status.id === "scheduled" &&
+            order.schedules.length > 0 &&
+            order.schedules.every(x => x.status === "end")
+        ) {
             return this.complete();
         }
 

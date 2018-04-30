@@ -226,7 +226,9 @@ export default class ScheduleVehicles extends Component {
         drivers: PropTypes.array,
         order: PropTypes.object,
         onSchedule: PropTypes.func,
-        onDepart: PropTypes.func
+        onDepart: PropTypes.func,
+        onProgress: PropTypes.func,
+        onRevert: PropTypes.func
     }
 
     constructor(props) {
@@ -250,6 +252,20 @@ export default class ScheduleVehicles extends Component {
         const { order, onDepart } = this.props;
         if (onDepart) {
             onDepart(order, schedule);
+        }
+    }
+
+    handleScheduleProgress = (schedule) => {
+        const { order, onProgress } = this.props;
+        if (onProgress) {
+            onProgress(order, schedule);
+        }
+    }
+
+    handleScheduleRevert = (schedule) => {
+        const { order, onRevert } = this.props;
+        if (onRevert) {
+            onRevert(order, schedule);
         }
     }
 
@@ -288,7 +304,8 @@ export default class ScheduleVehicles extends Component {
     render() {
         const { order, vehicles, drivers } = this.props;
         const { dialog } = this.state;
-        const schedulable = ["confirmed", "scheduled"].includes(order.status.id);
+        const schedulable = ["confirmed", "scheduled"].includes(order.status.id) &&
+            (order.schedules.length === 0 || order.schedules.every(x => !x.status));
 
         return (
             <Fragment>
@@ -300,6 +317,8 @@ export default class ScheduleVehicles extends Component {
                             schedules={order.schedules.filter(x => x.belongs === item.id)}
                             onSchedule={this.handleScheduleVehicle}
                             onDepart={this.handleScheduleDepart}
+                            onProgress={this.handleScheduleProgress}
+                            onRevert={this.handleScheduleRevert}
                         />
                     ))}
 

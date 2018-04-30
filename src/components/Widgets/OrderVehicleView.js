@@ -13,7 +13,8 @@ export default class OrderVehicleView extends Component {
         schedulable: PropTypes.bool,
         onSchedule: PropTypes.func,
         onDepart: PropTypes.func,
-        onProgress: PropTypes.func
+        onProgress: PropTypes.func,
+        onRevert: PropTypes.func
     }
 
     constructor(props) {
@@ -32,10 +33,34 @@ export default class OrderVehicleView extends Component {
         }
     }
 
+    generateRevertHandler = (schedule) => {
+        const { onRevert } = this.props;
+        return () => {
+            if (onRevert) {
+                onRevert(schedule);
+            }
+        }
+    }
+
     generateProgressHandler = (schedule) => {
         return () => {
             this.setState({ dialog: { display: true, schedule } });
         }
+    }
+
+    handleProgressEditorClose = () => {
+        this.setState({ dialog: { display: false } });
+    }
+
+    handleProgressEditorSubmit = (progress) => {
+        const { schedule } = this.state.dialog;
+        schedule.progress = [...schedule.progress, progress];
+        this.setState({ dialog: { display: false } }, () => {
+            const { onProgress } = this.props;
+            if (onProgress) {
+                onProgress(schedule);
+            }
+        });
     }
 
     handleScheduleClick = () => {
@@ -60,17 +85,23 @@ export default class OrderVehicleView extends Component {
             case "start":
                 return (
                     <div className={classNames("pull-right", styles.buttonGroup)}>
-                        <Button flat xs primary onClick={this.generateProgressHandler(item)}>
-                            汇报进度
-                        </Button>
-                        <Button flat xs danger onClick={this.generateProgressHandler(item)}>
+                        {item.terms.length > 0 && (
+                            <Button flat xs primary onClick={this.generateProgressHandler(item)}>
+                                汇报进度
+                            </Button>
+                        )}
+                        <Button flat xs danger onClick={this.generateRevertHandler(item)}>
                             确认收车
                         </Button>
                     </div>
                 );
             case "end":
+                if (item.terms.length === 0) {
+                    return null;
+                }
+
                 return (
-                    <Button className="pull-right" flat xs onClick={this.generateProgressHandler(item)}>
+                    <Button className="pull-right" primary flat xs onClick={this.generateProgressHandler(item)}>
                         汇报进度
                     </Button>
                 );

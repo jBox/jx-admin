@@ -95,9 +95,9 @@ export const confirmOrder = (order) => {
     return {
         type: API,
         endpoint: { url: `/api/orders/${order.id}`, method: "PUT", body },
-        error: ({ dispatch, error }) => dispatch(callout({ subject: "订单确认失败", message: error, type: "error", duration: 8 })),
+        error: ({ dispatch, error }) => dispatch(callout({ subject: `订单${order.id}确认失败`, message: error, type: "error", duration: 8 })),
         success: ({ data, dispatch }) => {
-            dispatch(callout({ message: "订单已确认", type: "success" }));
+            dispatch(callout({ message: `订单${order.id}已确认`, type: "success" }));
             dispatch({
                 data,
                 type: MANAGE_ORDER_UPDATED
@@ -115,9 +115,9 @@ export const confirmCancelOrder = (order) => {
     return {
         type: API,
         endpoint: { url: `/api/orders/${order.id}`, method: "PUT", body },
-        error: ({ dispatch, error }) => dispatch(callout({ subject: "确认取消失败", message: error, type: "error", duration: 8 })),
+        error: ({ dispatch, error }) => dispatch(callout({ subject: `订单${order.id}取消操作失败`, message: error, type: "error", duration: 8 })),
         success: ({ data, dispatch }) => {
-            dispatch(callout({ message: "订单已取消", type: "success" }));
+            dispatch(callout({ message: `订单${order.id}已取消`, type: "success" }));
             dispatch({
                 data,
                 type: MANAGE_ORDER_UPDATED
@@ -136,9 +136,9 @@ export const scheduleOrder = (order) => {
     return {
         type: API,
         endpoint: { url: `/api/orders/${order.id}`, method: "PUT", body },
-        error: ({ dispatch, error }) => dispatch(callout({ subject: "订单安排失败", message: error, type: "error", duration: 8 })),
+        error: ({ dispatch, error }) => dispatch(callout({ subject: `订单${order.id}安排失败`, message: error, type: "error", duration: 8 })),
         success: ({ data, dispatch }) => {
-            dispatch(callout({ message: "订单已安排", type: "success" }));
+            dispatch(callout({ message: `订单${order.id}已安排`, type: "success" }));
             dispatch({
                 data,
                 type: MANAGE_ORDER_UPDATED
@@ -156,9 +156,9 @@ export const completeOrder = (order) => {
     return {
         type: API,
         endpoint: { url: `/api/orders/${order.id}`, method: "PUT", body },
-        error: ({ dispatch, error }) => dispatch(callout({ subject: "无法完成订单", message: error, type: "error", duration: 8 })),
+        error: ({ dispatch, error }) => dispatch(callout({ subject: `订单${order.id}完成操作失败`, message: error, type: "error", duration: 8 })),
         success: ({ data, dispatch }) => {
-            dispatch(callout({ message: "订单已完成", type: "success" }));
+            dispatch(callout({ message: `订单${order.id}已完成`, type: "success" }));
             dispatch({
                 data,
                 type: MANAGE_ORDER_UPDATED
@@ -180,6 +180,48 @@ export const departSchedule = (order, schedule) => {
         error: ({ dispatch, error }) => dispatch(callout({ subject: `${schedule.licenseNumber}发车失败`, message: error, type: "error", duration: 8 })),
         success: ({ data, dispatch }) => {
             dispatch(callout({ message: `${schedule.licenseNumber}已发车`, type: "success" }));
+            dispatch({
+                data,
+                type: MANAGE_ORDER_UPDATED
+            });
+        }
+    };
+}
+
+export const progressSchedule = (order, schedule) => {
+    const body = {
+        version: order.version,
+        operation: "progress",
+        schedule
+    };
+
+    return {
+        type: API,
+        endpoint: { url: `/api/orders/${order.id}`, method: "PUT", body },
+        error: ({ dispatch, error }) => dispatch(callout({ subject: `${schedule.licenseNumber}进度更新失败`, message: error, type: "error", duration: 8 })),
+        success: ({ data, dispatch }) => {
+            dispatch(callout({ message: `${schedule.licenseNumber}进度已更新`, type: "success" }));
+            dispatch({
+                data,
+                type: MANAGE_ORDER_UPDATED
+            });
+        }
+    };
+}
+
+export const revertSchedule = (order, schedule) => {
+    const body = {
+        version: order.version,
+        operation: "revert",
+        schedule
+    };
+
+    return {
+        type: API,
+        endpoint: { url: `/api/orders/${order.id}`, method: "PUT", body },
+        error: ({ dispatch, error }) => dispatch(callout({ subject: `${schedule.licenseNumber}收车失败`, message: error, type: "error", duration: 8 })),
+        success: ({ data, dispatch }) => {
+            dispatch(callout({ message: `${schedule.licenseNumber}已收车`, type: "success" }));
             dispatch({
                 data,
                 type: MANAGE_ORDER_UPDATED

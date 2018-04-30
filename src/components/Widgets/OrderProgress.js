@@ -8,30 +8,40 @@ import Modal from "../Overlays/Modal";
 import Form from "../Form";
 import Button from "../Form/Button";
 
+const calcProgress = ({ schedules, duration }) => {
+    const percentages = schedules.map((schedule) => {
+        const ps = schedule.progress || [];
+        return ps.length / duration * 100;
+    });
+
+    if (percentages.length === 0) {
+        return 0;
+    }
+
+    const percentage = Math.floor(percentages.reduce((total, p) => (total + p), 0) / percentages.length);
+    return percentage >= 100 ? 100 : percentage;
+};
+
 export default class OrderProgress extends Component {
     static propTypes = {
         order: PropTypes.object
     }
 
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const progress = calcProgress(nextProps.order);
+        if (progress !== prevState.progress) {
+            return { progress };
+        }
+
+        return null;
+    }
+
     constructor(props) {
         super(props);
         this.state = {
-            progress: this.calcProgress(props.order),
+            progress: calcProgress(props.order),
             dialog: { display: false }
         };
-    }
-
-    calcProgress = ({ schedules, duration }) => {
-        const percentages = schedules.map((schedule) => {
-            return schedule.progress.length / duration * 100;
-        });
-
-        if(percentages.length === 0){
-            return 0;
-        }
-
-        const percentage = Math.floor(percentages.reduce((total, p) => (total + p), 0) / percentages.length);
-        return percentage >= 100 ? 100 : percentage;
     }
 
     handleProgressClick = (event) => {
