@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import Interactive from "../Tables/Interactive";
 import Button from "../Form/Button";
+import Switch from "react-switch";
 
 import styles from "./UserList.css";
 
@@ -21,7 +22,24 @@ class User extends Component {
         nickname: PropTypes.string,
         mobile: PropTypes.string,
         roles: PropTypes.array,
-        onDelete: PropTypes.func
+        onDelete: PropTypes.func,
+        onDispatcherChange: PropTypes.func
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const isDispatcher = nextProps.roles.includes("调度员");
+        if (prevState.isDispatcher !== isDispatcher) {
+            return { isDispatcher };
+        }
+
+        return null;
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            isDispatcher: props.roles.includes("dispatcher")
+        };
     }
 
     handleDelete = () => {
@@ -29,6 +47,15 @@ class User extends Component {
         if (onDelete) {
             onDelete({ id, nickname, mobile, roles });
         }
+    }
+
+    handleDispatcherChange = (checked) => {
+        const { id, nickname, mobile, roles, onDispatcherChange } = this.props;
+        this.setState({ isDispatcher: checked }, () => {
+            if (onDispatcherChange) {
+                onDispatcherChange({ id, nickname, mobile, roles }, checked);
+            }
+        });
     }
 
     render() {
@@ -46,7 +73,17 @@ class User extends Component {
                 </Interactive.Cell>
                 <Interactive.Tools>
                     <div className={styles.tools}>
-                        <Button key="del" className="pull-right" onClick={this.handleDelete} danger sm>删除</Button>
+                        <label htmlFor="dispatcher_switch" style={{ margin: 0 }}>
+                            <span>调度员</span>
+                            <Switch
+                                height={22}
+                                className="react-switch"
+                                onChange={this.handleDispatcherChange}
+                                checked={this.state.isDispatcher}
+                                id="dispatcher_switch"
+                            />
+                        </label>
+                        <Button key="del" className="pull-right" onClick={this.handleDelete} friable danger xs>删除</Button>
                     </div>
                 </Interactive.Tools>
             </Interactive.Row>
@@ -57,11 +94,12 @@ class User extends Component {
 export default class UserList extends Component {
     static propTypes = {
         data: PropTypes.array,
-        onDelete: PropTypes.func
+        onDelete: PropTypes.func,
+        onDispatcherChange: PropTypes.func
     }
 
     list = () => {
-        const { data, onDelete } = this.props;
+        const { data, onDelete, onDispatcherChange } = this.props;
         if (data.length === 0) {
             return (
                 <Interactive.Row>
@@ -73,7 +111,7 @@ export default class UserList extends Component {
         }
 
         return data.map((user) => {
-            return (<User {...user} key={user.mobile} onDelete={onDelete} />);
+            return (<User {...user} key={user.mobile} onDelete={onDelete} onDispatcherChange={onDispatcherChange} />);
         });
     }
 

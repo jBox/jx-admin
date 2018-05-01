@@ -7,7 +7,7 @@ import UserList from "../../components/Widgets/UserList";
 import Confirm from "../../components/Overlays/Confirm";
 
 import manageUsersSelector from "../../redux/selectors/manage/users";
-import { deleteUser, usersInitialLoad } from "../../redux/actions/manage";
+import { deleteUser, updateUserRole, usersInitialLoad } from "../../redux/actions/manage";
 
 class Users extends Component {
 
@@ -15,6 +15,7 @@ class Users extends Component {
         users: PropTypes.array,
         status: PropTypes.object,
         deleteUser: PropTypes.func,
+        updateUserRole: PropTypes.func,
         usersInitialLoad: PropTypes.func
     }
 
@@ -47,6 +48,13 @@ class Users extends Component {
         this.setState({ confirm: { display: false } });
     }
 
+    handleDispatcherChange = (user, isDispatcher) => {
+        const { updateUserRole } = this.props;
+        if (updateUserRole) {
+            updateUserRole(user, "dispatcher", isDispatcher ? "post" : "delete");
+        }
+    }
+
     render() {
         const { users } = this.props;
         const { confirm } = this.state;
@@ -59,7 +67,7 @@ class Users extends Component {
                     </div>
 
                     <div className="box-body no-padding">
-                        <UserList data={users} onDelete={this.handleDeleteUser} />
+                        <UserList data={users} onDelete={this.handleDeleteUser} onDispatcherChange={this.handleDispatcherChange} />
                     </div>
                     <div className="box-footer clearfix">
                     </div>
@@ -80,5 +88,6 @@ class Users extends Component {
 
 export default connect(manageUsersSelector, {
     deleteUser,
+    updateUserRole,
     usersInitialLoad
 })(Users);

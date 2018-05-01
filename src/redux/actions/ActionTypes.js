@@ -79,6 +79,10 @@ export const MANAGE_DEL_VEHICLE_SUCCESS = "m/del/vhc/suc";
 export const MANAGE_ADD_DRIVER_SUCCESS = "m/add/drv/suc";
 export const MANAGE_DEL_USER_SUCCESS = "m/del/user/suc";
 
+export const MANAGE_UPD_USER_REQUEST = "m/upd/user/req";
+export const MANAGE_UPD_USER_SUCCESS = "m/upd/user/suc";
+export const MANAGE_UPD_USER_FAILURE = "m/upd/user/fai";
+
 export const MANAGE_UPDATE_DRIVER_REQUEST = "m/u/drv/req";
 export const MANAGE_UPDATE_DRIVER_SUCCESS = "m/u/drv/suc";
 export const MANAGE_UPDATE_DRIVER_FAILURE = "m/u/drv/fai";

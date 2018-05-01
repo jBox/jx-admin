@@ -15,7 +15,8 @@ import {
     MANAGE_LOAD_VEHICLES_SUCCESS,
     MANAGE_ADD_VEHICLE_SUCCESS,
     MANAGE_DEL_VEHICLE_SUCCESS,
-    MANAGE_DEL_USER_SUCCESS
+    MANAGE_DEL_USER_SUCCESS,
+    MANAGE_UPD_USER_SUCCESS
 } from "../actions/ActionTypes";
 
 const roles = (state = {}, action) => {
@@ -71,14 +72,26 @@ const users = (state = [], action) => {
         case MANAGE_LOAD_USERS_SUCCESS:
             return action.data;
         case MANAGE_DEL_USER_SUCCESS: {
-            const users = [...state];
             const { user: { id } } = action;
-            const index = users.findIndex(x => x.id === id);
+            const index = state.findIndex(x => x.id === id);
             if (index !== -1) {
+                const users = [...state];
                 users.splice(index, 1);
+                return users;
             }
 
-            return users;
+            return state;
+        }
+        case MANAGE_UPD_USER_SUCCESS: {
+            const { user } = action;
+            const index = state.findIndex(x => x.id === user.id);
+            if (index !== -1) {
+                const users = [...state];
+                users[index] = user;
+                return users;
+            }
+
+            return state;
         }
         default:
             return state;

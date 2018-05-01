@@ -17,7 +17,10 @@ import {
     MANAGE_LOAD_ORDERS_REQUEST,
     MANAGE_LOAD_ORDERS_SUCCESS,
     MANAGE_LOAD_ORDERS_FAILURE,
-    MANAGE_DEL_USER_SUCCESS
+    MANAGE_DEL_USER_SUCCESS,
+    MANAGE_UPD_USER_REQUEST,
+    MANAGE_UPD_USER_SUCCESS,
+    MANAGE_UPD_USER_FAILURE
 } from "../ActionTypes";
 
 import isEmpty from "lodash/isEmpty";
@@ -172,6 +175,21 @@ export const deleteUser = (user) => {
             dispatch({
                 type: MANAGE_DEL_USER_SUCCESS,
                 user
+            });
+        }
+    };
+};
+
+export const updateUserRole = (user, role, action) => {
+    return {
+        type: API,
+        endpoint: { url: `/api/users/${user.id}/roles/${role}`, method: action.toUpperCase() },
+        error: ({ dispatch, error }) => dispatch(callout({ subject: `用户${user.nickname}的角色更新失败`, message: error, type: "error", duration: 8 })),
+        success: ({ data, dispatch }) => {
+            dispatch(callout({ message: `用户${user.nickname}的角色已更新！`, type: "success" }));
+            dispatch({
+                type: MANAGE_UPD_USER_SUCCESS,
+                user: data
             });
         }
     };
