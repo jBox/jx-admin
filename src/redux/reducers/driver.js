@@ -3,7 +3,8 @@ import {
     DRIVER_TRIP_DEPART_SUCCESS,
     DRIVER_TRIP_REVERT_SUCCESS,
     DRIVER_TRIP_UPDATE_SUCCESS,
-    DRIVER_LOAD_CURR_TRIP
+    DRIVER_LOAD_CURR_TRIP,
+    DRIVER_LOAD_TRIPS
 } from "../actions/ActionTypes";
 
 const current = (state = {}, action) => {
@@ -18,21 +19,7 @@ const current = (state = {}, action) => {
     }
 }
 
-const trips = (state = [
-
-    {
-        "name": "魏师傅", "mobile": "18688981234",
-        "departureTime": "2018-04-11T01:00:00.000Z",
-        "departurePlace": "Shenzhen",
-        "destination": "destination destination", "duration": 3,
-        "notes": "其他信息", "id": "20180410000005",
-        "version": 1524018704140, "licenseNunber": "粤A23233",
-        "vehicleModel": "商务车",
-        "status": "scheduled", //scheduled,departure,reverted
-        "progress": []
-    },
-
-], action) => {
+const trips = (state = [], action) => {
     switch (action.type) {
         case DRIVER_TRIP_DEPART_SUCCESS:
         case DRIVER_TRIP_REVERT_SUCCESS:
@@ -47,6 +34,8 @@ const trips = (state = [
 
             return state;
         }
+        case DRIVER_LOAD_TRIPS:
+            return action.data;
         default:
             return state;
     }

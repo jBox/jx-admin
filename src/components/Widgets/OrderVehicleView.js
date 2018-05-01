@@ -151,7 +151,13 @@ export default class OrderVehicleView extends Component {
                             <div key={item.id} className={styles.list}>
                                 <span className={styles.scheduleItem}>{item.licenseNumber}</span>
                                 {item.status && (
-                                    <span className={classNames("badge bg-green", styles.departure)}>{item.status === "start" ? "已发车" : "已收车"}</span>
+                                    <span className={classNames(
+                                        "badge",
+                                        { "bg-yellow": item.status === "start", "bg-green": item.status === "end" },
+                                        styles.departure)}
+                                    >
+                                        {item.status === "start" ? "已发车" : "已收车"}
+                                    </span>
                                 )}
                                 {this.renderActionButton(item)}
                             </div>

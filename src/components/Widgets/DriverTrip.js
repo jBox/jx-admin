@@ -66,7 +66,6 @@ export default class DriverTrip extends Component {
     }
 
     handleProgressChange = (progress) => {
-        console.log("progress", progress);
         const { data, onProgress } = this.props;
         if (onProgress) {
             onProgress(data, progress);
@@ -75,43 +74,28 @@ export default class DriverTrip extends Component {
 
     getTripInfo = () => {
         const { data } = this.props;
-        const departureTime = new Date(data.departureTime);
-        departureTime.setDate(departureTime.getDate() + data.duration - 1);
-        const revertTime = departureTime.toISOString().toDate();
-
         return {
             id: data.id,
             name: data.name,
             mobile: data.mobile,
             departureTime: data.departureTime.toDateTime(),
-            revertTime,
+            revertTime: data.revertTime.toDateTime(),
             departurePlace: data.departurePlace,
             destination: data.destination,
             notes: data.notes,
-            status: data.status,
-            licenseNunber: data.licenseNunber,
-            vehicleModel: data.vehicleModel,
-            progress: data.progress,
-            terms: data.terms
+            terms: data.terms,
+            schedule: { ...data.schedule }
         }
     }
 
     renderOperation = () => {
         const { data } = this.props;
         // //scheduled,departure
-        const status = data.status;
+        const status = data.schedule.status;
         switch (status) {
-            case "scheduled":
-                return (
-                    <div className="box-footer">
-                        <div className="row">
-                            <div className="col-md-offset-8 col-md-4 col-sm-12">
-                                <Button onClick={this.handleDepart} block warning>确认出车</Button>
-                            </div>
-                        </div>
-                    </div>
-                );
-            case "departure":
+            case "end":
+                return null;
+            case "start":
                 return (
                     <div className="box-footer">
                         <div className="row">
@@ -121,9 +105,18 @@ export default class DriverTrip extends Component {
                         </div>
                     </div>
                 );
-        }
+            default:
+                return (
+                    <div className="box-footer">
+                        <div className="row">
+                            <div className="col-md-offset-8 col-md-4 col-sm-12">
+                                <Button onClick={this.handleDepart} block primary>确认出车</Button>
+                            </div>
+                        </div>
+                    </div>
+                );
 
-        return null;
+        }
     }
 
     render() {
@@ -145,18 +138,18 @@ export default class DriverTrip extends Component {
                             <li className={styles.itemHeader}><label>出车信息</label></li>
                             <li>出发地点：<label>{trip.departurePlace}</label></li>
                             <li>目的地：<label>{trip.destination}</label></li>
-                            <li>发车时间：<label>{trip.departureTime.toDateTime()}</label></li>
+                            <li>发车时间：<label>{trip.departureTime}</label></li>
                             <li>计划收车时间：<label>{trip.revertTime}</label></li>
                             <li className={styles.itemHeader}><label>客户信息</label></li>
                             <li>联系人：<label>{trip.contact}</label></li>
                             <li>联系电话：<label>{trip.mobile}</label></li>
                             <li className={styles.itemHeader}><label>车辆信息</label></li>
-                            <li>车牌号码：<label>{trip.licenseNunber}</label></li>
-                            <li>车型：<label>{trip.vehicleModel}</label></li>
+                            <li>车牌号码：<label>{trip.schedule.licenseNumber}</label></li>
+                            <li>车型：<label>{trip.schedule.model}</label></li>
                         </ul>
 
-                        {trip.status !== "scheduled" && (
-                            <Progress data={trip.progress} terms={trip.terms} onChange={this.handleProgressChange} />
+                        {trip.schedule.status && (
+                            <Progress data={trip.schedule.progress} terms={trip.terms} onChange={this.handleProgressChange} />
                         )}
                     </div>
 

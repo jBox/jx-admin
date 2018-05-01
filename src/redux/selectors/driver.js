@@ -18,6 +18,22 @@ const calcTerms = (dateFrom, duration, progress) => {
     return terms;
 };
 
+export const tripsSelector = createSelector(
+    (state) => state.driver,
+    (driver) => {
+        const { trips } = driver;
+
+        const data = trips.map((trip) => {
+            const dateFrom = trip.departureTime.toDate();
+            const duration = Number(trip.duration);
+            const progress = (trip.schedule.progress || []).map((item) => (item.date));
+            const terms = calcTerms(dateFrom, duration, progress);
+            return { ...trip, terms };
+        });
+        return { data };
+    }
+);
+
 export default createSelector(
     (state) => state.driver,
     (driver) => {
@@ -28,7 +44,7 @@ export default createSelector(
 
         const dateFrom = current.departureTime.toDate();
         const duration = Number(current.duration);
-        const progress = (current.progress || []).map((item) => (item.date));
+        const progress = (current.schedule.progress || []).map((item) => (item.date));
         const terms = calcTerms(dateFrom, duration, progress);
         return {
             data: { ...current, terms }
