@@ -60,6 +60,7 @@ class User extends Component {
 
     render() {
         const { nickname, mobile, roles } = this.props;
+        const canBeDispatcher = roles.includes("管理员");
         return (
             <Interactive.Row>
                 <Interactive.Cell>
@@ -73,16 +74,18 @@ class User extends Component {
                 </Interactive.Cell>
                 <Interactive.Tools>
                     <div className={styles.tools}>
-                        <label htmlFor="dispatcher_switch" style={{ margin: 0 }}>
-                            <span>调度员</span>
-                            <Switch
-                                height={22}
-                                className="react-switch"
-                                onChange={this.handleDispatcherChange}
-                                checked={this.state.isDispatcher}
-                                id="dispatcher_switch"
-                            />
-                        </label>
+                        {canBeDispatcher && (
+                            <label htmlFor="dispatcher_switch" style={{ margin: 0 }}>
+                                <span>调度员</span>
+                                <Switch
+                                    height={22}
+                                    className="react-switch"
+                                    onChange={this.handleDispatcherChange}
+                                    checked={this.state.isDispatcher}
+                                    id="dispatcher_switch"
+                                />
+                            </label>
+                        )}
                         <Button key="del" className="pull-right" onClick={this.handleDelete} friable danger xs>删除</Button>
                     </div>
                 </Interactive.Tools>
