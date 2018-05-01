@@ -118,14 +118,20 @@ export default class ProgressEditor extends Component {
                             defaultValue={data.fuelFee}
                             required
                             onChange={this.handleInputChange} />
-                        <FormInput type="number" id="tollFee" name="tollFee" label="通行费" placeholder="通行费"
-                            message="请输入正确的通行费"
-                            defaultValue={data.tollFee}
-                            onChange={this.handleInputChange} />
-                        <FormInput type="number" id="parkingFee" name="parkingFee" label="停车费" placeholder="停车费"
-                            message="请输入正确的停车费"
-                            defaultValue={data.parkingFee}
-                            onChange={this.handleInputChange} />
+                        <div className="row">
+                            <div className="col-xs-6">
+                                <FormInput type="number" id="tollFee" name="tollFee" label="通行费" placeholder="通行费"
+                                    message="请输入正确的通行费"
+                                    defaultValue={data.tollFee}
+                                    onChange={this.handleInputChange} />
+                            </div>
+                            <div className="col-xs-6">
+                                <FormInput type="number" id="parkingFee" name="parkingFee" label="停车费" placeholder="停车费"
+                                    message="请输入正确的停车费"
+                                    defaultValue={data.parkingFee}
+                                    onChange={this.handleInputChange} />
+                            </div>
+                        </div>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button className="pull-left" onClick={onClose}>取消</Button>
