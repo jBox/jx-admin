@@ -14,3 +14,27 @@
 .percentage{
     padding-left: 10px;
 }
+
+.progressList {
+    max-height: 450px;
+    overflow-y: auto;
+}
+
+:global(.timeline:before) {
+    left: 15px;
+}
+
+:global(.timeline>li>.fa), 
+:global(.timeline>li>.glyphicon), 
+:global(.timeline>li>.ion) {
+    left: 2px;
+}
+
+:global(.timeline>li>.timeline-item) {  
+    margin-left: 42px;
+    margin-right: 0;
+}
+
+.zebra {
+    background-color: #ecf0f5;
+}

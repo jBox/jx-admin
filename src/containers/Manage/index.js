@@ -62,7 +62,7 @@ class Manage extends Component {
             <section className="content-header">
                 <h1>{info.title} <small>健湖租车</small></h1>
                 <ol className="breadcrumb">
-                    <li><Link to="/"><i className="fa fa-dashboard"></i> 主页</Link></li>
+                    <li><Link to="/dashboard"><i className="fa fa-dashboard"></i> 主页</Link></li>
                     {info.feature && (
                         <li>
                             <Link to={`/manage/${feature}`}><i className="fa fa-list"></i> {info.feature}</Link>

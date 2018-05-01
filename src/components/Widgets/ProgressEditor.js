@@ -71,7 +71,7 @@ export default class ProgressEditor extends Component {
     handleSubmit = () => {
         const { onSubmit } = this.props;
         if (onSubmit) {
-            onSubmit(this.state.data);
+            onSubmit({ ...this.state.data, report: new Date().toISOString() });
         }
     }
 

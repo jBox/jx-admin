@@ -96,6 +96,9 @@ export default class OrderPreview extends Component {
     render() {
         const { order, vehicles, drivers, onSchedule, onDepart, onProgress, onRevert } = this.props;
 
+        const editable = order.schedules.length === 0 ||
+            order.schedules.every(x => !x.status);
+
         return (
             <div className={classNames("box", this.getBoxStyle())}>
                 <div className="box-header with-border">
@@ -103,11 +106,13 @@ export default class OrderPreview extends Component {
                         <label className={styles.orderId}>订单：{order.id}</label>
                     </div>
 
-                    <div className="box-tools">
-                        <button type="button" className="btn btn-box-tool" onClick={this.handleModify}>
-                            <i className="fa fa-edit"></i>
-                        </button>
-                    </div>
+                    {editable && (
+                        <div className="box-tools">
+                            <button type="button" className="btn btn-box-tool" onClick={this.handleModify}>
+                                <i className="fa fa-edit"></i>
+                            </button>
+                        </div>
+                    )}
 
                 </div>
 
