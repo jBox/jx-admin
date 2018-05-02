@@ -18,7 +18,7 @@ const Role = ({ children }) => {
 
 class User extends Component {
     static propTypes = {
-        id: PropTypes.string,
+        id: PropTypes.number,
         nickname: PropTypes.string,
         mobile: PropTypes.string,
         roles: PropTypes.array,

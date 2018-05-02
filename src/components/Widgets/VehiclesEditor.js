@@ -11,7 +11,6 @@ import Input from "../Form/Input";
 class EditVehicle extends Component {
     static propTypes = {
         labelModels: PropTypes.object,
-        id: PropTypes.number,
         vehicle: PropTypes.object,
         deletable: PropTypes.bool,
         disabled: PropTypes.bool,
@@ -25,18 +24,18 @@ class EditVehicle extends Component {
     }
 
     handleChange = (event) => {
-        const { id, onChange } = this.props;
+        const { onChange } = this.props;
         if (onChange) {
             const { value } = event.target;
             const vehicle = this.extraVehicleState(value);
-            onChange(id, vehicle);
+            onChange(vehicle.id, vehicle);
         }
     }
 
     handleDelete = () => {
-        const { id, onDelete } = this.props;
+        const { vehicle, onDelete } = this.props;
         if (onDelete) {
-            onDelete(id);
+            onDelete(vehicle.id);
         }
     }
 
@@ -81,7 +80,7 @@ class EditVehicle extends Component {
         }
 
         return {
-            id: vehicle.id,
+            ...vehicle,
             model,
             count: Number(count),
             withDriver,
@@ -114,10 +113,12 @@ class EditVehicle extends Component {
 }
 
 const loopVehicles = (vehicles) => {
-    const keys = ["model", "count", "withDriver", "notes"];
+    const keys = ["id", "scheduled", "model", "count", "withDriver", "notes"];
     return vehicles.map((item) => {
         return keys.reduce((items, key) => {
-            items[key] = item[key];
+            if (item.hasOwnProperty(key)) {
+                items[key] = item[key];
+            }
             return items;
         }, {});
     });
@@ -141,7 +142,7 @@ export default class VehiclesEditor extends Component {
         if (!isEqual(vehicles, prevState.defaultVehicles)) {
             return {
                 defaultVehicles: vehicles,
-                vehicles: vehicles.map((item) => ({ ...item, id: uuid() }))
+                vehicles: vehicles.map((item) => ({ ...item }))
             };
         }
 
@@ -152,14 +153,14 @@ export default class VehiclesEditor extends Component {
         super(props);
         this.state = {
             defaultVehicles: props.vehicles,
-            vehicles: props.vehicles.map((item) => ({ ...item, id: uuid() }))
+            vehicles: props.vehicles.map((item) => ({ ...item }))
         };
     }
 
     handleModify = (id, updated) => {
-        console.log("modify", id, updated);
         const vehicles = [...this.state.vehicles];
-        vehicles[id] = updated;
+        const index = vehicles.findIndex(x => x.id === id);
+        vehicles[index] = updated;
         this.setState({ vehicles }, () => {
             const { onChange } = this.props;
             if (onChange) {
@@ -169,9 +170,8 @@ export default class VehiclesEditor extends Component {
     }
 
     handleDelete = (id) => {
-        console.log("delete", id);
-        const vehicles = this.state.vehicles.reduce((items, item, index) => {
-            if (id !== index) {
+        const vehicles = this.state.vehicles.reduce((items, item) => {
+            if (id !== item.id) {
                 return items.concat({ ...item });
             };
 
@@ -192,7 +192,7 @@ export default class VehiclesEditor extends Component {
             model: { ...models.mvp },
             count: 1,
             withDriver: true,
-            id: uuid()
+            id: `${Date.now()}${this.state.vehicles.length}`
         }];
         this.setState({ vehicles }, () => {
             const { onChange } = this.props;
@@ -219,9 +219,8 @@ export default class VehiclesEditor extends Component {
                     <label>车辆信息</label>
                     <Button onClick={this.handleCreate} className="pull-right" disabled={disabled} xs>添加车辆</Button>
                 </p>
-                {vehicles.map((item, index) => (
+                {vehicles.map((item) => (
                     <EditVehicle key={item.id}
-                        id={index}
                         deletable={deletable}
                         disabled={disabled}
                         labelModels={labelModels}
