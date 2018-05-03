@@ -97,10 +97,15 @@ export const confirmOrder = (order) => {
         endpoint: { url: `/api/orders/${order.id}`, method: "PUT", body },
         error: ({ dispatch, error }) => dispatch(callout({ subject: `订单${order.id}确认失败`, message: error, type: "error", duration: 8 })),
         success: ({ data, dispatch }) => {
-            dispatch(callout({ message: `订单${order.id}已确认`, type: "success" }));
+            const { warning, order } = data;
+            if (warning) {
+                dispatch(callout({ subject: `订单${order.id} - 警告`, message: warning.message, type: "warning", duration: 10 }));
+            } else {
+                dispatch(callout({ message: `订单${order.id}已确认`, type: "success" }));
+            }
             dispatch({
-                data,
-                type: MANAGE_ORDER_UPDATED
+                type: MANAGE_ORDER_UPDATED,
+                data: order
             });
         }
     };
@@ -117,10 +122,15 @@ export const confirmCancelOrder = (order) => {
         endpoint: { url: `/api/orders/${order.id}`, method: "PUT", body },
         error: ({ dispatch, error }) => dispatch(callout({ subject: `订单${order.id}取消操作失败`, message: error, type: "error", duration: 8 })),
         success: ({ data, dispatch }) => {
-            dispatch(callout({ message: `订单${order.id}已取消`, type: "success" }));
+            const { warning, order } = data;
+            if (warning) {
+                dispatch(callout({ subject: `订单${order.id} - 警告`, message: warning.message, type: "warning", duration: 10 }));
+            } else {
+                dispatch(callout({ message: `订单${order.id}已取消`, type: "success" }));
+            }
             dispatch({
-                data,
-                type: MANAGE_ORDER_UPDATED
+                type: MANAGE_ORDER_UPDATED,
+                data: order
             });
         }
     };
@@ -138,10 +148,15 @@ export const scheduleOrder = (order) => {
         endpoint: { url: `/api/orders/${order.id}`, method: "PUT", body },
         error: ({ dispatch, error }) => dispatch(callout({ subject: `订单${order.id}安排失败`, message: error, type: "error", duration: 8 })),
         success: ({ data, dispatch }) => {
-            dispatch(callout({ message: `订单${order.id}已安排`, type: "success" }));
+            const { warning, order } = data;
+            if (warning) {
+                dispatch(callout({ subject: `订单${order.id} - 警告`, message: warning.message, type: "warning", duration: 10 }));
+            } else {
+                dispatch(callout({ message: `订单${order.id}已安排`, type: "success" }));
+            }
             dispatch({
-                data,
-                type: MANAGE_ORDER_UPDATED
+                type: MANAGE_ORDER_UPDATED,
+                data: order
             });
         }
     };
@@ -158,10 +173,15 @@ export const completeOrder = (order) => {
         endpoint: { url: `/api/orders/${order.id}`, method: "PUT", body },
         error: ({ dispatch, error }) => dispatch(callout({ subject: `订单${order.id}完成操作失败`, message: error, type: "error", duration: 8 })),
         success: ({ data, dispatch }) => {
-            dispatch(callout({ message: `订单${order.id}已完成`, type: "success" }));
+            const { warning, order } = data;
+            if (warning) {
+                dispatch(callout({ subject: `订单${order.id} - 警告`, message: warning.message, type: "warning", duration: 10 }));
+            } else {
+                dispatch(callout({ message: `订单${order.id}已完成`, type: "success" }));
+            }
             dispatch({
-                data,
-                type: MANAGE_ORDER_UPDATED
+                type: MANAGE_ORDER_UPDATED,
+                data: order
             });
         }
     };
@@ -179,10 +199,15 @@ export const departSchedule = (order, schedule) => {
         endpoint: { url: `/api/orders/${order.id}`, method: "PUT", body },
         error: ({ dispatch, error }) => dispatch(callout({ subject: `${schedule.licenseNumber}发车失败`, message: error, type: "error", duration: 8 })),
         success: ({ data, dispatch }) => {
-            dispatch(callout({ message: `${schedule.licenseNumber}已发车`, type: "success" }));
+            const { warning, order } = data;
+            if (warning) {
+                dispatch(callout({ subject: `订单${order.id} - 警告`, message: warning.message, type: "warning", duration: 10 }));
+            } else {
+                dispatch(callout({ message: `${schedule.licenseNumber}已发车`, type: "success" }));
+            }
             dispatch({
-                data,
-                type: MANAGE_ORDER_UPDATED
+                type: MANAGE_ORDER_UPDATED,
+                data: order
             });
         }
     };
@@ -200,10 +225,15 @@ export const progressSchedule = (order, schedule) => {
         endpoint: { url: `/api/orders/${order.id}`, method: "PUT", body },
         error: ({ dispatch, error }) => dispatch(callout({ subject: `${schedule.licenseNumber}进度更新失败`, message: error, type: "error", duration: 8 })),
         success: ({ data, dispatch }) => {
-            dispatch(callout({ message: `${schedule.licenseNumber}进度已更新`, type: "success" }));
+            const { warning, order } = data;
+            if (warning) {
+                dispatch(callout({ subject: `订单${order.id} - 警告`, message: warning.message, type: "warning", duration: 10 }));
+            } else {
+                dispatch(callout({ message: `${schedule.licenseNumber}进度已更新`, type: "success" }));
+            }
             dispatch({
-                data,
-                type: MANAGE_ORDER_UPDATED
+                type: MANAGE_ORDER_UPDATED,
+                data: order
             });
         }
     };
@@ -221,10 +251,15 @@ export const revertSchedule = (order, schedule) => {
         endpoint: { url: `/api/orders/${order.id}`, method: "PUT", body },
         error: ({ dispatch, error }) => dispatch(callout({ subject: `${schedule.licenseNumber}收车失败`, message: error, type: "error", duration: 8 })),
         success: ({ data, dispatch }) => {
-            dispatch(callout({ message: `${schedule.licenseNumber}已收车`, type: "success" }));
+            const { warning, order } = data;
+            if (warning) {
+                dispatch(callout({ subject: `订单${order.id} - 警告`, message: warning.message, type: "warning", duration: 10 }));
+            } else {
+                dispatch(callout({ message: `${schedule.licenseNumber}已收车`, type: "success" }));
+            }
             dispatch({
-                data,
-                type: MANAGE_ORDER_UPDATED
+                type: MANAGE_ORDER_UPDATED,
+                data: order
             });
         }
     };
@@ -239,12 +274,17 @@ export const cancelOrder = (order) => {
     return {
         type: API,
         endpoint: { url: `/api/orders/${order.id}`, method: "PUT", body },
-        error: ({ dispatch, error }) => dispatch(callout({ subject: "无法取消订单", message: error, type: "error", duration: 8 })),
+        error: ({ dispatch, error }) => dispatch(callout({ subject: `订单${order.id}无法取消`, message: error, type: "error", duration: 8 })),
         success: ({ data, dispatch }) => {
-            dispatch(callout({ message: "订单已取消", type: "success" }));
+            const { warning, order } = data;
+            if (warning) {
+                dispatch(callout({ subject: `订单${order.id} - 警告`, message: warning.message, type: "warning", duration: 10 }));
+            } else {
+                dispatch(callout({ message: `订单${order.id}已取消`, type: "success" }));
+            }
             dispatch({
-                data,
-                type: MANAGE_ORDER_UPDATED
+                type: MANAGE_ORDER_UPDATED,
+                data: order
             });
         }
     };
@@ -263,13 +303,18 @@ export const modifyOrder = (order) => {
         before: ({ dispatch, error }) => dispatch({ type: MANAGE_MODIFY_ORDER_REQUEST, id: order.id }),
         error: ({ dispatch, error }) => {
             dispatch({ type: MANAGE_MODIFY_ORDER_FAILURE, error, id: order.id });
-            dispatch(callout({ subject: "修改订单失败", message: error, type: "error", duration: 8 }));
+            dispatch(callout({ subject: `订单${order.id}修改失败`, message: error, type: "error", duration: 8 }));
         },
         success: ({ data, dispatch }) => {
-            dispatch(callout({ message: "修改订单成功", type: "success" }));
+            const { warning, order } = data;
+            if (warning) {
+                dispatch(callout({ subject: `订单${order.id} - 警告`, message: warning.message, type: "warning", duration: 10 }));
+            } else {
+                dispatch(callout({ message: `订单${order.id}已修改成功`, type: "success" }));
+            }
             dispatch({
                 type: MANAGE_MODIFY_ORDER_SUCCESS,
-                data,
+                data: order,
                 id: order.id
             });
         }
