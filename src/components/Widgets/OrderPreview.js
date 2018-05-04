@@ -6,10 +6,11 @@ import Form from "../Form";
 import Autocomplete from "../Form/Autocomplete";
 import { SERVICE_STATUS } from "../utils";
 
+import Flip from "../Overlays/Flip";
 import Button from "../Form/Button";
 import OrderOperation from "./OrderOperation";
 import ScheduleVehicles from "./ScheduleVehicles";
-import { scheduleOrder } from "../../redux/actions/manage/orders";
+import OrderEditor from "./OrderEditor";
 
 const OrderTrack = ({ state, time }) => {
     return (
@@ -53,7 +54,9 @@ export default class OrderPreview extends Component {
         vehicles: PropTypes.array,
         drivers: PropTypes.array,
         order: PropTypes.object,
+        modification: PropTypes.object,
         onModify: PropTypes.func,
+        onCancel: PropTypes.func,
         onConfirm: PropTypes.func,
         onConfirmCancel: PropTypes.func,
         onSchedule: PropTypes.func,
@@ -67,11 +70,16 @@ export default class OrderPreview extends Component {
         jQuery(".box").boxWidget();
     }
 
+    state = {
+        flipActive: false
+    }
+
+    handleModifyClose = () => {
+        this.setState({ flipActive: false });
+    }
+
     handleModify = () => {
-        const { order, onModify } = this.props;
-        if (onModify) {
-            onModify(order);
-        }
+        this.setState({ flipActive: true });
     }
 
     getBoxStyle = () => {
@@ -94,54 +102,74 @@ export default class OrderPreview extends Component {
     }
 
     render() {
-        const { order, vehicles, drivers, onSchedule, onDepart, onProgress, onRevert } = this.props;
+        const {
+            order, models, modification, vehicles, drivers,
+            onModify,
+            onCancel,
+            onSchedule,
+            onDepart,
+            onProgress,
+            onRevert
+        } = this.props;
 
-        const editable = order.schedules.length === 0 ||
-            order.schedules.every(x => !x.status);
+        const editable = ["submitted", "confirmed"].includes(order.status.id);
+
+        const flipBack = (
+            <OrderEditor
+                models={models}
+                order={order}
+                modification={modification}
+                onSubmit={onModify}
+                onCancel={onCancel}
+                onClose={this.handleModifyClose}
+            />
+        );
 
         return (
-            <div className={classNames("box", this.getBoxStyle())}>
-                <div className="box-header with-border">
-                    <div className="user-block">
-                        <label className={styles.orderId}>订单：{order.id}</label>
+            <Flip active={this.state.flipActive} back={flipBack}>
+                <div className={classNames("box", this.getBoxStyle())}>
+                    <div className="box-header with-border">
+                        <div className="user-block">
+                            <span className={styles.orderId}>订单：{order.id}</span>
+                        </div>
+
+                        {editable && (
+                            <div className="box-tools">
+                                <Button warning flat xs onClick={this.handleModify}>
+                                    修改
+                                </Button>
+                            </div>
+                        )}
+
                     </div>
 
-                    {editable && (
-                        <div className="box-tools">
-                            <button type="button" className="btn btn-box-tool" onClick={this.handleModify}>
-                                <i className="fa fa-edit"></i>
-                            </button>
-                        </div>
-                    )}
+                    <div className="box-body">
+                        <ul className="list-unstyled">
+                            <li>联系人：<label>{order.contact}</label></li>
+                            <li>联系电话：<label>{order.mobile}</label></li>
+                            <li>出发时间：<label>{order.departureTime.toDateTime()}</label></li>
+                            <li>出发地点：<label>{order.departurePlace}</label></li>
+                            <li>目的地：<label>{order.destination}</label></li>
+                            <li>租车天数：<label>{`${order.duration} 天`}</label></li>
+                            <li>下单时间：<label>{order.createTime.toDateTime()}</label></li>
+                        </ul>
+                    </div>
 
+                    <ScheduleVehicles
+                        order={order}
+                        vehicles={vehicles}
+                        drivers={drivers}
+                        onSchedule={onSchedule}
+                        onDepart={onDepart}
+                        onProgress={onProgress}
+                        onRevert={onRevert}
+                    />
+
+                    <OrderStatus order={order} />
+
+                    <OrderOperation {...this.props} />
                 </div>
-
-                <div className="box-body">
-                    <ul className="list-unstyled">
-                        <li>联系人：<label>{order.contact}</label></li>
-                        <li>联系电话：<label>{order.mobile}</label></li>
-                        <li>出发时间：<label>{order.departureTime.toDateTime()}</label></li>
-                        <li>出发地点：<label>{order.departurePlace}</label></li>
-                        <li>目的地：<label>{order.destination}</label></li>
-                        <li>租车天数：<label>{`${order.duration} 天`}</label></li>
-                        <li>下单时间：<label>{order.createTime.toDateTime()}</label></li>
-                    </ul>
-                </div>
-
-                <ScheduleVehicles
-                    order={order}
-                    vehicles={vehicles}
-                    drivers={drivers}
-                    onSchedule={onSchedule}
-                    onDepart={onDepart}
-                    onProgress={onProgress}
-                    onRevert={onRevert}
-                />
-
-                <OrderStatus order={order} />
-
-                <OrderOperation {...this.props} />
-            </div>
+            </Flip>
         );
     }
 }

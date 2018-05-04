@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { connect } from "react-redux";
 
 import OrderPreview from "../../components/Widgets/OrderPreview";
+import Confirm from "../../components/Overlays/Confirm";
 import InfiniteScroll from "react-infinite-scroller";
 
 import manageOrdersSelector from "../../redux/selectors/manage/orders";
@@ -16,8 +17,11 @@ import {
     departSchedule,
     progressSchedule,
     revertSchedule,
+    modifyOrder,
+    cancelOrderImmediately,
     ordersInitialLoad
 } from "../../redux/actions/manage/orders";
+
 import { driversInitialLoad, vehiclesInitialLoad } from "../../redux/actions/manage";
 
 const centerAlign = { textAlign: "center" };
@@ -33,12 +37,16 @@ class Orders extends Component {
         vehicles: PropTypes.array,
         drivers: PropTypes.array,
         orders: PropTypes.array,
+        models: PropTypes.object,
+        modifications: PropTypes.object,
         hasMore: PropTypes.bool,
         confirmOrder: PropTypes.func,
         confirmCancelOrder: PropTypes.func,
         scheduleOrder: PropTypes.func,
         completeOrder: PropTypes.func,
         departSchedule: PropTypes.func,
+        modifyOrder: PropTypes.func,
+        cancelOrderImmediately: PropTypes.func,
         progressSchedule: PropTypes.func,
         revertSchedule: PropTypes.func,
         loadMore: PropTypes.func,
@@ -46,6 +54,8 @@ class Orders extends Component {
         driversInitialLoad: PropTypes.func,
         vehiclesInitialLoad: PropTypes.func
     }
+
+    state = { confirm: { display: false } }
 
     componentDidMount() {
         const { ordersInitialLoad, driversInitialLoad, vehiclesInitialLoad } = this.props;
@@ -74,6 +84,24 @@ class Orders extends Component {
         }
     }
 
+    handleCancelOrderImmediately = (order) => {
+        this.setState({ confirm: { display: true, order } });
+    }
+
+    handleConfirmCancelImmediately = () => {
+        const { confirm: { order } } = this.state;
+        this.setState({ confirm: { display: false } }, () => {
+            const { cancelOrderImmediately } = this.props;
+            if (cancelOrderImmediately) {
+                cancelOrderImmediately(order);
+            }
+        });
+    }
+
+    handleCloseConfirmDailog = () => {
+        this.setState({ confirm: { display: false } });
+    }
+
     handleScheduleOrder = (order, schedule) => {
         const { scheduleOrder } = this.props;
         if (scheduleOrder) {
@@ -89,9 +117,9 @@ class Orders extends Component {
     }
 
     handleModifyOrder = (order) => {
-        const { history } = this.props;
-        if (history) {
-            history.push(`/manage/orders/${order.id}`);
+        const { modifyOrder } = this.props;
+        if (modifyOrder) {
+            modifyOrder(order);
         }
     }
 
@@ -103,8 +131,7 @@ class Orders extends Component {
     }
 
     render() {
-        const { hasMore, orders, drivers, vehicles, departSchedule, progressSchedule, revertSchedule } = this.props;
-        const noMore = !hasMore && orders.length > 0;
+        const { hasMore, orders, models, modifications, drivers, vehicles, departSchedule, progressSchedule, revertSchedule } = this.props;
         const noAny = !hasMore && orders.length === 0;
 
         return (
@@ -120,10 +147,13 @@ class Orders extends Component {
                         <OrderPreview
                             key={order.id}
                             order={order}
+                            modification={modifications[order.id] || { state: "init" }}
+                            models={models}
                             vehicles={vehicles}
                             drivers={drivers}
                             onConfirm={this.handleConfirmOrder}
                             onConfirmCancel={this.handleConfirmCancelOrder}
+                            onCancel={this.handleCancelOrderImmediately}
                             onSchedule={this.handleScheduleOrder}
                             onComplete={this.handleCompleteOrder}
                             onModify={this.handleModifyOrder}
@@ -134,13 +164,18 @@ class Orders extends Component {
                     ))}
                 </InfiniteScroll>
 
-                {noMore && (<div style={centerAlign}>
-                    <label>---------------- + ----------------</label>
-                </div>)}
-
                 {noAny && (<div style={centerAlign}>
                     <label>---------------- 暂无数据 ----------------</label>
                 </div>)}
+
+                {this.state.confirm.display && (<Confirm
+                    title="取消订单"
+                    onConfirm={this.handleConfirmCancelImmediately}
+                    onClose={this.handleCloseConfirmDailog}
+                    warning
+                >
+                    {`你知道吗，你正在取消订单${this.state.confirm.order.id}，你确定要这么做吗？`}
+                </Confirm>)}
             </Fragment>
         );
     }
@@ -155,6 +190,8 @@ export default connect(manageOrdersSelector, {
     departSchedule,
     progressSchedule,
     revertSchedule,
+    modifyOrder,
+    cancelOrderImmediately,
     ordersInitialLoad,
     driversInitialLoad,
     vehiclesInitialLoad

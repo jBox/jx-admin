@@ -1,0 +1,52 @@
+@keyframes abs {
+    from {
+        position: relative
+    }
+    to {
+        position: absolute
+    }
+}
+
+.flip {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}
+
+.active .back {
+    transform: rotateY(0deg);
+    position: relative;
+}
+
+.active .front {
+    transform: rotateY(180deg);
+    animation: abs 0.6s linear forwards;
+}
+
+.flipper {
+    transition: 1s;
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.front,
+.back {
+    backface-visibility: hidden;
+    transition: 1s;
+    transform-style: preserve-3d;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.back {
+    position: absolute;
+}
+
+.front {
+    z-index: 2;
+    transform: rotateY(0deg);
+}
+
+.back {
+    transform: rotateY(-180deg);
+}

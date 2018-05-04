@@ -265,7 +265,7 @@ export const revertSchedule = (order, schedule) => {
     };
 }
 
-export const cancelOrder = (order) => {
+export const cancelOrderImmediately = (order) => {
     const body = {
         version: order.version,
         operation: "executecan"

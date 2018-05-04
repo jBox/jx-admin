@@ -34,22 +34,28 @@ export default class OrderEditor extends Component {
     }
 
     static propTypes = {
-        loading: PropTypes.bool,
+        modification: PropTypes.object,
         models: PropTypes.object,
         order: PropTypes.object,
         onCancel: PropTypes.func,
-        onSubmit: PropTypes.func
+        onSubmit: PropTypes.func,
+        onClose: PropTypes.func
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        const { order } = nextProps;
+        const { order, modification } = nextProps;
         const stateOrder = editableOrder(order);
         const changed = !isEqual(stateOrder, prevState.order);
+        const loading = modification.state === "request";
 
         const state = {};
         if (changed) {
             state.order = stateOrder;
             state.changed = false;
+        }
+
+        if (loading !== prevState.loading) {
+            state.loading = loading;
         }
 
         if (order.version !== prevState.version) {
@@ -71,9 +77,9 @@ export default class OrderEditor extends Component {
         this.state = {
             order: this.form,
             version: order.version,
-            changed: false
+            changed: false,
+            loading: props.modification.state === "request"
         };
-
     }
 
     handleSubmit = () => {
@@ -109,13 +115,19 @@ export default class OrderEditor extends Component {
     }
 
     render() {
-        const { loading, order, models } = this.props;
+        const { loading } = this.state;
+        const { order, models, onClose } = this.props;
         const editable = !["cancelling", "cancelled", "completed"].includes(order.status.id);
 
         return (
-            <div className="box box-primary">
+            <div className="box box-warning box-solid">
                 <div className="box-header with-border">
                     <h3 className="box-title">修改订单</h3>
+                    <div className="box-tools">
+                        <Button warning flat xs onClick={onClose}>
+                            返回
+                        </Button>
+                    </div>
                 </div>
                 <Form onSubmit={this.handleSubmit}>
                     <div className="box-body">

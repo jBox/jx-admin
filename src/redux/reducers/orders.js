@@ -44,7 +44,7 @@ const next = (state = "", action) => {
     }
 };
 
-const modify = (state = {}, action) => {
+const modifications = (state = {}, action) => {
     switch (action.type) {
         case MANAGE_MODIFY_ORDER_REQUEST:
             return { ...state, [action.id]: { state: "request" } };
@@ -60,5 +60,5 @@ const modify = (state = {}, action) => {
 export default combineReducers({
     data,
     next,
-    modify
+    modifications
 });
