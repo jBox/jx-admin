@@ -10,6 +10,7 @@ export default class Button extends Component {
     }
 
     static propTypes = {
+        right: PropTypes.bool,
         friable: PropTypes.bool,
         primary: PropTypes.bool,
         success: PropTypes.bool,
@@ -27,7 +28,7 @@ export default class Button extends Component {
     }
 
     render() {
-        const { children, type, className, block, friable, primary, success, info, warning, danger, flat, lg, sm, xs, ...props } = this.props;
+        const { children, type, className, block, friable, primary, success, info, warning, danger, flat, lg, sm, xs, right, ...props } = this.props;
         let buttonBackgroundStyle = "btn-default";
         if (primary) {
             buttonBackgroundStyle = "btn-primary";
@@ -56,6 +57,8 @@ export default class Button extends Component {
 
         const buttonFriable = friable ? styles.friable : "";
 
+        const pullRight = right ? "pull-right" : "";
+
         const buttonClassNames = classNames(
             "btn",
             buttonBackgroundStyle,
@@ -63,6 +66,7 @@ export default class Button extends Component {
             buttonBlock,
             buttonFlat,
             buttonFriable,
+            pullRight,
             className
         );
 

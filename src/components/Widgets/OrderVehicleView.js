@@ -4,7 +4,6 @@ import classNames from "classnames";
 
 import styles from "./OrderVehicleView.css";
 import Button from "../Form/Button";
-import ProgressEditor from "./ProgressEditor";
 
 export default class OrderVehicleView extends Component {
     static propTypes = {
@@ -13,15 +12,8 @@ export default class OrderVehicleView extends Component {
         schedulable: PropTypes.bool,
         onSchedule: PropTypes.func,
         onDepart: PropTypes.func,
-        onProgress: PropTypes.func,
-        onRevert: PropTypes.func
-    }
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            dialog: { display: false }
-        }
+        onRevert: PropTypes.func,
+        onProgressReport: PropTypes.func
     }
 
     generateDepartHandler = (schedule) => {
@@ -43,24 +35,10 @@ export default class OrderVehicleView extends Component {
     }
 
     generateProgressHandler = (schedule) => {
+        const { onProgressReport } = this.props;
         return () => {
-            this.setState({ dialog: { display: true, schedule } });
+            onProgressReport(schedule);
         }
-    }
-
-    handleProgressEditorClose = () => {
-        this.setState({ dialog: { display: false } });
-    }
-
-    handleProgressEditorSubmit = (progress) => {
-        const { schedule } = this.state.dialog;
-        schedule.progress = [...schedule.progress, progress];
-        this.setState({ dialog: { display: false } }, () => {
-            const { onProgress } = this.props;
-            if (onProgress) {
-                onProgress(schedule);
-            }
-        });
     }
 
     handleScheduleClick = () => {
@@ -115,7 +93,6 @@ export default class OrderVehicleView extends Component {
     }
 
     render() {
-        const { dialog } = this.state;
         const { schedules, schedulable, data } = this.props;
         const { model, count, withDriver, scheduled } = data;
         const additional = [model.label, `${count} 辆`];
@@ -164,14 +141,6 @@ export default class OrderVehicleView extends Component {
                         ))}
                     </div>
                 </div>
-
-                {dialog.display && (
-                    <ProgressEditor
-                        terms={dialog.schedule.terms}
-                        onClose={this.handleProgressEditorClose}
-                        onSubmit={this.handleProgressEditorSubmit}
-                    />
-                )}
             </Fragment>
         );
     }

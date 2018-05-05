@@ -12,6 +12,8 @@ import OrderOperation from "./OrderOperation";
 import ScheduleVehicles from "./ScheduleVehicles";
 import OrderEditor from "./OrderEditor";
 import ProgressDetails from "./ProgressDetails";
+import ProgressEditor from "./ProgressEditor2";
+import VehicleScheduler from "./VehicleScheduler";
 
 const OrderTrack = ({ state, time }) => {
     return (
@@ -94,6 +96,66 @@ export default class OrderPreview extends Component {
         });
     }
 
+    handleProgressReport = (schedule) => {
+        this.setState({
+            schedule,
+            flipBack: "progress-report",
+            flipActive: true
+        });
+    }
+
+    handleProgressReportSubmit = (progress) => {
+        const { order } = this.props;
+        const { schedule } = this.state;
+        schedule.progress = [...schedule.progress, progress];
+        this.setState({ flipActive: false }, () => {
+            const { onProgress } = this.props;
+            if (onProgress) {
+                onProgress(order, schedule);
+            }
+        });
+    }
+
+    handleScheduleVehicle = (vehicle) => {
+        const { order: { schedules } } = this.props;
+        const original = schedules.filter(x => x.belongs === vehicle.id);
+
+        this.setState({
+            vehicle,
+            original,
+            flipBack: "schedule",
+            flipActive: true
+        });
+    }
+
+    handleVehicleSchedulerSubmit = (schedules) => {
+        const { order, onSchedule } = this.props;
+        const { vehicle: current } = this.state;
+        let currentSchedules = order.schedules || [];
+        // update order
+        if (currentSchedules.length > 0) {
+            currentSchedules = currentSchedules.reduce((items, item) => {
+                if (item.belongs !== current.id) {
+                    return items.concat(item);
+                }
+
+                return items;
+            }, []);
+        }
+
+        order.schedules = [...currentSchedules, ...schedules];
+        const vehicle = order.vehicles.find(x => x.id === current.id);
+        vehicle.scheduled = true;
+
+        this.setState({ flipActive: false }, () => {
+            const allScheduled = order.vehicles.every(x => x.scheduled);
+            if (allScheduled && onSchedule) {
+                // submit schedules
+                onSchedule(order);
+            }
+        });
+    }
+
     getBoxStyle = () => {
         const { order } = this.props;
 
@@ -118,9 +180,7 @@ export default class OrderPreview extends Component {
             order, models, modification, vehicles, drivers,
             onModify,
             onCancel,
-            onSchedule,
             onDepart,
-            onProgress,
             onRevert
         } = this.props;
 
@@ -161,12 +221,11 @@ export default class OrderPreview extends Component {
                         <ScheduleVehicles
                             order={order}
                             vehicles={vehicles}
-                            drivers={drivers}
-                            onSchedule={onSchedule}
                             onDepart={onDepart}
-                            onProgress={onProgress}
                             onRevert={onRevert}
                             onProgressDetails={this.handleProgressDetails}
+                            onProgressReport={this.handleProgressReport}
+                            onSchedule={this.handleScheduleVehicle}
                         />
 
                         <OrderStatus order={order} />
@@ -189,6 +248,25 @@ export default class OrderPreview extends Component {
                         <ProgressDetails
                             order={order}
                             onClose={this.handleFlipBack}
+                        />
+                    )}
+                    {flipBack === "progress-report" && (
+                        <ProgressEditor
+                            order={order}
+                            terms={this.state.schedule.terms}
+                            onClose={this.handleFlipBack}
+                            onSubmit={this.handleProgressReportSubmit}
+                        />
+                    )}
+                    {flipBack === "schedule" && (
+                        <VehicleScheduler
+                            order={order}
+                            data={this.state.vehicle}
+                            original={this.state.original}
+                            vehicles={vehicles}
+                            drivers={drivers}
+                            onClose={this.handleFlipBack}
+                            onSubmit={this.handleVehicleSchedulerSubmit}
                         />
                     )}
                 </Flip.Back>

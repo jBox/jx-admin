@@ -20,8 +20,3 @@
 .zebra {
     background-color: #ecf0f5;
 }
-
-.tableBlock {
-    display: table-cell;
-    width: 1%;
-}

@@ -86,7 +86,7 @@ export default class ProgressDetails extends Component {
 
         return (
             <div className="box box-success box-solid">
-                <div className={classNames("box-header with-border", styles.tableBlock)}>
+                <div className="box-header with-border">
                     <h3 className="box-title">订单{order.id} - 进度</h3>
                     <div className="box-tools">
                         <Button success flat xs onClick={onClose}>
