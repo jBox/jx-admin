@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-browser-router";
 
 import Avatar from "./Avatar";
 
@@ -34,7 +33,7 @@ export default class Nameplate extends Component {
                 </div>
                 <div className="pull-left info">
                     <p>{profile.nickname}</p>
-                    <Link to="/landing"><i className="fa fa-circle text-success"></i> Online</Link>
+                    <a href="#"><i className="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
         );
