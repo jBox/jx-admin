@@ -142,6 +142,7 @@ class Orders extends Component {
                     loadMore={this.handleLoadMore}
                     hasMore={hasMore}
                     loader={<Loader key={0} />}
+                    className="content-limit" 
                 >
                     {orders.map((order) => (
                         <OrderPreview

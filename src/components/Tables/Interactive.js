@@ -42,6 +42,7 @@ class Head extends Component {
     render() {
         return (
             <tr>
+                <th></th>
                 {this.build()}
             </tr>
         );
@@ -59,11 +60,8 @@ class Row extends Component {
     }
 
     handleClick = () => {
-        if (!this.state.showTools) {
-            this.setState({ showTools: true });
-        }
+        this.setState({ showTools: !this.state.showTools });
     }
-
 
     build = () => {
         const { children } = this.props;
@@ -84,18 +82,27 @@ class Row extends Component {
         return row;
     }
 
+    handleToolsContainerClick = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
     render() {
         const { cells, tools } = this.build();
+        const { showTools } = this.state;
+
+        const iconStyle = showTools ? "fa-minus-square-o text-warning" : "fa-plus-square-o text-success";
 
         const row = [(
             <tr key="row" onClick={this.handleClick}>
+                <td><i className={classNames("fa fa-fw", iconStyle)}></i></td>
                 {cells.map((cell, index) => {
                     return (<td key={index} {...cell.props}>{cell.children}</td>);
                 })}
             </tr>
         )];
 
-        if (tools && (tools.props.active || this.state.showTools)) {
+        if (tools && (tools.props.active || showTools)) {
             const { className: containerClassName, active, ...toolsProps } = tools.props
             const toolsClassName = classNames(styles.tools);
             const toolsCellClassName = classNames(styles.cell);
@@ -103,7 +110,7 @@ class Row extends Component {
             row.push((
                 <tr key="tools" className={toolsClassName}>
                     <td className={toolsCellClassName} colSpan="99">
-                        <div {...toolsProps} className={toolsContainerClassName}>
+                        <div {...toolsProps} className={toolsContainerClassName} onClick={this.handleToolsContainerClick}>
                             {tools.children}
                         </div>
                     </td>

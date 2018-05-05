@@ -31,7 +31,7 @@ class Vehicle extends Component {
                     {model}
                 </Interactive.Cell>
                 <Interactive.Tools>
-                    <div className={styles.tools}><Button className="pull-right" onClick={this.handleDeleteClick} danger sm>删除</Button></div>
+                    <div className={styles.tools}><Button className="pull-right" onClick={this.handleDeleteClick} danger xs friable>删除</Button></div>
                 </Interactive.Tools>
             </Interactive.Row>
         );

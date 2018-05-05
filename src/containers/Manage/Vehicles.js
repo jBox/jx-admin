@@ -83,7 +83,7 @@ class Vehicles extends Component {
                     <h3 className="box-title">车辆</h3>
 
                     <div className="box-tools">
-                        <Button className="pull-right" onClick={this.handleAddVehicleClick} success sm>
+                        <Button className="pull-right" onClick={this.handleAddVehicleClick} success xs flat>
                             添加车辆
                     </Button>
                     </div>

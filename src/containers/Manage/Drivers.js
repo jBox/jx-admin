@@ -85,7 +85,7 @@ class Drivers extends Component {
                 <h3 className="box-title">司机</h3>
 
                 <div className="box-tools">
-                    <Button className="pull-right" onClick={this.handleAddDriverClick} success sm>
+                    <Button className="pull-right" onClick={this.handleAddDriverClick} success xs flat>
                         添加司机
                     </Button>
                 </div>

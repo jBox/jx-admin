@@ -29,6 +29,8 @@ export default class Flip extends Component {
             props: { active: props.active },
             active: props.active
         };
+
+        this.backShow = false;
     }
 
     render() {
@@ -39,6 +41,8 @@ export default class Flip extends Component {
             [styles.active]: active
         });
 
+        this.backShow = this.backShow || active;
+
         return (
             <div className={filpClassName}>
                 <div className={styles.flipper}>
@@ -46,7 +50,7 @@ export default class Flip extends Component {
                         {children}
                     </div>
                     <div className={styles.back}>
-                        {back}
+                        {this.backShow && back}
                     </div>
                 </div>
             </div>

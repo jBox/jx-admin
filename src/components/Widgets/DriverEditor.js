@@ -119,7 +119,7 @@ export default class DriverEditor extends Component {
         const buttons = [];
         if (!edit) {
             buttons.push(
-                <Button key="modify" className="pull-right" onClick={this.handleEditClick} sm primary>
+                <Button key="modify" className="pull-right" onClick={this.handleEditClick} friable xs primary>
                     修改
                 </Button>
             );
@@ -129,17 +129,17 @@ export default class DriverEditor extends Component {
                     <Button type="submit" className="pull-right"
                         onClick={this.handleSaveClick}
                         disabled={!changed || !!error}
-                        sm success>
+                        xs friable success>
                         保存
                     </Button>
-                    <Button className="pull-right" onClick={this.handleEditCancelClick} sm>
+                    <Button className="pull-right" onClick={this.handleEditCancelClick} xs friable>
                         取消
                     </Button>
                 </div>
             );
         }
 
-        buttons.push(<Button key="del" className="pull-right" onClick={this.handleDeleteClick} danger sm>删除</Button>);
+        buttons.push(<Button key="del" className="pull-right" onClick={this.handleDeleteClick} danger xs friable>删除</Button>);
 
         const { nickname, mobile, title } = this.state;
         return (
