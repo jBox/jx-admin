@@ -114,61 +114,62 @@ export default class OrderPreview extends Component {
 
         const editable = ["submitted", "confirmed"].includes(order.status.id);
 
-        const flipBack = (
-            <OrderEditor
-                models={models}
-                order={order}
-                modification={modification}
-                onSubmit={onModify}
-                onCancel={onCancel}
-                onClose={this.handleModifyClose}
-            />
-        );
-
         return (
-            <Flip active={this.state.flipActive} back={flipBack}>
-                <div className={classNames("box", this.getBoxStyle())}>
-                    <div className="box-header with-border">
-                        <div className="user-block">
-                            <span className={styles.orderId}>订单：{order.id}</span>
+            <Flip active={this.state.flipActive}>
+                <Flip.Front>
+                    <div className={classNames("box", this.getBoxStyle())}>
+                        <div className="box-header with-border">
+                            <div className="user-block">
+                                <span className={styles.orderId}>订单：{order.id}</span>
+                            </div>
+
+                            {editable && (
+                                <div className="box-tools">
+                                    <Button warning flat xs onClick={this.handleModify}>
+                                        修改
+                                </Button>
+                                </div>
+                            )}
+
                         </div>
 
-                        {editable && (
-                            <div className="box-tools">
-                                <Button warning flat xs onClick={this.handleModify}>
-                                    修改
-                                </Button>
-                            </div>
-                        )}
+                        <div className="box-body">
+                            <ul className="list-unstyled">
+                                <li>联系人：<label>{order.contact}</label></li>
+                                <li>联系电话：<label>{order.mobile}</label></li>
+                                <li>出发时间：<label>{order.departureTime.toDateTime()}</label></li>
+                                <li>出发地点：<label>{order.departurePlace}</label></li>
+                                <li>目的地：<label>{order.destination}</label></li>
+                                <li>租车天数：<label>{`${order.duration} 天`}</label></li>
+                                <li>下单时间：<label>{order.createTime.toDateTime()}</label></li>
+                            </ul>
+                        </div>
 
+                        <ScheduleVehicles
+                            order={order}
+                            vehicles={vehicles}
+                            drivers={drivers}
+                            onSchedule={onSchedule}
+                            onDepart={onDepart}
+                            onProgress={onProgress}
+                            onRevert={onRevert}
+                        />
+
+                        <OrderStatus order={order} />
+
+                        <OrderOperation {...this.props} />
                     </div>
-
-                    <div className="box-body">
-                        <ul className="list-unstyled">
-                            <li>联系人：<label>{order.contact}</label></li>
-                            <li>联系电话：<label>{order.mobile}</label></li>
-                            <li>出发时间：<label>{order.departureTime.toDateTime()}</label></li>
-                            <li>出发地点：<label>{order.departurePlace}</label></li>
-                            <li>目的地：<label>{order.destination}</label></li>
-                            <li>租车天数：<label>{`${order.duration} 天`}</label></li>
-                            <li>下单时间：<label>{order.createTime.toDateTime()}</label></li>
-                        </ul>
-                    </div>
-
-                    <ScheduleVehicles
+                </Flip.Front>
+                <Flip.Back>
+                    <OrderEditor
+                        models={models}
                         order={order}
-                        vehicles={vehicles}
-                        drivers={drivers}
-                        onSchedule={onSchedule}
-                        onDepart={onDepart}
-                        onProgress={onProgress}
-                        onRevert={onRevert}
+                        modification={modification}
+                        onSubmit={onModify}
+                        onCancel={onCancel}
+                        onClose={this.handleModifyClose}
                     />
-
-                    <OrderStatus order={order} />
-
-                    <OrderOperation {...this.props} />
-                </div>
+                </Flip.Back>
             </Flip>
         );
     }

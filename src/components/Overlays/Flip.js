@@ -4,6 +4,10 @@ import classNames from "classnames";
 
 import styles from "./Flip.css";
 
+const Front = ({ children }) => (children);
+
+const Back = ({ children }) => (children);
+
 export default class Flip extends Component {
     static propTypes = {
         active: PropTypes.bool,
@@ -33,9 +37,27 @@ export default class Flip extends Component {
         this.backShow = false;
     }
 
+    refineContents = () => {
+        const { children } = this.props;
+        const contents = {
+            front: null,
+            back: null
+        };
+
+        React.Children.forEach(children, (child) => {
+            if (child.type === Front && !contents.front) {
+                contents.front = child;
+            } else if (child.type === Back && !contents.back) {
+                contents.back = child;
+            }
+        });
+
+        return contents;
+    }
+
     render() {
         const { active } = this.state;
-        const { children, back } = this.props;
+        const { front, back } = this.refineContents();
 
         const filpClassName = classNames(styles.flip, {
             [styles.active]: active
@@ -47,7 +69,7 @@ export default class Flip extends Component {
             <div className={filpClassName}>
                 <div className={styles.flipper}>
                     <div className={styles.front}>
-                        {children}
+                        {front}
                     </div>
                     <div className={styles.back}>
                         {this.backShow && back}
@@ -57,3 +79,6 @@ export default class Flip extends Component {
         )
     }
 }
+
+Flip.Front = Front;
+Flip.Back = Back;
