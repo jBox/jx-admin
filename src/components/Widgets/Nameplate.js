@@ -34,7 +34,7 @@ export default class Nameplate extends Component {
                 </div>
                 <div className="pull-left info">
                     <p>{profile.nickname}</p>
-                    <Link to="/"><i className="fa fa-circle text-success"></i> Online</Link>
+                    <Link to="/landing"><i className="fa fa-circle text-success"></i> Online</Link>
                 </div>
             </div>
         );
