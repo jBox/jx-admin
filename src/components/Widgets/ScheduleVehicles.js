@@ -228,7 +228,8 @@ export default class ScheduleVehicles extends Component {
         onSchedule: PropTypes.func,
         onDepart: PropTypes.func,
         onProgress: PropTypes.func,
-        onRevert: PropTypes.func
+        onRevert: PropTypes.func,
+        onProgressDetails: PropTypes.func
     }
 
     constructor(props) {
@@ -302,7 +303,7 @@ export default class ScheduleVehicles extends Component {
     }
 
     render() {
-        const { order, vehicles, drivers } = this.props;
+        const { order, vehicles, drivers,onProgressDetails } = this.props;
         const { dialog } = this.state;
         const schedulable = ["confirmed", "scheduled"].includes(order.status.id) &&
             (order.schedules.length === 0 || order.schedules.every(x => !x.status));
@@ -322,7 +323,7 @@ export default class ScheduleVehicles extends Component {
                         />
                     ))}
 
-                    <OrderProgress order={order} />
+                    <OrderProgress order={order} onDetails={onProgressDetails} />
 
                 </div>
 

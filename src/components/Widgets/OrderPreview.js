@@ -11,6 +11,7 @@ import Button from "../Form/Button";
 import OrderOperation from "./OrderOperation";
 import ScheduleVehicles from "./ScheduleVehicles";
 import OrderEditor from "./OrderEditor";
+import ProgressDetails from "./ProgressDetails";
 
 const OrderTrack = ({ state, time }) => {
     return (
@@ -71,15 +72,26 @@ export default class OrderPreview extends Component {
     }
 
     state = {
-        flipActive: false
+        flipActive: false,
+        flipBack: null
     }
 
-    handleModifyClose = () => {
+    handleFlipBack = () => {
         this.setState({ flipActive: false });
     }
 
     handleModify = () => {
-        this.setState({ flipActive: true });
+        this.setState({
+            flipBack: "modify",
+            flipActive: true
+        });
+    }
+
+    handleProgressDetails = () => {
+        this.setState({
+            flipBack: "progress-details",
+            flipActive: true
+        });
     }
 
     getBoxStyle = () => {
@@ -113,9 +125,10 @@ export default class OrderPreview extends Component {
         } = this.props;
 
         const editable = ["submitted", "confirmed"].includes(order.status.id);
+        const { flipActive, flipBack } = this.state;
 
         return (
-            <Flip active={this.state.flipActive}>
+            <Flip active={flipActive}>
                 <Flip.Front>
                     <div className={classNames("box", this.getBoxStyle())}>
                         <div className="box-header with-border">
@@ -153,6 +166,7 @@ export default class OrderPreview extends Component {
                             onDepart={onDepart}
                             onProgress={onProgress}
                             onRevert={onRevert}
+                            onProgressDetails={this.handleProgressDetails}
                         />
 
                         <OrderStatus order={order} />
@@ -161,14 +175,22 @@ export default class OrderPreview extends Component {
                     </div>
                 </Flip.Front>
                 <Flip.Back>
-                    <OrderEditor
-                        models={models}
-                        order={order}
-                        modification={modification}
-                        onSubmit={onModify}
-                        onCancel={onCancel}
-                        onClose={this.handleModifyClose}
-                    />
+                    {flipBack === "modify" && (
+                        <OrderEditor
+                            models={models}
+                            order={order}
+                            modification={modification}
+                            onSubmit={onModify}
+                            onCancel={onCancel}
+                            onClose={this.handleFlipBack}
+                        />
+                    )}
+                    {flipBack === "progress-details" && (
+                        <ProgressDetails
+                            order={order}
+                            onClose={this.handleFlipBack}
+                        />
+                    )}
                 </Flip.Back>
             </Flip>
         );

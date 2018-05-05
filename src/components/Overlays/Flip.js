@@ -60,7 +60,8 @@ export default class Flip extends Component {
         const { front, back } = this.refineContents();
 
         const filpClassName = classNames(styles.flip, {
-            [styles.active]: active
+            [styles.active]: active,
+            [styles.inActive]: !active
         });
 
         this.backShow = this.backShow || active;

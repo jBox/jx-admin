@@ -19,11 +19,11 @@
 
 .active .front {
     transform: rotateY(180deg);
-    animation: abs 0.6s linear forwards;
+    animation: abs 0.3s linear forwards;
 }
 
 .flipper {
-    transition: 1s;
+    transition: 0.6s;
     transform-style: preserve-3d;
     position: relative;
 }
@@ -31,7 +31,7 @@
 .front,
 .back {
     backface-visibility: hidden;
-    transition: 1s;
+    transition: 0.6s;
     transform-style: preserve-3d;
     position: relative;
     top: 0;
@@ -48,5 +48,6 @@
 }
 
 .back {
+    z-index: 0;
     transform: rotateY(-180deg);
 }
