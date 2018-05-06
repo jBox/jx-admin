@@ -83,49 +83,50 @@ export default class OrderPreview extends Component {
     }
 
     handleModify = () => {
-        this.setState({
+        this.setState({ flipBack: null }, () => this.setState({
             flipBack: "modify",
             flipActive: true
-        });
+        }));
     }
 
     handleProgressDetails = () => {
-        this.setState({
+        this.setState({ flipBack: null }, () => this.setState({
             flipBack: "progress-details",
             flipActive: true
-        });
+        }));
     }
 
     handleProgressReport = (schedule) => {
-        this.setState({
+        this.setState({ flipBack: null }, () => this.setState({
             schedule,
             flipBack: "progress-report",
             flipActive: true
-        });
+        }));
     }
 
     handleProgressReportSubmit = (progress) => {
         const { order } = this.props;
         const { schedule } = this.state;
         schedule.progress = [...schedule.progress, progress];
-        this.setState({ flipActive: false }, () => {
+
+        this.setState({ flipBack: null }, () => this.setState({ flipActive: false }, () => {
             const { onProgress } = this.props;
             if (onProgress) {
                 onProgress(order, schedule);
             }
-        });
+        }));
     }
 
     handleScheduleVehicle = (vehicle) => {
         const { order: { schedules } } = this.props;
         const original = schedules.filter(x => x.belongs === vehicle.id);
 
-        this.setState({
+        this.setState({ flipBack: null }, () => this.setState({
             vehicle,
             original,
             flipBack: "schedule",
             flipActive: true
-        });
+        }));
     }
 
     handleVehicleSchedulerSubmit = (schedules) => {

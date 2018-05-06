@@ -183,10 +183,10 @@ export default class VehicleScheduler extends Component {
     }
 
     handleGoBack = () => {
-        const { original, onClose } = this.props;
-        if (!isEqual(this.state.schedules, original)) {
+        const { onClose } = this.props;
+        /* if (!isEqual(this.state.schedules, original)) {
             this.setState({ schedules: original });
-        }
+        } */
 
         if (onClose) {
             onClose();
