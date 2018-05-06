@@ -207,7 +207,7 @@ export default class Login extends Component {
                     <div className="col-xs-8">
                         <div className="checkbox">
                             <label>
-                                <input name="remember" type="checkbox" onChange={this.handleInputChange} /> 记住我
+                                <input name="remember" type="checkbox" onChange={this.handleInputChange} /> 下次自动登录
                             </label>
                         </div>
                     </div>
