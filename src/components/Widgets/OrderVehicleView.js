@@ -7,6 +7,7 @@ import Button from "../Form/Button";
 
 export default class OrderVehicleView extends Component {
     static propTypes = {
+        order: PropTypes.object,
         data: PropTypes.object,
         schedules: PropTypes.array,
         schedulable: PropTypes.bool,
@@ -93,12 +94,14 @@ export default class OrderVehicleView extends Component {
     }
 
     render() {
-        const { schedules, schedulable, data } = this.props;
+        const { schedules, schedulable, data, order } = this.props;
         const { model, count, withDriver, scheduled } = data;
         const additional = [model.label, `${count} 辆`];
         if (withDriver) {
             additional.push("带驾");
         }
+
+        const actionable = order.status.id !== "cancelled";
 
         return (
             <Fragment>
@@ -109,7 +112,7 @@ export default class OrderVehicleView extends Component {
                     <div className={styles.content}>
                         <div className={styles.list}>
                             <span className={styles.item}>{additional.join(" / ")}</span>
-                            {schedulable && !scheduled && (
+                            {actionable && schedulable && !scheduled && (
                                 <Button className="pull-right"
                                     onClick={this.handleScheduleClick}
                                     primary
@@ -118,7 +121,7 @@ export default class OrderVehicleView extends Component {
                                     安排车辆
                                 </Button>
                             )}
-                            {schedulable && scheduled && (
+                            {actionable && schedulable && scheduled && (
                                 <a href="#re-schedule" onClick={this.handleRescheduleClick}>
                                     重新安排
                                 </a>
@@ -136,7 +139,7 @@ export default class OrderVehicleView extends Component {
                                         {item.status === "start" ? "已发车" : "已收车"}
                                     </span>
                                 )}
-                                {this.renderActionButton(item)}
+                                {actionable && this.renderActionButton(item)}
                             </div>
                         ))}
                     </div>

@@ -165,11 +165,11 @@ export default class OrderPreview extends Component {
             case "confirmed":
                 boxStyle = "box-warning";
                 break;
-            case "cancelling":
-                boxStyle = "box-danger";
-                break;
             case "scheduled":
                 boxStyle = "box-success";
+                break;
+            case "cancelled":
+                boxStyle = "box-danger";
                 break;
         }
 

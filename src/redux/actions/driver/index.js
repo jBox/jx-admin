@@ -46,6 +46,7 @@ export const depart = (trip) => {
     return {
         type: API,
         endpoint,
+        error: ({ dispatch, error }) => dispatch(callout({ subject: `行程${trip.id}发车失败`, message: error, type: "error", duration: 8 })),
         success: ({ data, dispatch }) => {
             dispatch(callout({ message: `行程${trip.id}已确认发车！`, type: "success" }));
             dispatch({
@@ -66,6 +67,7 @@ export const revert = (trip) => {
     return {
         type: API,
         endpoint,
+        error: ({ dispatch, error }) => dispatch(callout({ subject: `行程${trip.id}收车失败`, message: error, type: "error", duration: 8 })),
         success: ({ data, dispatch }) => {
             dispatch(callout({ message: `行程${trip.id}已确认收车！`, type: "success" }));
             dispatch({
@@ -86,8 +88,9 @@ export const updateProgress = (trip, progress) => {
     return {
         type: API,
         endpoint,
+        error: ({ dispatch, error }) => dispatch(callout({ subject: `行程${trip.id}进度更新失败`, message: error, type: "error", duration: 8 })),
         success: ({ data, dispatch }) => {
-            dispatch(callout({ message: `行程${trip.id}d\进度已更新！`, type: "success" }));
+            dispatch(callout({ message: `行程${trip.id}进度已更新！`, type: "success" }));
             dispatch({
                 type: DRIVER_TRIP_UPDATE_SUCCESS,
                 data

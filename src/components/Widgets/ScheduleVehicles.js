@@ -43,6 +43,7 @@ export default class ScheduleVehicles extends Component {
                 {order.vehicles.map((item) => (
                     <OrderVehicleView key={item.id}
                         schedulable={schedulable}
+                        order={order}
                         data={item}
                         schedules={order.schedules.filter(x => x.belongs === item.id)}
                         onSchedule={onSchedule}
