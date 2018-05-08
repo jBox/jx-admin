@@ -12,7 +12,7 @@ import OrderOperation from "./OrderOperation";
 import ScheduleVehicles from "./ScheduleVehicles";
 import OrderEditor from "./OrderEditor";
 import ProgressDetails from "./ProgressDetails";
-import ProgressEditor from "./ProgressEditor2";
+import ProgressEditor from "./ProgressEditor";
 import VehicleScheduler from "./VehicleScheduler";
 
 const OrderTrack = ({ state, time }) => {

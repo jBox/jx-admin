@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import homeSelector from "../../redux/selectors/driver";
-import DriverTrip from "../../components/Widgets/DriverTrip";
+import DriverTrip from "../../components/Widgets/Trip";
 import { depart, revert, updateProgress, currentTripInitialLoad } from "../../redux/actions/driver";
 
 class Home extends Component {

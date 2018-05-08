@@ -7,7 +7,6 @@ import Form from "../Form";
 import Button from "../Form/Button";
 import Dropdown from "../Form/Dropdown";
 import FormInput from "../Form/Input";
-import Modal from "../Overlays/Modal";
 
 const isDataEmpty = (data) => {
     if (!data) {
@@ -36,6 +35,7 @@ export default class ProgressEditor extends Component {
     }
 
     static propTypes = {
+        order: PropTypes.object,
         data: PropTypes.object,
         terms: PropTypes.array,
         onSubmit: PropTypes.func,
@@ -81,17 +81,26 @@ export default class ProgressEditor extends Component {
     }
 
     render() {
-        const { onClose, terms } = this.props;
+        const { onClose, terms, order } = this.props;
         const { isEdit, data } = this.state;
-        const title = isEdit ? `编辑进度 （${data.date}）` : "汇报进度";
+        let title = isEdit ? `编辑进度 （${data.date}）` : "汇报进度";
+        if (order && order.id) {
+            title = `订单${order.id} - ${title}`;
+        }
+
         const submitButton = isEdit ? `提交修改` : "提交汇报";
         return (
             <Form action="/api/users/drivers" method="POST" onSubmit={this.handleSubmit}>
-                <Modal>
-                    <Modal.Header onClose={onClose}>
-                        <Modal.Title>{title}</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
+                <div className="box box-primary box-solid">
+                    <div className="box-header with-border">
+                        <h3 className="box-title">{title}</h3>
+                        <div className="box-tools">
+                            <Button primary flat xs onClick={onClose}>
+                                返回
+                        </Button>
+                        </div>
+                    </div>
+                    <div className="box-body">
                         {!isEdit && (
                             <Dropdown id="date" name="date" label="行车日期"
                                 defaultValue={data.date}
@@ -116,28 +125,21 @@ export default class ProgressEditor extends Component {
                         <FormInput type="number" id="fuelFee" name="fuelFee" label="油费" placeholder="油费"
                             message="请输入正确的油费"
                             defaultValue={data.fuelFee}
-                            required
                             onChange={this.handleInputChange} />
-                        <div className="row">
-                            <div className="col-xs-6">
-                                <FormInput type="number" id="tollFee" name="tollFee" label="通行费" placeholder="通行费"
-                                    message="请输入正确的通行费"
-                                    defaultValue={data.tollFee}
-                                    onChange={this.handleInputChange} />
-                            </div>
-                            <div className="col-xs-6">
-                                <FormInput type="number" id="parkingFee" name="parkingFee" label="停车费" placeholder="停车费"
-                                    message="请输入正确的停车费"
-                                    defaultValue={data.parkingFee}
-                                    onChange={this.handleInputChange} />
-                            </div>
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button className="pull-left" onClick={onClose}>取消</Button>
-                        <Button type="submit" primary>{submitButton}</Button>
-                    </Modal.Footer>
-                </Modal>
+                        <FormInput type="number" id="tollFee" name="tollFee" label="通行费" placeholder="通行费"
+                            message="请输入正确的通行费"
+                            defaultValue={data.tollFee}
+                            onChange={this.handleInputChange} />
+                        <FormInput type="number" id="parkingFee" name="parkingFee" label="停车费" placeholder="停车费"
+                            message="请输入正确的停车费"
+                            defaultValue={data.parkingFee}
+                            onChange={this.handleInputChange} />
+                    </div>
+
+                    <div className="box-footer">
+                        <Button type="submit" flat primary right>{submitButton}</Button>
+                    </div>
+                </div>
             </Form>
         );
     }
