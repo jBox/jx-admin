@@ -1,12 +1,3 @@
-@keyframes abs {
-    from {
-        position: relative
-    }
-    to {
-        position: absolute
-    }
-}
-
 .flip {
     perspective: 1000px;
     transform-style: preserve-3d;
@@ -19,7 +10,7 @@
 
 .active .front {
     transform: rotateY(180deg);
-    animation: abs 0.3s linear forwards;
+    position: absolute;
 }
 
 .flipper {
@@ -52,6 +43,7 @@
     transform: rotateY(-180deg);
 }
 
+.front :global(.box-header),
 .back :global(.box-header) {
     display: table-cell;
     width: 1%;
