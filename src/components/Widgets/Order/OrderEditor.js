@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import isEqual from "lodash/isEqual";
 import isEmpty from "lodash/isEmpty";
-import { LPN_CONTENT_PATTERN } from "../utils";
+import { LPN_CONTENT_PATTERN } from "../../utils";
 
-import Form from "../Form";
-import Button from "../Form/Button";
-import Input from "../Form/Input";
-import Autocomplete from "../Form/Autocomplete";
+import Form from "../../Form";
+import Button from "../../Form/Button";
+import Input from "../../Form/Input";
+import Autocomplete from "../../Form/Autocomplete";
 import VehiclesEditor from "./VehiclesEditor";
 
 const localDepartureTime = (departureTime) => {

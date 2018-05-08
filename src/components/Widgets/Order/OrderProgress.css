@@ -1,4 +1,4 @@
-@value success from "../Colors.css";
+@value success from "../../Colors.css";
 
 .content {
     display: flex;

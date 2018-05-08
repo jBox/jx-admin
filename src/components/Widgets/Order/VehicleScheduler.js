@@ -2,11 +2,11 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import isEqual from "lodash/isEqual";
-import { LPN_CONTENT_PATTERN } from "../utils";
+import { LPN_CONTENT_PATTERN } from "../../utils";
 
-import Form from "../Form";
-import Button from "../Form/Button";
-import Autocomplete from "../Form/Autocomplete";
+import Form from "../../Form";
+import Button from "../../Form/Button";
+import Autocomplete from "../../Form/Autocomplete";
 
 class Scheduler extends Component {
     static propTypes = {

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 import styles from "./OrderVehicleView.css";
-import Button from "../Form/Button";
+import Button from "../../Form/Button";
 
 export default class OrderVehicleView extends Component {
     static propTypes = {

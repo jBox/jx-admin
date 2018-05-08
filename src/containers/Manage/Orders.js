@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
 
-import OrderPreview from "../../components/Widgets/OrderPreview";
+import OrderPreview from "../../components/Widgets/Order";
 import Confirm from "../../components/Overlays/Confirm";
 import InfiniteScroll from "react-infinite-scroller";
 

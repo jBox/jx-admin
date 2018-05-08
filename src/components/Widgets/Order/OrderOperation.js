@@ -1,19 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
-import styles from "./OrderPreview.css";
 
-import Button from "../Form/Button";
+import Button from "../../Form/Button";
 
 export default class OrderOperation extends Component {
     static defaultProps = {
-        vehicles: [],
-        drivers: []
+        vehicles: []
     }
 
     static propTypes = {
         vehicles: PropTypes.array,
-        drivers: PropTypes.array,
         order: PropTypes.object,
         onConfirm: PropTypes.func,
         onConfirmCancel: PropTypes.func,

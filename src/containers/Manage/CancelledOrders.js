@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
 
-import OrderPreview from "../../components/Widgets/OrderPreview";
+import OrderPreview from "../../components/Widgets/Order";
 
 import manageOrdersSelector from "../../redux/selectors/manage/orders";
 import { ordersInitialLoad } from "../../redux/actions/manage/orders";

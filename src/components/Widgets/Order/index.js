@@ -1,53 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
-import styles from "./OrderPreview.css";
-import Form from "../Form";
-import Autocomplete from "../Form/Autocomplete";
-import { SERVICE_STATUS } from "../utils";
 
-import Flip from "../Overlays/Flip";
-import Button from "../Form/Button";
-import OrderOperation from "./OrderOperation";
-import ScheduleVehicles from "./ScheduleVehicles";
+import Flip from "../../Overlays/Flip";
 import OrderEditor from "./OrderEditor";
 import ProgressDetails from "./ProgressDetails";
-import ProgressEditor from "./ProgressEditor";
 import VehicleScheduler from "./VehicleScheduler";
+import OrderPreview from "./OrderPreview";
+import ProgressEditor from "../ProgressEditor";
 
-const OrderTrack = ({ state, time }) => {
-    return (
-        <div className={styles.track}>
-            <label>{state}</label>
-            <span>{time}</span>
-        </div>
-    );
-};
-
-const OrderStatus = ({ order }) => {
-    const traces = order.traces.reduceRight((items, item) => {
-        return items.concat({ state: item.state, time: item.time.toDateTime() });
-    }, []);
-    const status = order.service.status ?
-        SERVICE_STATUS[order.service.status] :
-        order.status.label;
-    return (
-        <div className="box box-widget box-solid collapsed-box" style={{ boxShadow: "none" }}>
-            <div className="box-header">
-                <span>订单状态：<label>{status}</label></span>
-
-                <div className="box-tools pull-right">
-                    <button type="button" className="btn btn-box-tool" data-widget="collapse">查看详情 &gt;</button>
-                </div>
-            </div>
-            <div className="box-body" style={{ display: "none", paddingTop: "0" }}>
-                {traces.map((item, index) => (<OrderTrack key={index} {...item} />))}
-            </div>
-        </div>
-    );
-}
-
-export default class OrderPreview extends Component {
+export default class Order extends Component {
     static defaultProps = {
         vehicles: [],
         drivers: []
@@ -67,10 +28,6 @@ export default class OrderPreview extends Component {
         onRevert: PropTypes.func,
         onProgress: PropTypes.func,
         onComplete: PropTypes.func
-    }
-
-    componentDidMount() {
-        jQuery(".box").boxWidget();
     }
 
     state = {
@@ -157,82 +114,47 @@ export default class OrderPreview extends Component {
         });
     }
 
-    getBoxStyle = () => {
-        const { order } = this.props;
-
-        let boxStyle = "box-primary";
-        switch (order.status.id) {
-            case "confirmed":
-                boxStyle = "box-warning";
-                break;
-            case "scheduled":
-                boxStyle = "box-success";
-                break;
-            case "cancelled":
-                boxStyle = "box-danger";
-                break;
+    handleOrderEditorSubmit = (order) => {
+        const { onModify } = this.props;
+        if (onModify) {
+            onModify(order);
         }
-
-        return boxStyle;
+        this.setState({ flipActive: false });
     }
 
     render() {
         const {
-            order, models, modification, vehicles, drivers,
-            onModify,
+            order,
+            models,
+            modification,
+            vehicles,
+            drivers,
             onCancel,
             onDepart,
-            onRevert
+            onRevert,
+            onConfirm,
+            onComplete,
+            onConfirmCancel
         } = this.props;
 
-        const editable = ["submitted", "confirmed"].includes(order.status.id);
         const { flipActive, flipBack } = this.state;
 
         return (
             <Flip active={flipActive}>
                 <Flip.Front>
-                    <div className={classNames("box", this.getBoxStyle())}>
-                        <div className="box-header with-border">
-                            <div className="user-block">
-                                <span className={styles.orderId}>订单：{order.id}</span>
-                            </div>
-
-                            {editable && (
-                                <div className="box-tools">
-                                    <Button warning flat xs onClick={this.handleModify}>
-                                        修改
-                                </Button>
-                                </div>
-                            )}
-
-                        </div>
-
-                        <div className="box-body">
-                            <ul className="list-unstyled">
-                                <li>联系人：<label>{order.contact}</label></li>
-                                <li>联系电话：<label>{order.mobile}</label></li>
-                                <li>出发时间：<label>{order.departureTime.toDateTime()}</label></li>
-                                <li>出发地点：<label>{order.departurePlace}</label></li>
-                                <li>目的地：<label>{order.destination}</label></li>
-                                <li>租车天数：<label>{`${order.duration} 天`}</label></li>
-                                <li>下单时间：<label>{order.createTime.toDateTime()}</label></li>
-                            </ul>
-                        </div>
-
-                        <ScheduleVehicles
-                            order={order}
-                            vehicles={vehicles}
-                            onDepart={onDepart}
-                            onRevert={onRevert}
-                            onProgressDetails={this.handleProgressDetails}
-                            onProgressReport={this.handleProgressReport}
-                            onSchedule={this.handleScheduleVehicle}
-                        />
-
-                        <OrderStatus order={order} />
-
-                        <OrderOperation {...this.props} />
-                    </div>
+                    <OrderPreview
+                        vehicles={vehicles}
+                        order={order}
+                        onModify={this.handleModify}
+                        onConfirm={onConfirm}
+                        onConfirmCancel={onConfirmCancel}
+                        onDepart={onDepart}
+                        onRevert={onRevert}
+                        onComplete={onComplete}
+                        onVehicleSchedule={this.handleScheduleVehicle}
+                        onProgressDetails={this.handleProgressDetails}
+                        onProgressReport={this.handleProgressReport}
+                    />
                 </Flip.Front>
                 <Flip.Back>
                     {flipBack === "modify" && (
@@ -240,7 +162,7 @@ export default class OrderPreview extends Component {
                             models={models}
                             order={order}
                             modification={modification}
-                            onSubmit={onModify}
+                            onSubmit={this.handleOrderEditorSubmit}
                             onCancel={onCancel}
                             onClose={this.handleFlipBack}
                         />

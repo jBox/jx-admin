@@ -3,10 +3,11 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import isEqual from "lodash/isEqual";
 import uuid from "uuid/v4";
+
 import styles from "./VehiclesEditor.css";
 
-import Button from "../Form/Button";
-import Input from "../Form/Input";
+import Button from "../../Form/Button";
+import Input from "../../Form/Input";
 
 class EditVehicle extends Component {
     static propTypes = {

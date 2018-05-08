@@ -4,8 +4,8 @@ import classNames from "classnames";
 
 import styles from "./ProgressDetails.css";
 
-import Modal from "../Overlays/Modal";
-import Button from "../Form/Button";
+import Modal from "../../Overlays/Modal";
+import Button from "../../Form/Button";
 
 const ProgressItem = ({ licenseNumber, model, driver, progress }) => {
 
