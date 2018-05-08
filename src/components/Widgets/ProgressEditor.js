@@ -18,7 +18,9 @@ const isDataEmpty = (data) => {
         data.duration === "" &&
         data.tollFee === "" &&
         data.fuelFee === "" &&
-        data.parkingFee === "";
+        data.parkingFee === "" &&
+        data.otherFee === "" &&
+        data.notes === "";
 };
 
 export default class ProgressEditor extends Component {
@@ -30,7 +32,9 @@ export default class ProgressEditor extends Component {
             duration: "", // 行车时间
             tollFee: "", // 通行费
             fuelFee: "", // 油费
-            parkingFee: "" // 停车费
+            parkingFee: "", // 停车费
+            otherFee: "", // 其他费
+            notes: "" // 备注
         }
     }
 
@@ -122,17 +126,32 @@ export default class ProgressEditor extends Component {
                             defaultValue={data.duration}
                             required
                             onChange={this.handleInputChange} />
-                        <FormInput type="number" id="fuelFee" name="fuelFee" label="油费" placeholder="油费"
-                            message="请输入正确的油费"
-                            defaultValue={data.fuelFee}
-                            onChange={this.handleInputChange} />
-                        <FormInput type="number" id="tollFee" name="tollFee" label="通行费" placeholder="通行费"
-                            message="请输入正确的通行费"
-                            defaultValue={data.tollFee}
-                            onChange={this.handleInputChange} />
-                        <FormInput type="number" id="parkingFee" name="parkingFee" label="停车费" placeholder="停车费"
-                            message="请输入正确的停车费"
-                            defaultValue={data.parkingFee}
+                        <div className="row">
+                            <div className="col-xs-6">
+                                <FormInput type="number" id="fuelFee" name="fuelFee" label="油费" placeholder="油费"
+                                    defaultValue={data.fuelFee}
+                                    onChange={this.handleInputChange} />
+                            </div>
+                            <div className="col-xs-6">
+                                <FormInput type="number" id="tollFee" name="tollFee" label="通行费" placeholder="通行费"
+                                    defaultValue={data.tollFee}
+                                    onChange={this.handleInputChange} />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-xs-6">
+                                <FormInput type="number" id="parkingFee" name="parkingFee" label="停车费" placeholder="停车费"
+                                    defaultValue={data.parkingFee}
+                                    onChange={this.handleInputChange} />
+                            </div>
+                            <div className="col-xs-6">
+                                <FormInput type="number" id="otherFee" name="otherFee" label="其他费用" placeholder="其他费用"
+                                    defaultValue={data.otherFee}
+                                    onChange={this.handleInputChange} />
+                            </div>
+                        </div>
+                        <FormInput id="notes" name="notes" label="备注" placeholder="备注"
+                            defaultValue={data.备注}
                             onChange={this.handleInputChange} />
                     </div>
 

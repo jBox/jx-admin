@@ -15,13 +15,17 @@ const ProgressItem = ({ licenseNumber, model, driver, progress }) => {
     };
 
     /**date: "", // 日期 milage: "", // 里程 duration: "", // 行车时间
-    tollFee: "", // 通行费 fuelFee: "", // 油费 parkingFee: "" // 停车费 */
+    tollFee: "", // 通行费 fuelFee: "", // 油费 parkingFee: "" // 停车费
+    otherFee: "", // 其他费用 notes: "" // 备注 */
 
     const infos = [
         `行驶${progress.duration}小时`,
-        `${progress.milage}公里`,
-        `燃油费${progress.fuelFee}元`
+        `${progress.milage}公里`
     ];
+
+    if (progress.fuelFee) {
+        infos.push(`燃油费${progress.fuelFee}元`);
+    }
 
     if (progress.tollFee) {
         infos.push(`过路费${progress.tollFee}元`);
@@ -29,6 +33,10 @@ const ProgressItem = ({ licenseNumber, model, driver, progress }) => {
 
     if (progress.parkingFee) {
         infos.push(`停车费${progress.parkingFee}元`);
+    }
+
+    if (progress.otherFee) {
+        infos.push(`其他费用${progress.otherFee}元`);
     }
 
     const reportDateTime = progress.report.toDateTime();
@@ -41,6 +49,7 @@ const ProgressItem = ({ licenseNumber, model, driver, progress }) => {
                 <span className="time"><i className="fa fa-clock-o"></i> {reportDateTime}</span>
                 <h3 className="timeline-header">{licenseNumber} / {driver}</h3>
                 <div className="timeline-body">{infos.join(", ")}</div>
+                {progress.notes && (<div className={styles.notes}>{progress.notes}</div>)}
             </div>
         </li>
     )
