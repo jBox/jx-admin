@@ -86,9 +86,10 @@ export const loadMore = (filter) => (dispatch, getState) => {
     });
 };
 
-export const confirmOrder = (order) => {
+export const confirmOrder = (order, department) => {
     const body = {
         version: order.version,
+        department,
         operation: "confirm"
     };
 

@@ -119,7 +119,7 @@ export default class Order extends Component {
         if (onModify) {
             onModify(order);
         }
-        this.setState({ flipActive: false });
+        // this.setState({ flipActive: false });
     }
 
     render() {

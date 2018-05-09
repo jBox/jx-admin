@@ -137,7 +137,7 @@ export default class OrderEditor extends Component {
                         <Input id="contact" name="contact" label="联系人"
                             defaultValue={order.contact}
                             onChange={this.handleInputChange}
-                            plaseholder="联系人姓名"
+                            placeholder="联系人姓名"
                             message="请输入联系人"
                             required
                             readOnly={!editable}
@@ -146,9 +146,18 @@ export default class OrderEditor extends Component {
                         <Input id="mobile" name="mobile" label="联系电话"
                             defaultValue={order.mobile}
                             onChange={this.handleInputChange}
-                            plaseholder="手机号码"
+                            placeholder="手机号码"
                             message="请输入有效的手机号码"
                             pattern="^1\d{10}$"
+                            required
+                            readOnly={!editable}
+                        />
+
+                        <Input id="department" name="department" label="用车单位"
+                            defaultValue={order.department}
+                            onChange={this.handleInputChange}
+                            placeholder="用车单位"
+                            message="请输入用车单位"
                             required
                             readOnly={!editable}
                         />
@@ -156,7 +165,7 @@ export default class OrderEditor extends Component {
                         <Input type="datetime-local" id="departureTime" name="departureTime" label="出发时间"
                             defaultValue={localDepartureTime(order.departureTime)}
                             onChange={this.handleInputChange}
-                            plaseholder="出发时间"
+                            placeholder="出发时间"
                             message="请输入出发时间"
                             required
                             readOnly={!editable}
@@ -165,7 +174,7 @@ export default class OrderEditor extends Component {
                         <Input id="departurePlace" name="departurePlace" label="出发地点"
                             defaultValue={order.departurePlace}
                             onChange={this.handleInputChange}
-                            plaseholder="出发地点"
+                            placeholder="出发地点"
                             message="请输入出发地点"
                             required
                             readOnly={!editable}
@@ -174,7 +183,7 @@ export default class OrderEditor extends Component {
                         <Input id="destination" name="destination" label="目的地"
                             defaultValue={order.destination}
                             onChange={this.handleInputChange}
-                            plaseholder="目的地"
+                            placeholder="目的地"
                             message="请输入目的地"
                             required
                             readOnly={!editable}
@@ -183,7 +192,7 @@ export default class OrderEditor extends Component {
                         <Input type="number" id="duration" name="duration" label="租车天数"
                             defaultValue={order.duration}
                             onChange={this.handleInputChange}
-                            plaseholder="租车天数"
+                            placeholder="租车天数"
                             message="请输入租车天数"
                             pattern="^\d+$"
                             required

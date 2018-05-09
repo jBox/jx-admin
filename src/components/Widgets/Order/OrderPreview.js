@@ -140,6 +140,7 @@ export default class OrderPreview extends Component {
                     <ul className="list-unstyled">
                         <li>联系人：<label>{order.contact}</label></li>
                         <li>联系电话：<label>{order.mobile}</label></li>
+                        {order.department && (<li>用车单位：<label>{order.department}</label></li>)}
                         <li>出发时间：<label>{order.departureTime.toDateTime()}</label></li>
                         <li>出发地点：<label>{order.departurePlace}</label></li>
                         <li>目的地：<label>{order.destination}</label></li>

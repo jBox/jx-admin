@@ -70,10 +70,10 @@ class Orders extends Component {
         }
     }
 
-    handleConfirmOrder = (order) => {
+    handleConfirmOrder = (order, department) => {
         const { confirmOrder } = this.props;
         if (confirmOrder) {
-            confirmOrder(order);
+            confirmOrder(order, department);
         }
     }
 
@@ -142,7 +142,7 @@ class Orders extends Component {
                     loadMore={this.handleLoadMore}
                     hasMore={hasMore}
                     loader={<Loader key={0} />}
-                    className="content-limit" 
+                    className="content-limit"
                 >
                     {orders.map((order) => (
                         <OrderPreview
