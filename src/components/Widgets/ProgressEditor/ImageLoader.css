@@ -1,0 +1,51 @@
+@value danger from "../../Colors.css";
+ul.list {
+    margin: 0;
+    padding: 0;
+}
+
+ul.list li {
+    list-style: none;
+    margin: 5px 0;
+    padding: 5px;
+    border: 1px #d2d6de solid;
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+
+ul.list::after {
+    content: " ";
+    clear: both;
+}
+
+ul.list li.x {
+    padding: 0;
+    border: none;
+}
+
+ul.list .dropzone {
+    margin: 0;
+    width: 100%;
+    height: 80px;
+    border: 2px dashed #666;
+    padding: 5px;
+    text-align: center;
+    font-size: 18px;
+    line-height: 62px;
+    cursor: pointer;
+}
+
+.remove {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    text-align: center;
+    line-height: 42px;
+    background: white;
+    border-radius: 40px;
+    color: danger;
+    cursor: pointer;
+}

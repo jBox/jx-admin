@@ -3,10 +3,11 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import isEqual from "lodash/isEqual";
 
-import Form from "../Form";
-import Button from "../Form/Button";
-import Dropdown from "../Form/Dropdown";
-import FormInput from "../Form/Input";
+import Form from "../../Form";
+import Button from "../../Form/Button";
+import Dropdown from "../../Form/Dropdown";
+import FormInput from "../../Form/Input";
+import ImageLoader from "./ImageLoader";
 
 const isDataEmpty = (data) => {
     if (!data) {
@@ -153,6 +154,8 @@ export default class ProgressEditor extends Component {
                         <FormInput id="notes" name="notes" label="备注" placeholder="备注"
                             defaultValue={data.备注}
                             onChange={this.handleInputChange} />
+
+                        <ImageLoader />
                     </div>
 
                     <div className="box-footer">
