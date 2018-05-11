@@ -27,7 +27,8 @@ export default class Order extends Component {
         onDepart: PropTypes.func,
         onRevert: PropTypes.func,
         onProgress: PropTypes.func,
-        onComplete: PropTypes.func
+        onComplete: PropTypes.func,
+        onImagePreview: PropTypes.func
     }
 
     state = {
@@ -134,7 +135,8 @@ export default class Order extends Component {
             onRevert,
             onConfirm,
             onComplete,
-            onConfirmCancel
+            onConfirmCancel,
+            onImagePreview
         } = this.props;
 
         const { flipActive, flipBack } = this.state;
@@ -171,6 +173,7 @@ export default class Order extends Component {
                         <ProgressDetails
                             order={order}
                             onClose={this.handleFlipBack}
+                            onImagePreview={onImagePreview}
                         />
                     )}
                     {flipBack === "progress-report" && (

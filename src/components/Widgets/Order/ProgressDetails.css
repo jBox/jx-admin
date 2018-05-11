@@ -6,13 +6,13 @@
     left: 15px;
 }
 
-:global(.timeline>li>.fa), 
-:global(.timeline>li>.glyphicon), 
+:global(.timeline>li>.fa),
+:global(.timeline>li>.glyphicon),
 :global(.timeline>li>.ion) {
     left: 2px;
 }
 
-:global(.timeline>li>.timeline-item) {  
+:global(.timeline>li>.timeline-item) {
     margin-left: 42px;
     margin-right: 0;
 }
@@ -25,4 +25,8 @@
     padding: 0 10px 10px 10px;
     color: #999;
     font-size: 12px;
+}
+
+.thumbnails {
+    padding: 0 10px 10px 10px;
 }

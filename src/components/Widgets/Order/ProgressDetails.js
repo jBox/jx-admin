@@ -7,7 +7,30 @@ import styles from "./ProgressDetails.css";
 import Modal from "../../Overlays/Modal";
 import Button from "../../Form/Button";
 
-const ProgressItem = ({ licenseNumber, model, driver, progress }) => {
+const Thumbnails = ({ pics, onImagePreview }) => {
+
+    const handleClick = (id) => {
+        return () => {
+            if (onImagePreview) {
+                onImagePreview(id);
+            }
+        }
+    };
+
+    return (
+        <div className={styles.thumbnails}>
+            <div className="row">
+                {pics.map((img) => (
+                    <div key={img.id} className="col-xs-4 col-md-4 col-sm-4" onClick={handleClick(img.id)}>
+                        <img className="img-responsive" src={img.thumbnail} />
+                    </div>
+                ))}
+            </div>
+        </div>
+    )
+};
+
+const ProgressItem = ({ licenseNumber, model, driver, progress, onImagePreview }) => {
 
     const VehicleIcons = {
         "商务车": "fa-car bg-aqua", "轿车": "fa-car bg-purple",
@@ -50,6 +73,9 @@ const ProgressItem = ({ licenseNumber, model, driver, progress }) => {
                 <h3 className="timeline-header">{licenseNumber} / {driver}</h3>
                 <div className="timeline-body">{infos.join(", ")}</div>
                 {progress.notes && (<div className={styles.notes}>{progress.notes}</div>)}
+                {progress.pics.length > 0 && (
+                    <Thumbnails pics={progress.pics} onPreview={onImagePreview} />
+                )}
             </div>
         </li>
     )
@@ -64,7 +90,8 @@ const TimeLabel = ({ label }) => (
 export default class ProgressDetails extends Component {
     static propTypes = {
         order: PropTypes.object,
-        onClose: PropTypes.func
+        onClose: PropTypes.func,
+        onImagePreview: PropTypes.func
     }
 
     refineProgress = () => {
@@ -90,7 +117,7 @@ export default class ProgressDetails extends Component {
     }
 
     render() {
-        const { onClose, order } = this.props;
+        const { onClose, onImagePreview, order } = this.props;
         const progress = this.refineProgress();
 
         return (
@@ -113,7 +140,7 @@ export default class ProgressDetails extends Component {
                                         <TimeLabel label={label} />
 
                                         {progress[label].map((item, index) => (
-                                            <ProgressItem key={index} {...item} />
+                                            <ProgressItem key={index} {...item} onImagePreview={onImagePreview} />
                                         ))}
                                     </Fragment>
                                 );

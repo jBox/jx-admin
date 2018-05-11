@@ -35,7 +35,8 @@ export default class ProgressEditor extends Component {
             fuelFee: "", // 油费
             parkingFee: "", // 停车费
             otherFee: "", // 其他费
-            notes: "" // 备注
+            notes: "", // 备注
+            pics: []
         }
     }
 
@@ -83,6 +84,10 @@ export default class ProgressEditor extends Component {
     handleInputChange = (event) => {
         const { name, value } = event.target;
         this.setState({ data: { ...this.state.data, [name]: value } });
+    }
+
+    handleImagesChange = (imgs) => {
+        this.setState({ data: { ...this.state.data, pics: [...imgs] } });
     }
 
     render() {
@@ -152,10 +157,10 @@ export default class ProgressEditor extends Component {
                             </div>
                         </div>
                         <FormInput id="notes" name="notes" label="备注" placeholder="备注"
-                            defaultValue={data.备注}
+                            defaultValue={data.notes}
                             onChange={this.handleInputChange} />
 
-                        <ImageLoader />
+                        <ImageLoader imgs={data.pics} onChange={this.handleImagesChange} />
                     </div>
 
                     <div className="box-footer">
