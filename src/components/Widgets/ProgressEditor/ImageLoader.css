@@ -1,17 +1,24 @@
 @value danger from "../../Colors.css";
+
 ul.list {
     margin: 0;
     padding: 0;
+    display: flex;
+    justify-content: space-between;
 }
 
 ul.list li {
     list-style: none;
-    margin: 5px 0;
-    padding: 5px;
+    margin: 2px;
+    padding: 2px;
     border: 1px #d2d6de solid;
     width: 100%;
     height: auto;
     position: relative;
+}
+
+ul.list li.placeholder {
+    border: none;
 }
 
 ul.list::after {
@@ -19,33 +26,34 @@ ul.list::after {
     clear: both;
 }
 
-ul.list li.x {
+.x {
+    position: relative;
     padding: 0;
     border: none;
 }
 
-ul.list .dropzone {
+.x .dropzone { 
     margin: 0;
     width: 100%;
-    height: 80px;
+    height: 40px;
     border: 2px dashed #666;
     padding: 5px;
     text-align: center;
     font-size: 18px;
-    line-height: 62px;
+    line-height: 25px;
     cursor: pointer;
 }
 
 .remove {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 2px;
+    right: 2px;
     text-align: center;
-    line-height: 42px;
+    line-height: 36px;
     background: white;
     border-radius: 40px;
-    color: danger;
+    color: #f56954;
     cursor: pointer;
 }

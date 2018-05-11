@@ -71,7 +71,8 @@ export default class ImageLoader extends Component {
 
     static propTypes = {
         imgs: PropTypes.array,
-        onChange: PropTypes.func
+        onChange: PropTypes.func,
+        onPreview: PropTypes.func
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -118,30 +119,54 @@ export default class ImageLoader extends Component {
         }
     }
 
+    handlePreviewClick = (img) => {
+        const { onPreview } = this.props;
+        return () => {
+            if (onPreview) {
+                onPreview(img);
+            }
+        }
+    }
+
+    handleRemoveClick = (img) => {
+        return () => {
+            const { imgs } = this.state;
+            const index = imgs.indexOf(img);
+            if (index > -1) {
+                const images = [...imgs];
+                images.splice(index, 1);
+                this.setState({ imgs: images });
+            }
+        }
+    }
+
     render() {
 
         const { imgs } = this.state;
 
         return (
-            <ul className={styles.list}>
-
-                {imgs.map((img, index) => (
-                    <li key={index}>
-                        <img className="img-responsive" src={img.dataURL} />
-                        <div className={styles.remove}>
-                            <span className="glyphicon glyphicon-trash"></span>
-                        </div>
-                    </li>
-                ))}
+            <Fragment>
+                <ul className={styles.list}>
+                    {imgs.map((img) => (
+                        <li key={img.id}>
+                            <img className="img-responsive" src={img.dataURL} onClick={this.handlePreviewClick(img)} />
+                            <div className={styles.remove} onClick={this.handleRemoveClick(img)}>
+                                <span className="glyphicon glyphicon-trash"></span>
+                            </div>
+                        </li>
+                    ))}
+                    <li className={styles.placeholder}></li>
+                    <li className={styles.placeholder}></li>
+                </ul>
 
                 {imgs.length < 3 && (
-                    <li className={styles.x}>
+                    <div className={styles.x}>
                         <Dropzone accept="image/*" onDrop={this.handleDrop} className={styles.dropzone}>
                             上传发票
                         </Dropzone>
-                    </li>
+                    </div>
                 )}
-            </ul>
+            </Fragment>
         );
     }
 }
