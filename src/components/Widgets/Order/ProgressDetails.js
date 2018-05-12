@@ -19,13 +19,17 @@ const Thumbnails = ({ pics, onImagePreview }) => {
 
     return (
         <div className={styles.thumbnails}>
-            <div className="row">
-                {pics.map((img) => (
-                    <div key={img.id} className="col-xs-4 col-md-4 col-sm-4" onClick={handleClick(img.id)}>
-                        <img className="img-responsive" src={img.thumbnail} />
-                    </div>
-                ))}
-            </div>
+            {pics.map((img) => {
+                if (img && img.id) {
+                    return (
+                        <div key={img.id} onClick={handleClick(img.id)}>
+                            <img className="img-responsive" src={img.thumbnail} />
+                        </div>
+                    );
+                }
+
+                return <div></div>
+            })}
         </div>
     )
 };
@@ -64,6 +68,11 @@ const ProgressItem = ({ licenseNumber, model, driver, progress, onImagePreview }
 
     const reportDateTime = progress.report.toDateTime();
 
+    const pics = [
+        ...progress.pics,
+        ...("0".repeat(3 - progress.pics.length).split(""))
+    ];
+
     return (
         <li>
             <i className={classNames("fa", VehicleIcons[model])}></i>
@@ -73,8 +82,8 @@ const ProgressItem = ({ licenseNumber, model, driver, progress, onImagePreview }
                 <h3 className="timeline-header">{licenseNumber} / {driver}</h3>
                 <div className="timeline-body">{infos.join(", ")}</div>
                 {progress.notes && (<div className={styles.notes}>{progress.notes}</div>)}
-                {progress.pics.length > 0 && (
-                    <Thumbnails pics={progress.pics} onPreview={onImagePreview} />
+                {pics.length > 0 && (
+                    <Thumbnails pics={pics} onPreview={onImagePreview} />
                 )}
             </div>
         </li>

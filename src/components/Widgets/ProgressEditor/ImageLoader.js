@@ -64,6 +64,22 @@ const refineImages = (files) => {
     });
 };
 
+const Remove = ({ img, onClick }) => {
+
+    const handleRemoveClick = () => {
+        if (onClick && img) {
+            onClick(img);
+        }
+    };
+
+    return (
+        <div className={styles.remove} onClick={handleRemoveClick}>
+            <div className={styles.bg}></div>
+            <span className="glyphicon glyphicon-trash"></span>
+        </div>
+    );
+};
+
 export default class ImageLoader extends Component {
     static defaultProps = {
         imgs: []
@@ -129,44 +145,43 @@ export default class ImageLoader extends Component {
     }
 
     handleRemoveClick = (img) => {
-        return () => {
-            const { imgs } = this.state;
-            const index = imgs.indexOf(img);
-            if (index > -1) {
-                const images = [...imgs];
-                images.splice(index, 1);
-                this.setState({ imgs: images });
-            }
+        const { imgs } = this.state;
+        const index = imgs.indexOf(img);
+        if (index > -1) {
+            const images = [...imgs];
+            images.splice(index, 1);
+            this.setState({ imgs: images });
         }
     }
 
     render() {
-
+        const MAX_LEN = 3;
         const { imgs } = this.state;
+        const uploadable = MAX_LEN - imgs.length >= 1;
+        const placeholderLen = MAX_LEN - imgs.length - 1;
+        const placeholders = placeholderLen > 0 ? "0".repeat(placeholderLen).split("") : [];
 
         return (
-            <Fragment>
-                <ul className={styles.list}>
-                    {imgs.map((img) => (
-                        <li key={img.id}>
-                            <img className="img-responsive" src={img.dataURL} onClick={this.handlePreviewClick(img)} />
-                            <div className={styles.remove} onClick={this.handleRemoveClick(img)}>
-                                <span className="glyphicon glyphicon-trash"></span>
-                            </div>
-                        </li>
-                    ))}
-                    <li className={styles.placeholder}></li>
-                    <li className={styles.placeholder}></li>
-                </ul>
+            <ul className={styles.list}>
+                {imgs.map((img) => (
+                    <li key={img.id}>
+                        <img className="img-responsive" src={img.dataURL} onClick={this.handlePreviewClick(img)} />
+                        <Remove img={img} onClick={this.handleRemoveClick} />
+                    </li>
+                ))}
 
-                {imgs.length < 3 && (
-                    <div className={styles.x}>
+                {uploadable && (
+                    <li className={styles.x}>
                         <Dropzone accept="image/*" onDrop={this.handleDrop} className={styles.dropzone}>
                             上传发票
                         </Dropzone>
-                    </div>
+                    </li>
                 )}
-            </Fragment>
+
+                {placeholders.map((_, index) => (
+                    <li key={index} className={styles.placeholder}></li>
+                ))}
+            </ul>
         );
     }
 }

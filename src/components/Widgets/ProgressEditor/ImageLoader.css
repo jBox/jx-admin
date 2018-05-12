@@ -9,12 +9,16 @@ ul.list {
 
 ul.list li {
     list-style: none;
-    margin: 2px;
+    margin: 0;
     padding: 2px;
     border: 1px #d2d6de solid;
     width: 100%;
     height: auto;
     position: relative;
+}
+
+ul.list li:not(:last-child) {
+    margin-right: 3px
 }
 
 ul.list li.placeholder {
@@ -26,34 +30,52 @@ ul.list::after {
     clear: both;
 }
 
-.x {
+ul.list li.x {
     position: relative;
     padding: 0;
     border: none;
 }
 
-.x .dropzone { 
+ul.list li.x .dropzone { 
     margin: 0;
     width: 100%;
-    height: 40px;
+    height: 80px;
     border: 2px dashed #666;
     padding: 5px;
     text-align: center;
     font-size: 18px;
-    line-height: 25px;
+    line-height: 62px;
     cursor: pointer;
 }
 
 .remove {
     width: 35px;
     height: 35px;
-    position: absolute;
     top: 2px;
     right: 2px;
-    text-align: center;
-    line-height: 36px;
-    background: white;
-    border-radius: 40px;
-    color: #f56954;
+    position: absolute;
+    color: #FFFFFF;
     cursor: pointer;
+}
+
+.remove .bg {
+    top: 0;
+    left: 0;
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 35px;
+    cursor: pointer;
+}
+
+.remove span {
+    top: 10px;
+    left: 10px;
+    position: absolute;
+    cursor: pointer;
+}
+
+.remove:hover span {
+    color: danger;
 }
