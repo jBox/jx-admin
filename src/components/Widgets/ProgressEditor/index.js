@@ -77,7 +77,20 @@ export default class ProgressEditor extends Component {
     handleSubmit = () => {
         const { onSubmit } = this.props;
         if (onSubmit) {
-            onSubmit({ ...this.state.data, report: new Date().toISOString() });
+            const { data } = this.state;
+            onSubmit({
+                ...data,
+                pics: data.pics.map((img) => {
+                    if (img.id && img.dataURL) {
+                        return { ...img };
+                    } else if (img.id) {
+                        return img.id;
+                    }
+
+                    return { ...img };
+                }),
+                report: new Date().toISOString()
+            });
         }
     }
 

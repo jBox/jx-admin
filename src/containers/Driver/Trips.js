@@ -28,14 +28,14 @@ class Trips extends Component {
         }
 
         return (
-            <Fragment>
+            <div className="content-limit">
                 {data.map((item) => (
                     <DriverTrip key={item.id}
                         data={item}
                         onProgress={updateProgress}
                     />
                 ))}
-            </Fragment>
+            </div>
         );
     }
 }

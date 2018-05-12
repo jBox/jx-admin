@@ -165,7 +165,7 @@ export default class ImageLoader extends Component {
             <ul className={styles.list}>
                 {imgs.map((img) => (
                     <li key={img.id}>
-                        <img className="img-responsive" src={img.dataURL} onClick={this.handlePreviewClick(img)} />
+                        <img className="img-responsive" src={img.thumbnail || img.dataURL} onClick={this.handlePreviewClick(img)} />
                         <Remove img={img} onClick={this.handleRemoveClick} />
                     </li>
                 ))}

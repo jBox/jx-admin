@@ -30,11 +30,13 @@ class Home extends Component {
         }
 
         return (
-            <DriverTrip data={data}
-                onDepart={depart}
-                onRevert={revert}
-                onProgress={updateProgress}
-            />
+            <div className="content-limit">
+                <DriverTrip data={data}
+                    onDepart={depart}
+                    onRevert={revert}
+                    onProgress={updateProgress}
+                />
+            </div>
         );
     }
 }

@@ -5,27 +5,17 @@ import classNames from "classnames";
 import styles from "./Progress.css";
 import Button from "../../Form/Button";
 
-const ProgressItem = ({
-    date,
-    milage,
-    duration,
-    fuelFee,
-    tollFee,
-    parkingFee,
-    otherFee,
-    notes,
-    onClick }) => {
-
+const ProgressItem = ({ data, onClick }) => {
+    const { date, milage, duration, fuelFee, tollFee, parkingFee, otherFee, notes } = data;
     const fee = Number(fuelFee) + Number(tollFee) + Number(parkingFee) + Number(otherFee);
     const infos = [`行驶${duration}小时`, `${milage}公里`, `总费用${fee.toFixed(1)}元`];
 
     const dateTime = new Date(date).format("MM-dd");
     const handleClick = () => {
-        const data = { date, milage, duration, fuelFee, tollFee, parkingFee, otherFee, notes };
         return (event) => {
             event.preventDefault();
             event.stopPropagation();
-            onClick(data);
+            onClick({ ...data });
         }
     };
     return (
@@ -64,7 +54,7 @@ export default class Progress extends Component {
                     )}
                 </li>
                 {data.map((item, index) => (
-                    <ProgressItem key={index} {...item} onClick={this.handleItemClick} />
+                    <ProgressItem key={index} data={item} onClick={this.handleItemClick} />
                 ))}
 
             </ul>
