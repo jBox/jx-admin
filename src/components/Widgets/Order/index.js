@@ -182,6 +182,7 @@ export default class Order extends Component {
                             terms={this.state.schedule.terms}
                             onClose={this.handleFlipBack}
                             onSubmit={this.handleProgressReportSubmit}
+                            onPreview={onImagePreview}
                         />
                     )}
                     {flipBack === "schedule" && (

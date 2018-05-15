@@ -7,28 +7,28 @@ import styles from "./ProgressDetails.css";
 import Modal from "../../Overlays/Modal";
 import Button from "../../Form/Button";
 
-const Thumbnails = ({ pics, onImagePreview }) => {
+const Thumbnails = ({ pics, onPreview }) => {
 
-    const handleClick = (id) => {
+    const handleClick = (img) => {
         return () => {
-            if (onImagePreview) {
-                onImagePreview(id);
+            if (onPreview) {
+                onPreview(img);
             }
         }
     };
 
     return (
         <div className={styles.thumbnails}>
-            {pics.map((img) => {
+            {pics.map((img, index) => {
                 if (img && img.id) {
                     return (
-                        <div key={img.id} onClick={handleClick(img.id)}>
-                            <img className="img-responsive" src={img.thumbnail} />
+                        <div key={img.id}>
+                            <img className="img-responsive" src={img.thumbnail} onClick={handleClick(img)} />
                         </div>
                     );
                 }
 
-                return <div></div>
+                return <div key={index}></div>
             })}
         </div>
     )

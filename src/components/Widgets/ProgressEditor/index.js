@@ -45,7 +45,8 @@ export default class ProgressEditor extends Component {
         data: PropTypes.object,
         terms: PropTypes.array,
         onSubmit: PropTypes.func,
-        onClose: PropTypes.func
+        onClose: PropTypes.func,
+        onPreview: PropTypes.func
     }
 
     static getDerivedStateFromProps = (nextProps, prevState) => {
@@ -104,7 +105,7 @@ export default class ProgressEditor extends Component {
     }
 
     render() {
-        const { onClose, terms, order } = this.props;
+        const { onClose, terms, order, onPreview } = this.props;
         const { isEdit, data } = this.state;
         let title = isEdit ? `编辑进度 （${data.date}）` : "汇报进度";
         if (order && order.id) {
@@ -173,7 +174,11 @@ export default class ProgressEditor extends Component {
                             defaultValue={data.notes}
                             onChange={this.handleInputChange} />
 
-                        <ImageLoader imgs={data.pics} onChange={this.handleImagesChange} />
+                        <ImageLoader
+                            imgs={data.pics}
+                            onChange={this.handleImagesChange}
+                            onPreview={onPreview}
+                        />
                     </div>
 
                     <div className="box-footer">

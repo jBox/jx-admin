@@ -11,7 +11,8 @@ export default class Trip extends Component {
         data: PropTypes.object,
         onDepart: PropTypes.func,
         onRevert: PropTypes.func,
-        onProgress: PropTypes.func
+        onProgress: PropTypes.func,
+        onImagePreview: PropTypes.func
     }
 
     state = {
@@ -95,7 +96,7 @@ export default class Trip extends Component {
 
     render() {
         const { confirm, flip } = this.state;
-        const { data, onDepart } = this.props;
+        const { data, onDepart, onImagePreview } = this.props;
 
         return (
             <Fragment>
@@ -116,6 +117,7 @@ export default class Trip extends Component {
                                 terms={data.terms}
                                 onClose={this.handleFlipBack}
                                 onSubmit={this.handleProgressSubmit}
+                                onPreview={onImagePreview}
                             />
                         )}
                     </Flip.Back>

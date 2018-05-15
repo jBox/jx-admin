@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import OrderPreview from "../../components/Widgets/Order";
 import Confirm from "../../components/Overlays/Confirm";
 import InfiniteScroll from "react-infinite-scroller";
+import ImagePreview from "../../components/Widgets/ImagePreview";
 
 import manageOrdersSelector from "../../redux/selectors/manage/orders";
 import {
@@ -55,7 +56,7 @@ class Orders extends Component {
         vehiclesInitialLoad: PropTypes.func
     }
 
-    state = { confirm: { display: false } }
+    state = { confirm: { display: false }, imagePreview: null }
 
     componentDidMount() {
         const { ordersInitialLoad, driversInitialLoad, vehiclesInitialLoad } = this.props;
@@ -130,9 +131,14 @@ class Orders extends Component {
         }
     }
 
+    handleImagePreview = (img) => {
+        this.setState({ imagePreview: img.dataURL || img.src });
+    }
+
     render() {
         const { hasMore, orders, models, modifications, drivers, vehicles, departSchedule, progressSchedule, revertSchedule } = this.props;
         const noAny = !hasMore && orders.length === 0;
+        const { imagePreview, confirm } = this.state;
 
         return (
             <Fragment>
@@ -161,6 +167,7 @@ class Orders extends Component {
                             onDepart={departSchedule}
                             onProgress={progressSchedule}
                             onRevert={revertSchedule}
+                            onImagePreview={this.handleImagePreview}
                         />
                     ))}
                 </InfiniteScroll>
@@ -169,14 +176,16 @@ class Orders extends Component {
                     <label>---------------- 暂无数据 ----------------</label>
                 </div>)}
 
-                {this.state.confirm.display && (<Confirm
+                {confirm.display && (<Confirm
                     title="取消订单"
                     onConfirm={this.handleConfirmCancelImmediately}
                     onClose={this.handleCloseConfirmDailog}
                     warning
                 >
-                    {`你知道吗，你正在取消订单${this.state.confirm.order.id}，你确定要这么做吗？`}
+                    {`你知道吗，你正在取消订单${confirm.order.id}，你确定要这么做吗？`}
                 </Confirm>)}
+
+                <ImagePreview image={imagePreview} />
             </Fragment>
         );
     }
